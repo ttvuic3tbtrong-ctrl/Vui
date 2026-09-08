@@ -73,7 +73,7 @@ async function analyze(){
     if(!res.ok) throw new Error(data.error||"Không kết nối được Trợ lý AI.");
     addMsg("ai",renderReport(data)); record(data);
   }catch(e){
-    loading.remove(); addMsg("error",`⚠️ ${esc(e.message)}<br><small>Nếu đây là bản chạy trên Netlify, hãy kiểm tra biến môi trường OPENAI_API_KEY và lần deploy gần nhất.</small>`);
+    loading.remove(); addMsg("error",`⚠️ ${esc(e.message)}<br><small>Bản V1.3 vẫn có chế độ phân tích cục bộ miễn phí ngay cả khi dịch vụ AI ngoài tạm thời không khả dụng.</small>`);
   }finally{send.disabled=false;send.textContent="Phân tích cùng AI";}
 }
 send.addEventListener("click",analyze);
