@@ -1,40 +1,30 @@
-# KHÔNG GIAN SỐ VĂN HÓA CÙNG AI – V1.3 HYBRID FREE
+# KHÔNG GIAN SỐ VĂN HÓA CÙNG AI – V1.3.1 HYBRID FREE
 
-## Cấu trúc sản phẩm
-1. NHẬN BIẾT
-2. TÂM SỰ CÙNG AI
-3. THỐNG KÊ
+## Mục tiêu V1.3.1
+Bản này sửa trọng tâm phản hồi cho học sinh theo 4 trụ cột:
 
-## Điểm mới V1.3
-Ứng dụng **không còn bắt buộc API trả phí**. Netlify Function có một bộ phân tích Rule-based cục bộ, vì vậy chức năng “Tâm sự cùng AI” vẫn hoạt động khi chưa cấu hình khóa AI ngoài.
+1. **Động viên – ổn định tâm lý**
+2. **Hướng giải quyết an toàn, sát tình huống**
+3. **Góc nhìn pháp luật tách riêng người kể và đối phương**
+4. **Lời khuyên cuối cùng**, cân nhắc ảnh hưởng tới bản thân, đối phương, gia đình, nhà trường và xã hội
 
-Có thể thêm **Gemini Free Tier** để tăng khả năng hiểu ngôn ngữ tự nhiên:
-- Netlify > Environment variables
-- `GEMINI_API_KEY` = khóa tạo từ Google AI Studio
-- tùy chọn `GEMINI_MODEL` = `gemini-2.5-flash-lite`
-- Redeploy site
+Các thông tin kỹ thuật như vai trò, chủ thể, nhóm vấn đề và mức nguy cơ vẫn được phân tích ở phía sau để phục vụ bộ 100 tình huống kiểm thử, nhưng không hiển thị thành báo cáo khô cho học sinh.
 
-Không đưa API key vào `index.html`, `app.js`, GitHub hoặc ảnh chụp màn hình.
+## Sửa lỗi quan trọng
+- Không còn bắt từ `anh` rồi hiểu nhầm thành "Ảnh & đời tư".
+- Tách rõ tình huống: **em cho bạn mượn tiền → sau mới biết bạn đánh bài**. Người kể được xác định là **người cho vay/bị ảnh hưởng**, không phải người tham gia đánh bài.
+- Cờ bạc + nợ được xếp mức **Cao** để khớp bộ 100 tình huống kiểm thử.
+- Không đưa lời khuyên "gỡ bài/không phát tán" nếu tình huống không hề có ảnh, bài đăng hoặc nội dung riêng tư.
+- Rule Engine là nguồn chuẩn cho phần xác định chủ thể; Gemini (nếu có) chỉ hỗ trợ diễn đạt tự nhiên hơn.
 
-## Cơ chế dự phòng
-- Có Gemini key và còn hạn mức: Gemini hỗ trợ phân tích → Rules chuẩn hóa/an toàn.
-- Không có key / Gemini lỗi / hết hạn mức: Rules cục bộ tự xử lý → website vẫn trả lời.
+## Miễn phí / Hybrid
+Không bắt buộc API trả phí.
+- Không có `GEMINI_API_KEY`: chạy Rule Engine cục bộ miễn phí.
+- Có Gemini Free Tier: Gemini hỗ trợ diễn đạt; Rules vẫn khóa phần xác định chủ thể/nguy cơ để giảm nhầm vai.
+- Gemini lỗi/hết hạn mức: tự quay về Rules.
 
-## Bộ não V1.3
-- Phân tích ai đang chat, ai thực hiện hành vi, hành vi hướng tới ai.
-- Cho phép đa vai trò.
-- Hỗ trợ câu không dấu/sai chính tả ở mức quy tắc.
-- Không cổ vũ trả đũa, hack, phát tán riêng tư, cờ bạc, vay để gỡ nợ.
-- Nguy cơ cao: ưu tiên người lớn có trách nhiệm.
-- Đe dọa mơ hồ: hỏi thêm thay vì tự nâng mức quá cao.
-- Pháp luật chỉ dùng kho căn cứ giới hạn trong `netlify/functions/ai.mjs`.
+## Kiểm thử
+Giữ nguyên file:
+`tests/Bo_100_tinh_huong_kiem_thu_AI_bao_luc_hoc_duong_V1.xlsx`
 
-## Kiểm thử khoa học
-Dùng file `tests/Bo_100_tinh_huong_kiem_thu_AI_bao_luc_hoc_duong_V1.xlsx` để chấm độc lập:
-- Đúng chủ thể
-- Đúng vai trò
-- Đúng vấn đề
-- Hỗ trợ phù hợp
-- Pháp luật đúng/không bịa
-
-Quy trình: V1.3 → chạy 100 tình huống → PASS/FAIL → phân tích lỗi → V1.4.
+Nên test trước 10 tình huống đại diện, sau đó mới chạy toàn bộ 100 tình huống.
