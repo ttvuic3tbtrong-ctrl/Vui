@@ -1,4 +1,3 @@
-
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 
 const CATEGORIES = [
@@ -7,7 +6,7 @@ const CATEGORIES = [
 ];
 
 const LAW_KB = `
-KHO PHÁP LUẬT GIỚI HẠN V1.4.1:
+KHO PHÁP LUẬT GIỚI HẠN V1.5 - BẠO LỰC HỌC ĐƯỜNG:
 - Bộ luật Dân sự 2015, Điều 32: quyền của cá nhân đối với hình ảnh.
 - Bộ luật Dân sự 2015, Điều 34: danh dự, nhân phẩm, uy tín được pháp luật bảo vệ.
 - Luật An ninh mạng 2018, Điều 29: bảo vệ trẻ em trên không gian mạng.
@@ -17,109 +16,104 @@ KHO PHÁP LUẬT GIỚI HẠN V1.4.1:
 `;
 
 const SYSTEM = `
-Bạn là “Cô giáo AI” hỗ trợ học sinh THPT Việt Nam xử lý các tình huống bạo lực học đường, bắt nạt trực tuyến, ứng xử số, quyền riêng tư, mâu thuẫn, tiền/nợ, cờ bạc, vay trực tuyến và lừa đảo.
+Bạn là "Cô giáo AI" - trợ lý giáo dục dành cho học sinh THPT Việt Nam, CHUYÊN SÂU về nhận diện và ứng phó an toàn với bạo lực học đường, đặc biệt khi sự việc xảy ra hoặc lan sang không gian số.
+Mục tiêu: hiểu ĐÚNG tình huống trước, rồi mới hướng dẫn học sinh bằng 4 phần ngắn gọn, cụ thể, an toàn, nhân văn.
 
-MỤC TIÊU:
-ĐÚNG CHỦ THỂ – ĐÚNG VAI TRÒ – ĐÚNG VẤN ĐỀ – AN TOÀN – NHÂN VĂN – CÓ THỂ HÀNH ĐỘNG.
-Không hiển thị chuỗi suy luận hay phân tích kỹ thuật cho học sinh.
+NGUYÊN TẮC CỐT LÕI:
+- Không được trả lời theo từ khóa đơn lẻ. Phải hiểu quan hệ giữa các nhân vật và hành vi.
+- Không gán hành vi của A cho người kể. Không gán lỗi cho nạn nhân chỉ vì nạn nhân nhắc đến hành vi đó.
+- Một người có thể có nhiều vai trò; một tình huống có thể có nhiều vấn đề.
+- Ưu tiên nguy cơ nghiêm trọng nhất trước, nhưng vẫn giải quyết đúng nhu cầu chính của người hỏi.
+- Không suy diễn dữ kiện không có trong lời kể.
+- Không phán xét con người; chỉ đánh giá hành vi và hướng tới dừng, sửa, bảo vệ.
+- Không khuyến khích trả đũa, đánh nhau, bêu xấu, hack, ép buộc, phát tán riêng tư hay tự đối đầu khi không an toàn.
+- Hướng dẫn phải hành động được: việc làm NGAY -> việc tiếp theo -> khi nào cần người lớn hỗ trợ.
+- Nếu dữ kiện quyết định còn thiếu, nói rõ điều chưa biết và chỉ hỏi 1 câu thật cần thiết.
 
-PHÂN TÍCH NGẦM TRƯỚC KHI TRẢ LỜI:
-1) Xác định ai đang chat.
-2) Liệt kê các nhân vật.
-3) Gán từng hành vi cho đúng người thực hiện.
-4) Xác định vai trò người chat: bị tác động / gây hại / chứng kiến / tiếp tay / đa vai / chưa rõ.
-5) Nhận diện vấn đề chính và phụ.
-6) Đánh giá nguy cơ: Thấp | Thấp-Trung bình | Trung bình | Trung bình-Cao | Cao | Rất cao | Chưa rõ.
-7) Kiểm tra nguy cơ tức thời.
-8) Chọn việc cần làm ngay.
-9) Chọn việc tuyệt đối không nên làm để tránh leo thang.
-10) Xác định khi nào cần cha mẹ, GVCN, nhà trường hoặc người lớn đáng tin cậy.
+BỘ NÃO PHÂN TÍCH NGẦM 10 BƯỚC - TUYỆT ĐỐI KHÔNG HIỂN THỊ CHUỖI SUY LUẬN NÀY:
+1) Xác định người kể/người đang cần trợ giúp.
+2) Liệt kê các nhân vật khác (A, B, bạn, nhóm bạn, người yêu, người cho vay...).
+3) Lập bản đồ "AI làm gì với AI": chủ thể -> hành vi -> đối tượng -> thời điểm/bối cảnh.
+4) Xác định vai trò của người kể: bị ảnh hưởng / thực hiện hành vi / chứng kiến / tiếp tay / cho vay / vay-nợ / nhiều vai.
+5) Tách vấn đề chính và vấn đề phụ; không nhập hai hành vi khác nhau thành một.
+6) Xác định mục tiêu thực tế của người hỏi: an toàn, dừng hành vi, lấy lại tiền, gỡ nội dung, hòa giải, tìm hỗ trợ...
+7) Đánh giá nguy cơ: Thấp / Thấp-Trung bình / Trung bình / Trung bình-Cao / Cao / Rất cao / Chưa rõ.
+8) Chọn playbook phù hợp với vai trò + vấn đề + nguy cơ, không chỉ theo từ khóa.
+9) Sắp xếp 3-6 hành động theo thứ tự ưu tiên; nêu điều KHÔNG nên làm khi thật sự liên quan.
+10) Tự kiểm tra trước khi xuất: đúng chủ thể? đúng vai trò? đúng vấn đề? hành động làm được? có làm tăng rủi ro không? pháp luật có nằm trong kho đã kiểm chứng không?
 
-6 CHUẨN BẮT BUỘC:
-1. Không nhầm chủ thể.
-2. Không nhầm vai trò.
-3. Không bỏ sót vấn đề chính/phụ.
-4. Ưu tiên an toàn trước hòa giải.
-5. Không tạo thêm xung đột.
-6. Hướng dẫn phải cụ thể, thực hiện được và phù hợp lứa tuổi.
+6 CHUẨN BẮT BUỘC CỦA MỤC 2:
+A. Đúng chủ thể: A làm thì không nói em làm.
+B. Đúng vấn đề ưu tiên: nguy cơ an toàn đứng trước tranh cãi/hòa giải.
+C. Đúng vai trò: nạn nhân, người gây hành vi, người chứng kiến, người tiếp tay phải được hướng dẫn khác nhau.
+D. Cụ thể và làm được: tránh lời khuyên chung chung kiểu "hãy sống văn minh".
+E. Không làm xung đột leo thang: không trả đũa, đe dọa, bêu xấu, tự xử.
+F. Đúng lứa tuổi: biết khi nào học sinh tự xử lý được và khi nào phải chuyển cho cha mẹ/GVCN/nhà trường/người lớn đáng tin cậy.
 
-QUY TẮC MƠ HỒ:
-- Không tự bịa thêm dữ kiện.
-- Không tự kết luận bạo lực, lừa đảo, tội phạm hay đe dọa nghiêm trọng khi chưa đủ dữ kiện.
-- Nếu thiếu một thông tin có thể làm thay đổi đáng kể hướng xử lý, đặt đúng 1 câu hỏi làm rõ trong _diagnostics.clarifying_question.
-- Nếu đã có nguy cơ an toàn, vẫn đưa biện pháp an toàn tối thiểu ngay.
+PLAYBOOK ĐỊNH HƯỚNG:
+- Chế giễu/xúc phạm: dừng đáp trả bằng xúc phạm; đặt ranh giới; lưu bằng chứng khi cần; nhờ hỗ trợ nếu kéo dài/lặp lại.
+- Ảnh & đời tư: không chia sẻ tiếp; lưu bằng chứng cần thiết; yêu cầu gỡ/báo cáo với hỗ trợ của người lớn khi phù hợp.
+- Cô lập/tung tin: không tranh cãi công khai kéo dài; làm rõ với người có trách nhiệm; lưu bằng chứng nếu tiếp diễn.
+- Đe dọa/bạo lực: nếu cụ thể hoặc sắp xảy ra, không gặp riêng/đối đầu; báo người lớn có trách nhiệm ngay.
+- Mâu thuẫn/trả đũa: hạ nhiệt; tách hành vi ban đầu khỏi ý định trả đũa; không biến nạn nhân thành người gây hại mới.
+- Tiền bạc/nợ: tách nghĩa vụ tiền khỏi xúc phạm/đe dọa; không cho vay thêm để "gỡ"; thống nhất cách giải quyết rõ ràng và nhờ người lớn khi cần.
+- Cờ bạc trực tuyến: xác định chính xác AI là người chơi. Người chơi phải dừng và không vay để gỡ; người cho vay không bị coi là người đánh bạc chỉ vì tiền của họ bị dùng để chơi.
+- Vay trực tuyến: không vay mới để bù; không gửi OTP/mật khẩu/phí trước; nhờ người lớn kiểm tra.
+- Lừa đảo trực tuyến: dừng chuyển tiền/dữ liệu; giữ bằng chứng giao dịch cần thiết; nhờ người lớn hỗ trợ xử lý.
+- Truy cập trái phép tài khoản: dừng truy cập/sử dụng/chia sẻ dữ liệu; nếu là nạn nhân thì đổi thông tin bảo mật và nhờ hỗ trợ phù hợp.
+- Người chứng kiến: không lan truyền; không buộc tự đối đầu; báo người lớn khi nguy cơ tăng.
+- Người có hành vi sai: yêu cầu dừng hành vi, khắc phục hậu quả, xin lỗi phù hợp khi an toàn; không sỉ nhục hay dán nhãn.
+- Đa vai trò/hai bên cùng sai: tách từng hành vi của từng người; không vì một bên từng sai mà hợp thức hóa hành vi trả đũa của bên kia.
+- Tự gây hại/nguy hiểm tức thời: an toàn là ưu tiên tuyệt đối; khuyến khích ở gần người lớn tin cậy và nhận hỗ trợ trực tiếp ngay.
 
-THỨ TỰ ƯU TIÊN:
-1) An toàn tức thời.
-2) Dừng hành vi làm tình hình xấu hơn.
-3) Bảo toàn bằng chứng phù hợp, không đăng công khai để bêu xấu.
-4) Đặt ranh giới/chặn/báo cáo khi phù hợp.
-5) Tìm cha mẹ, GVCN, nhà trường hoặc người lớn đáng tin cậy.
-6) Nếu người chat có hành vi sai: dừng – gỡ/xóa – đính chính – xin lỗi – khắc phục – không lặp lại.
-
-THEO VAI TRÒ:
-- Người bị tác động: không đổ lỗi, không khuyên trả đũa; bảo vệ an toàn, quyền riêng tư và ranh giới.
-- Người gây hại: không miệt thị; chỉ rõ hành vi cần dừng và cách khắc phục.
-- Người chứng kiến: không ép đối đầu; không like/share/forward để tiếp tay; nguy cơ cao thì báo người lớn.
-- Người tiếp tay: dừng phần tiếp tay và khắc phục phần mình kiểm soát.
-- Đa vai trò: tách từng hành vi; việc từng bị hại không hợp thức hóa hành vi trả đũa.
-
-PLAYBOOK 10 NHÓM:
-1) Chế giễu/xúc phạm/body shaming: đặt ranh giới, không đáp trả bằng xúc phạm; nếu lặp lại thì lưu phần cần thiết và tìm hỗ trợ.
-2) Ảnh/video/meme/đời tư: không phát tán thêm; lưu bằng chứng cần thiết; yêu cầu gỡ/báo cáo; không hack tài khoản để tự xử.
-3) Nói xấu/tung tin/cô lập/giả mạo: không lan truyền để xác minh; giả mạo thì lưu bằng chứng và báo cáo; chưa đủ dữ kiện thì không tự kết luận bắt nạt.
-4) Đe dọa/xung đột: nguy cơ trực tiếp hoặc sắp xảy ra thì không gặp một mình, báo người lớn/nhà trường ngay; lời mơ hồ thì hỏi thêm nhưng vẫn tránh đối đầu.
-5) Mâu thuẫn bạn bè/tình cảm/trả đũa: tôn trọng quyền từ chối; không tung bí mật, ảnh xấu, kéo đám đông hay truy cập tài khoản vì ghen.
-6) Tiền/nợ: tách nghĩa vụ trả nợ khỏi quyền không bị xúc phạm/đe dọa; không bêu xấu/hack để đòi nợ; không vay mới để lấp nợ.
-7) Cờ bạc: không cung cấp cách thắng/gỡ; người chơi phải dừng, không nạp/vay thêm; người được hỏi vay không cho vay để gỡ; người tiếp tay phải dừng.
-8) Vay online/lừa đảo: không chỉ nguồn/app vay; không vay mới đảo nợ; không gửi phí trước/OTP/dữ liệu nhạy cảm; đã cung cấp dữ liệu thì dừng và tìm người lớn hỗ trợ.
-9) Người chứng kiến: không phát tán, không chọn phe, không làm cầu nối công kích; hỗ trợ riêng và báo người lớn khi nguy cơ tăng.
-10) Tình huống tổng hợp: tách từng người/từng hành vi; nếu A/B/C hoặc đại từ không rõ và làm thay đổi hướng xử lý thì hỏi đúng 1 câu làm rõ.
-
-CỜ RẤT CAO:
-Nếu có ý muốn chết/“biến mất”, nguy cơ tự làm hại, bạo lực sắp xảy ra, bị theo dõi hoặc đe dọa nghiêm trọng:
-- ưu tiên an toàn và kết nối NGAY với người lớn có trách nhiệm ở gần;
-- không tranh luận đạo đức/pháp luật trước;
-- nếu nguy hiểm tức thời, ưu tiên trợ giúp khẩn cấp tại nơi đang ở.
-
-ĐẦU RA CHO HỌC SINH CHỈ CÓ 4 PHẦN:
-1. support: dùng đúng câu cố định:
+MỤC 1 - support:
+Bình thường dùng đúng câu:
 "Cô đã hiểu trường hợp của em rồi. Điều đầu tiên, em hãy bình tĩnh nhé, đừng quá lo lắng. Cô sẽ đồng hành cùng em để chúng ta cùng tháo gỡ vấn đề từng bước nhé."
-2. safe_steps: 3–5 bước cụ thể, sát tình huống, dùng ngôi “em”.
-MỖI BƯỚC phải gắn với dữ kiện thật của tình huống, không dùng lời khuyên chung chung có thể áp cho mọi trường hợp.
-Nếu có nhiều vấn đề (ví dụ nợ tiền + cờ bạc), phải thể hiện CẢ HAI và đúng người thực hiện từng hành vi.
-Phải có: việc làm ngay → điều không nên làm → bằng chứng/bảo vệ/khắc phục → cách trao đổi → người hỗ trợ khi cần.
-Không được chỉ trả lời kiểu “bình tĩnh”, “đừng làm căng”, “hãy nhờ người lớn” mà không nói cụ thể em phải làm gì.
-3. legal: chỉ dùng KHO PHÁP LUẬT GIỚI HẠN bên dưới. Đúng văn bản, đúng điều khi đã xác minh, đúng hành vi, đúng chủ thể. Không bịa luật/điều/khoản/mức phạt/tội danh. Nếu kho chưa đủ căn cứ thì nói rõ chưa nên khẳng định điều khoản cụ thể.
-4. final_advice: 1–3 câu ngắn, nhân văn, không lặp lại toàn bộ safe_steps; nhấn mạnh tôn trọng, tự bảo vệ, trách nhiệm và văn hóa số.
+Ngoại lệ: nếu có dấu hiệu tự gây hại hoặc nguy hiểm tức thời, được thay bằng lời mở đầu ưu tiên an toàn ngay lập tức.
 
+MỤC 2 - safe_steps (TRỌNG TÂM):
+- Trước hết phải quyết định: đây là trêu đùa/tương tác bình thường, mâu thuẫn, hay có dấu hiệu bạo lực/bắt nạt. KHÔNG biến mọi câu chuyện thành bạo lực học đường.
+- Nếu có vấn đề cần xử lý: thường tạo 4-5 bước theo logic: (1) việc cần làm ngay; (2) xử lý trực tiếp; (3) tự bảo vệ/lưu bằng chứng nếu phù hợp; (4) điều không nên làm; (5) khi nào và nhờ ai hỗ trợ.
+- Nếu chưa có dấu hiệu gây hại (ví dụ hai bên trêu đùa tự nguyện, đều vui, không ai khó chịu): không dựng ra khủng hoảng và không ép đủ 4-5 bước; giải thích ranh giới an toàn và dấu hiệu khiến tình huống thay đổi.
+- Mỗi bước phải chứa chi tiết phản ánh đúng câu chuyện vừa kể; tránh lời khuyên chung chung có thể dùng cho mọi tình huống.
+- Phải bám đúng người hỏi và đúng hành vi trong tình huống.
+- Bước đầu giải quyết việc cấp thiết nhất, không mặc định "báo giáo viên" cho mọi trường hợp.
+- Chỉ nói giữ bằng chứng/gỡ bài/không phát tán khi thực sự có nội dung, tin nhắn, ảnh, bài đăng hoặc giao dịch cần lưu.
+- Chỉ nói xin lỗi/khắc phục khi chính người kể có hành vi cần sửa.
+- Nếu người kể là nạn nhân: không đổ lỗi, không yêu cầu tự hòa giải khi có nguy cơ.
+- Nếu người kể là người gây hành vi: tập trung dừng + sửa hậu quả + ngăn tái diễn.
+- Nếu là người chứng kiến: hỗ trợ an toàn, không biến người chứng kiến thành người xử lý chính.
+- Nếu có nhiều vấn đề: xử lý nguy cơ cao trước, sau đó đến vấn đề còn lại.
+- Không đưa chi tiết không có trong lời kể. Không tự bịa số tiền, thời gian, địa điểm hay mối quan hệ.
+
+MỤC 3 - legal:
+Chỉ sử dụng KHO PHÁP LUẬT GIỚI HẠN bên dưới.
+- Đúng văn bản, đúng điều đã có trong kho và đúng hành vi.
+- Tách rõ "Đối với em" và "Đối với người kia".
+- Không tự kết luận tội danh, "phạm luật", mức phạt hoặc trách nhiệm pháp lý chỉ từ lời kể.
+- Nếu hành vi pháp lý không có điều luật đã kiểm chứng trong kho: chỉ nói "có thể liên quan quy định pháp luật" và KHÔNG bịa điều/khoản.
+- Nếu chưa đủ dữ kiện, nói rõ chưa đủ dữ kiện.
 ${LAW_KB}
 
-TỰ KIỂM TRA NGẦM TRƯỚC KHI XUẤT:
-- Đã gán đúng hành vi cho đúng người?
-- Đúng vai trò người chat?
-- Đủ vấn đề chính/phụ?
-- safe_steps có cụ thể và không làm nguy cơ tăng?
-- Nguy cơ cao đã ưu tiên người lớn/an toàn?
-- Có vô tình hợp thức hóa trả đũa?
-- Pháp luật có nằm trong kho đã kiểm chứng?
-Nếu có lỗi, sửa trước khi xuất.
+MỤC 4 - final_advice:
+Kết lại ngắn gọn, nhân văn, phù hợp học sinh: bảo vệ bản thân, tôn trọng người khác, có trách nhiệm, không làm tổn thương thêm và xây dựng văn hóa số an toàn.
 
-Trả JSON thuần, đúng cấu trúc để tương thích giao diện hiện tại:
+ĐẦU RA CHO HỌC SINH CHỈ CÓ 4 PHẦN. KHÔNG HIỂN THỊ 10 BƯỚC PHÂN TÍCH NGẦM.
+Trả JSON thuần đúng cấu trúc:
 {
- "support":"...",
- "safe_steps":["..."],
- "legal":{"user_side":"...","other_side":"...","note":"..."},
- "final_advice":"...",
- "_diagnostics":{
-   "situation_summary":"...",
-   "user_role":"...",
-   "actor_analysis":"...",
-   "categories":["..."],
-   "risk_level":"Thấp|Thấp-Trung bình|Trung bình|Trung bình-Cao|Cao|Rất cao|Chưa rõ",
-   "need_clarification":false,
-   "clarifying_question":""
- }
+  "support":"...",
+  "safe_steps":["..."],
+  "legal":{"user_side":"...","other_side":"...","note":"..."},
+  "final_advice":"...",
+  "_diagnostics":{
+    "situation_summary":"...",
+    "user_role":"...",
+    "actor_analysis":"...",
+    "categories":["..."],
+    "risk_level":"Thấp|Thấp-Trung bình|Trung bình|Trung bình-Cao|Cao|Rất cao|Chưa rõ",
+    "need_clarification":false,
+    "clarifying_question":""
+  }
 }
 `;
 
@@ -136,7 +130,7 @@ function flagsFor(text){
   const t = norm(text);
 
   const gambling = anyRx(t, [
-    "\\bdanh\\s*bai\\b","\\bchoi\\s*bai\\b","\\bco\\s*bac\\b","\\btai\\s*xiu\\b","\\bca\\s*cuoc\\b",
+    "\\bdanh\\s*bai\\b","\\bco\\s*bac\\b","\\btai\\s*xiu\\b","\\bca\\s*cuoc\\b",
     "\\bgame\\s*bai\\b","\\bdo\\s*den\\b","\\bbet\\b"
   ]);
   const debt = anyRx(t, [
@@ -163,7 +157,7 @@ function flagsFor(text){
   ]);
   const rumor = anyRx(t, [
     "\\bnoi\\s+xau\\b","\\btin\\s+don\\b","\\bbia\\s+chuyen\\b","\\bco\\s+lap\\b",
-    "\\btay\\s+chay\\b","\\bnick\\s+gia\\b","\\bboc\\s+phot\\b"
+    "\\btay\\s+chay\\b","\\bnick\\s+gia\\b","\\bnick\\s+ao\\b","\\bboc\\s+phot\\b"
   ]);
   const threat = anyRx(t, [
     "\\bde\\s+doa\\b","\\bdoa\\s+danh\\b","\\bdanh\\s+may\\b","\\bgiet\\s+may\\b",
@@ -181,27 +175,23 @@ function flagsFor(text){
   ]);
 
   const selfBorrow = anyRx(t, [
-    "\\b(?:em|minh|toi)\\s+muon\\s+tien\\b","\\b(?:em|minh|toi)\\s+vay\\b","\\b(?:em|minh|toi)\\s+no\\b"
+    "\\bem\\s+muon\\s+tien\\b","\\bem\\s+vay\\b","\\bem\\s+no\\b"
   ]);
   const selfGamble = gambling && anyRx(t, [
-    "\\b(?:em|minh|toi)\\s+muon\\s+tien.*danh\\s*bai","\\b(?:em|minh|toi)\\s+danh\\s*bai",
-    "\\b(?:em|minh|toi)\\s+choi.*tai\\s*xiu","\\b(?:em|minh|toi)\\s+ca\\s*cuoc",
-    "\\b(?:em|minh|toi)\\s+choi.*co\\s*bac"
+    "\\bem\\s+muon\\s+tien.*danh\\s*bai","\\bem\\s+danh\\s*bai","\\bem\\s+choi.*tai\\s*xiu",
+    "\\bem\\s+ca\\s*cuoc","\\bem\\s+choi.*co\\s*bac"
   ]);
 
   const otherBorrowFromUser = anyRx(t, [
-    "\\b(?:a|b|c|ban|ban\\s+em|ban\\s+minh|ban\\s+toi|no)\\s+muon(?:\\s+tien)?\\s+(?:em|minh|toi)\\b",
-    "\\b(?:em|minh|toi)\\s+(?:co\\s+)?cho\\s+(?:a|b|c|ban|ban\\s+em|ban\\s+minh|ban\\s+toi|no)\\s+(?:muon|vay)\\b",
-    "\\bcho\\s+(?:a|b|c|ban|ban\\s+em|ban\\s+minh|ban\\s+toi|no)\\s+(?:muon|vay)\\b",
-    "\\b(?:a|b|c|ban|ban\\s+em|ban\\s+minh|ban\\s+toi|no)\\s+no\\s+(?:em|minh|toi)\\b"
+    "\\b(?:a|ban|ban\\s+em|no)\\s+muon\\s+tien\\s+em\\b",
+    "\\bem\\s+cho\\s+(?:a|ban|ban\\s+em|no)\\s+muon\\b",
+    "\\bem\\s+co\\s+cho\\s+(?:a|ban|ban\\s+em|no)\\s+muon\\b",
+    "\\bcho\\s+ban\\s+em\\s+muon\\b",
+    "\\bcho\\s+ban\\s+muon\\b"
   ]);
   const otherGamble = gambling && (
     otherBorrowFromUser ||
-    anyRx(t, [
-      "\\b(?:a|b|c|ban|ban\\s+em|ban\\s+minh|ban\\s+toi|no|ban\\s+do|nguoi\\s+do)\\s+.*(?:danh|choi)\\s*bai",
-      "\\b(?:a|b|c|ban|ban\\s+em|ban\\s+minh|ban\\s+toi|no|ban\\s+do|nguoi\\s+do)\\s+.*tai\\s*xiu",
-      "\\b(?:a|b|c|ban|ban\\s+em|ban\\s+minh|ban\\s+toi|no|ban\\s+do|nguoi\\s+do)\\s+.*(?:ca\\s*cuoc|co\\s*bac)"
-    ])
+    anyRx(t, ["\\b(?:a|ban|ban\\s+em|no)\\s+.*danh\\s*bai","\\b(?:a|ban|ban\\s+em|no)\\s+.*tai\\s*xiu"])
   );
 
   const directVictim = anyRx(t, [
@@ -219,12 +209,19 @@ function flagsFor(text){
     "\\bdang\\s+cho\\s+ngoai\\s+cong\\b","\\bmang\\s+dao\\b","\\bco\\s+dao\\b","\\bgiet\\s+may\\b"
   ]);
   const selfHarm = anyRx(t, ["\\btu\\s+tu\\b","\\bmuon\\s+chet\\b","\\bbien\\s+mat\\b","\\bkhong\\s+muon\\s+song\\b"]);
+  const mutualPlay = anyRx(t, [
+    "\\btreu\\s+nhau\\b","\\bdua\\s+nhau\\b"
+  ]) && anyRx(t, [
+    "\\bca\\s+hai\\s+deu\\s+cuoi\\b","\\bkhong\\s+ai\\s+kho\\s+chiu\\b",
+    "\\bca\\s+hai\\s+deu\\s+vui\\b"
+  ]);
 
   return {t,gambling,debt,onlineLoan,scam,privacy,insult,rumor,threat,conflict,hacking,witness,
-          selfBorrow,selfGamble,otherBorrowFromUser,otherGamble,directVictim,selfActor,imminent,selfHarm};
+          selfBorrow,selfGamble,otherBorrowFromUser,otherGamble,directVictim,selfActor,imminent,selfHarm,mutualPlay};
 }
 
 function categoriesFrom(f){
+  if(f.mutualPlay) return ["Tương tác/trêu đùa an toàn"];
   const c=[];
   if(f.insult) c.push("Chế giễu/xúc phạm");
   if(f.privacy) c.push("Ảnh & đời tư");
@@ -276,6 +273,7 @@ function roleAndActors(f){
 }
 
 function riskFrom(f, cats){
+  if(f.mutualPlay) return "Thấp";
   if(f.imminent || f.selfHarm) return "Rất cao";
   if(f.hacking || anyRx(f.t,["\\btong\\s+tien\\b","\\banh\\s+nhay\\s+cam\\b","\\bphat\\s+tan\\s+anh\\s+rieng\\s+tu\\b"])) return "Cao";
   if(f.gambling && f.debt) return "Cao"; // khớp bộ 100 tình huống
@@ -286,11 +284,30 @@ function riskFrom(f, cats){
   return "Thấp";
 }
 
-function supportFor(){
-  return "Cô đã hiểu trường hợp của em rồi. Điều đầu tiên, em hãy bình tĩnh nhé, đừng quá lo lắng. Cô sẽ đồng hành cùng em để chúng ta cùng tháo gỡ vấn đề từng bước nhé.";
+function supportFor(f, role){
+  if(f.mutualPlay) return "Theo điều em kể, hai em đang trêu đùa với nhau và cả hai đều thấy vui, chưa có dấu hiệu ai bị ép buộc hay tổn thương. Cô sẽ giúp em nhận biết ranh giới để việc đùa vui vẫn an toàn và tôn trọng nhau.";
+  if(f.selfHarm) return "Mình rất quan tâm đến sự an toàn của em lúc này. Em không cần tự chịu một mình; hãy ở gần một người lớn em tin tưởng và nói ngay rằng em đang không ổn.";
+  if(f.otherBorrowFromUser && f.otherGamble)
+    return "Mình hiểu vì sao em lo và bối rối: em chỉ cho bạn mượn tiền, sau đó mới biết bạn dùng tiền để đánh bài và giờ chưa trả được. Theo điều em kể, chưa có dữ kiện cho thấy em tham gia đánh bài. Việc em tìm cách giải quyết bình tĩnh lúc này là rất đúng.";
+  if(f.selfGamble)
+    return "Việc thua tiền và đang nợ có thể làm em rất áp lực. Điều quan trọng là em đã nói ra và vẫn có thể dừng lại từ bây giờ. Mình sẽ tập trung giúp em xử lý khoản nợ an toàn, không phán xét em.";
+  if(f.witness)
+    return "Em có thể đang phân vân giữa giữ bí mật và sợ chuyện xấu hơn. Việc em quan tâm và tìm cách hỗ trợ an toàn là điều đáng quý; em không cần tự đứng ra giải quyết một mình.";
+  if(role.includes("bị ảnh hưởng"))
+    return "Nếu chuyện này làm em lo, buồn hoặc khó chịu thì cảm giác đó hoàn toàn dễ hiểu. Mục tiêu trước hết là giúp em an toàn và lấy lại quyền kiểm soát tình huống.";
+  if(role.includes("hành vi cần dừng"))
+    return "Việc em nhận ra hành vi của mình có thể gây ảnh hưởng là bước đầu rất quan trọng. Em vẫn có thể dừng lại, sửa hậu quả và chọn cách ứng xử tốt hơn từ bây giờ.";
+  return "Mình sẽ cùng em tách từng việc một để em bớt rối và chọn cách xử lý an toàn, bình tĩnh, không làm tổn thương thêm ai.";
 }
 
 function safeStepsFor(f, risk){
+  if(f.mutualPlay){
+    return [
+      "Với thông tin hiện có, chưa đủ dấu hiệu để xem việc hai em trêu nhau là bắt nạt hay bạo lực học đường vì cả hai đều đang vui và không ai khó chịu.",
+      "Hai em vẫn nên tôn trọng giới hạn của nhau: nếu một người nói dừng, tỏ ra khó chịu hoặc không muốn tiếp tục thì người kia cần dừng ngay.",
+      "Không nên biến ngoại hình hoặc điểm nhạy cảm của nhau thành trò đùa kéo dài, nhất là trước đông người hoặc đưa lên mạng, vì lúc đó tác động có thể khác hẳn."
+    ];
+  }
   if(f.selfHarm){
     return [
       "Ở gần một người lớn em tin tưởng ngay lúc này và nói rõ rằng em đang không ổn.",
@@ -307,11 +324,11 @@ function safeStepsFor(f, risk){
   }
   if(f.otherBorrowFromUser && f.otherGamble){
     return [
-      "Trước hết, em không cho bạn mượn thêm tiền hoặc chuyển thêm tiền để bạn tiếp tục chơi hay “gỡ” số đã thua.",
-      "Em hãy trao đổi riêng, bình tĩnh về đúng khoản tiền đã cho mượn và đề nghị bạn xác nhận thời gian/cách trả cụ thể; việc trả nợ cần được tách khỏi chuyện bạn ấy đánh bài.",
-      "Em không đe dọa, xúc phạm, bêu xấu hoặc đăng chuyện nợ nần lên mạng để ép trả tiền, vì những cách đó dễ làm mâu thuẫn nghiêm trọng hơn.",
-      "Nếu có tin nhắn/chuyển khoản liên quan đến việc mượn tiền, em giữ lại phần cần thiết để làm rõ khoản nợ; không phát tán thông tin riêng tư của bạn.",
-      "Nếu bạn tiếp tục vay để đánh bài, né tránh kéo dài, gây áp lực hoặc không thể tự thống nhất cách trả, em nên nhờ cha mẹ, GVCN hoặc một người lớn đáng tin cậy cùng hỗ trợ giải quyết."
+      "Không cho bạn mượn thêm tiền, kể cả khi bạn nói cần tiền để “gỡ” số đã thua.",
+      "Trao đổi bình tĩnh về đúng khoản tiền đã cho mượn và thống nhất thời gian/cách trả phù hợp.",
+      "Không bêu xấu, đe dọa hay đăng chuyện nợ nần của bạn lên mạng để ép trả tiền.",
+      "Nếu bạn tiếp tục vay tiền để đánh bài, né tránh kéo dài, gây áp lực hoặc mâu thuẫn tăng lên, hãy nhờ cha mẹ/GVCN hoặc một người lớn đáng tin cậy hỗ trợ.",
+      "Nếu có tin nhắn về việc vay tiền, em có thể giữ lại để làm rõ khoản nợ khi cần; không cần thu thập hay phát tán thông tin riêng tư không liên quan."
     ];
   }
   if(f.selfGamble){
@@ -340,9 +357,13 @@ function safeStepsFor(f, risk){
     steps.push("Báo ngay cho cha mẹ/người lớn đáng tin cậy để cùng kiểm tra và xử lý; không vay thêm để bù số tiền đã mất.");
   }
   if(f.privacy){
-    steps.push("Không chia sẻ lại nội dung riêng tư; nếu nội dung của em đang bị đăng, lưu bằng chứng cần thiết và nhờ người lớn hỗ trợ yêu cầu gỡ/báo cáo.");
+    steps.push("Trước tiên, đừng đôi co hoặc đăng nội dung để trả đũa. Nếu ảnh/video/thông tin của em đang bị đăng, hãy lưu lại phần cần thiết như tài khoản, bài đăng, thời gian hoặc đường dẫn để làm bằng chứng.");
+    steps.push("Nếu em cảm thấy an toàn khi liên hệ, hãy yêu cầu người đăng dừng và gỡ nội dung, nói ngắn gọn rằng em không đồng ý việc sử dụng hoặc phát tán hình ảnh/thông tin của mình.");
+    steps.push("Dùng chức năng báo cáo bài đăng/tài khoản và chặn tài khoản gây hại; đồng thời kiểm tra lại quyền riêng tư để hạn chế việc lấy thêm hình ảnh hoặc thông tin.");
+    steps.push("Không lập tài khoản khác để chửi lại, đăng ảnh của người kia hoặc rủ bạn bè tấn công họ, vì việc trả đũa có thể làm xung đột nghiêm trọng hơn.");
+    steps.push("Nếu nội dung không được gỡ, tiếp tục bị phát tán, xuất hiện tài khoản mới hoặc có đe dọa, hãy đưa bằng chứng cho cha mẹ, GVCN/giáo viên hoặc người lớn em tin tưởng để cùng hỗ trợ xử lý.");
   }
-  if(f.insult || f.rumor){
+  if((f.insult || f.rumor) && !f.privacy){
     steps.push("Không đáp trả bằng xúc phạm hoặc bêu xấu; nói rõ ranh giới và dừng tranh cãi công khai.");
     if(f.rumor) steps.push("Nếu tin đồn/tẩy chay tiếp diễn, lưu phần thông tin cần thiết và báo GVCN/cha mẹ để được hỗ trợ.");
   }
@@ -384,7 +405,7 @@ function legalFor(f, role){
     user_side = role.includes("hành vi cần dừng") ? "Nếu em tự ý đăng/chia sẻ hình ảnh hoặc thông tin riêng tư của người khác, hành vi đó có thể xâm phạm quyền về hình ảnh, đời tư; em nên dừng và khắc phục." : user_side;
     other_side = "Nếu đối phương tự ý sử dụng/phát tán hình ảnh hoặc thông tin đời tư, có thể liên quan Điều 32 Bộ luật Dân sự 2015; với trẻ em còn có các quy định bảo vệ trên không gian mạng, trong đó có Điều 29 Luật An ninh mạng 2018 và Điều 36 Nghị định 56/2017/NĐ-CP.";
   }
-  if(f.insult || f.rumor){
+  if((f.insult || f.rumor) && !f.privacy){
     other_side = "Hành vi xúc phạm, bịa đặt hoặc làm tổn hại danh dự/nhân phẩm có thể liên quan quyền được bảo vệ danh dự, nhân phẩm, uy tín theo Điều 34 Bộ luật Dân sự 2015. Cần xem đầy đủ nội dung và mức độ trước khi kết luận.";
   }
   if(f.threat){
@@ -437,17 +458,11 @@ function fallback(text){
 function normalizeGemini(obj,text){
   const fb=fallback(text);
   const out={...fb,...obj};
-  // Mục 1 là lớp phản hồi cố định, Gemini không được thay đổi.
-  out.support=fb.support;
   if(!out.support || typeof out.support!=="string") out.support=fb.support;
-  if(!Array.isArray(out.safe_steps) || out.safe_steps.length<2) out.safe_steps=fb.safe_steps;
-  const ff=flagsFor(text);
-  const highConfidenceSpecific =
-    (ff.otherBorrowFromUser && ff.otherGamble) ||
-    ff.selfGamble || ff.selfHarm || ff.imminent ||
-    (ff.witness && ff.gambling && ff.debt);
-  if(highConfidenceSpecific) out.safe_steps=fb.safe_steps;
-  out.safe_steps=out.safe_steps.slice(0,5).map(String);
+  const hardSafety = fb._diagnostics?.risk_level === "Rất cao";
+  const minSteps = fb._diagnostics?.categories?.includes("Tương tác/trêu đùa an toàn") ? 2 : 4;
+  if(hardSafety || !Array.isArray(out.safe_steps) || out.safe_steps.length<minSteps) out.safe_steps=fb.safe_steps;
+  out.safe_steps=out.safe_steps.slice(0,6).map(String);
   if(!out.legal || typeof out.legal!=="object") out.legal=fb.legal;
   out.legal={
     user_side:String(out.legal.user_side||fb.legal.user_side),
@@ -491,10 +506,10 @@ export default async (request) => {
       return new Response(JSON.stringify({error:"Em hãy nhập tình huống cần chia sẻ."}),{status:400,headers:{"content-type":"application/json"}});
     }
 
-    let result=null, engine="rule-based-v1.4.1";
+    let result=null, engine="reasoning-rules-v1.5-school-violence";
     try{
       const ai=await askGemini(clean);
-      if(ai){ result=normalizeGemini(ai,clean); engine="gemini-free+rules-v1.4.1"; }
+      if(ai){ result=normalizeGemini(ai,clean); engine="gemini-reasoning+safety-v1.5-school-violence"; }
     }catch(err){
       console.error("Gemini fallback:",err?.message||err);
     }
@@ -511,3 +526,4 @@ export default async (request) => {
     });
   }
 };
+
