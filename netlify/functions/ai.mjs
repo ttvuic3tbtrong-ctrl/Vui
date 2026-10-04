@@ -1,8 +1,9 @@
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 
 const CATEGORIES = [
-  "Chế giễu/xúc phạm","Ảnh & đời tư","Cô lập/tung tin","Đe dọa","Mâu thuẫn",
-  "Tiền bạc/nợ","Cờ bạc trực tuyến","Vay trực tuyến","Lừa đảo trực tuyến","Khác"
+  "Trêu đùa an toàn","Chế giễu/xúc phạm","Bắt nạt lặp lại","Ảnh & đời tư",
+  "Cô lập/tung tin","Đe dọa/bạo lực thể chất","Ép buộc/khống chế",
+  "Quấy rối/xâm phạm ranh giới","Mâu thuẫn/trả đũa","Người chứng kiến","Khác"
 ];
 
 const LAW_KB = `
@@ -216,8 +217,29 @@ function flagsFor(text){
     "\\bca\\s+hai\\s+deu\\s+vui\\b"
   ]);
 
-  return {t,gambling,debt,onlineLoan,scam,privacy,insult,rumor,threat,conflict,hacking,witness,
-          selfBorrow,selfGamble,otherBorrowFromUser,otherGamble,directVictim,selfActor,imminent,selfHarm,mutualPlay};
+  // Context signals: these are not labels by themselves. They help the fallback
+  // reason compositionally about consent, repetition and escalation.
+  const boundarySet = anyRx(t,[
+    "\\bkhong\\s+thich\\b","\\bye[uê]u\\s+cau\\s+dung\\b","\\bbao\\s+dung\\b",
+    "\\bnoi\\s+dung\\b","\\bda\\s+noi\\b.*\\bdung\\b","\\bkhong\\s+muon\\b"
+  ]);
+  const repeated = anyRx(t,[
+    "\\bngay\\s+nao\\b","\\bthuong\\s+xuyen\\b","\\blien\\s+tuc\\b",
+    "\\bvan\\s+(?:lam|goi|noi|dang|gui|tiep\\s+tuc)\\b","\\btiep\\s+tuc\\b","\\bnhieu\\s+lan\\b"
+  ]);
+  const appearanceTarget = anyRx(t,[
+    "\\bngoai\\s+hinh\\b","\\bm[aâ]p\\b","\\bbeo\\b","\\blun\\b","\\bxau\\b",
+    "\\bgoi\\s+em\\s+la\\b","\\bbiet\\s+danh\\b"
+  ]);
+  const imagePosted = anyRx(t,[
+    "\\b(?:dang|dua|up|post)\\s+anh\\s+em\\b","\\banh\\s+em\\s+len\\s+mang\\b",
+    "\\blay\\s+anh\\s+em\\b.*\\b(?:dang|up|post|meme)\\b"
+  ]);
+  const coercion = anyRx(t,["\\bep\\b","\\bbat\\s+em\\b","\\bneu\\s+khong.*(?:danh|dang|tung|noi)\\b","\\bkhong\\s+lam.*(?:danh|tung|dang)\\b"]);
+
+  return {t,gambling,debt,onlineLoan,scam,privacy:(privacy||imagePosted),insult:(insult||appearanceTarget),rumor,threat,conflict,hacking,witness,
+          selfBorrow,selfGamble,otherBorrowFromUser,otherGamble,directVictim,selfActor,imminent,selfHarm,mutualPlay,
+          boundarySet,repeated,appearanceTarget,imagePosted,coercion};
 }
 
 function categoriesFrom(f){
@@ -320,6 +342,24 @@ function safeStepsFor(f, risk){
       "Không đi gặp riêng hoặc đối đầu với người đang đe dọa em.",
       "Báo ngay cho cha mẹ, GVCN/giáo viên hoặc người có trách nhiệm ở trường.",
       "Nếu có tin nhắn đe dọa cụ thể, giữ lại phần cần thiết làm bằng chứng; không đăng công khai để trả đũa."
+    ];
+  }
+  if(f.appearanceTarget && f.boundarySet && f.repeated){
+    return [
+      "Việc em đã nói rõ là mình không thích và yêu cầu dừng nhưng các bạn vẫn lặp lại cho thấy đây không còn là một trò đùa hai bên cùng vui. Em không cần phải cười theo hoặc chịu đựng để giữ hòa khí.",
+      "Nếu thấy an toàn, em có thể nhắc lại một lần ngắn gọn và dứt khoát: ‘Mình đã nói mình không thích bị gọi như vậy. Các bạn hãy dừng lại.’ Sau đó không kéo dài tranh cãi trước đám đông.",
+      "Ghi lại những lần sự việc tiếp tục xảy ra (thời điểm, nơi xảy ra, ai có mặt); nếu có tin nhắn/bài đăng thì chỉ lưu phần cần thiết làm bằng chứng, không phát tán lại.",
+      "Không đáp trả bằng biệt danh, xúc phạm ngoại hình, đánh nhau hoặc đăng chuyện xấu của các bạn lên mạng, vì trả đũa có thể làm tình huống leo thang.",
+      "Vì em đã yêu cầu dừng mà hành vi vẫn lặp lại, hãy nói với GVCN, giáo viên hoặc cha mẹ/người lớn em tin tưởng để họ hỗ trợ chấm dứt việc này; nếu có đe dọa hay bạo lực thể chất thì cần báo ngay."
+    ];
+  }
+  if(f.imagePosted && f.insult){
+    return [
+      "Trước hết, em không cần chửi lại hay đăng ảnh của bạn để trả đũa. Hãy lưu lại bài đăng, tên tài khoản, thời gian và một vài ảnh chụp màn hình cần thiết trước khi nội dung bị xóa.",
+      "Nếu em thấy an toàn khi liên hệ, hãy yêu cầu bạn gỡ ảnh và dừng việc chế giễu em; có thể nói ngắn gọn: ‘Mình không đồng ý bạn đăng ảnh và nói về mình như vậy. Bạn hãy gỡ ảnh và dừng lại.’",
+      "Báo cáo bài đăng/tài khoản trên nền tảng và kiểm tra quyền riêng tư của tài khoản để hạn chế việc lấy thêm hình ảnh hoặc thông tin của em.",
+      "Không lập tài khoản khác để công kích, đăng ảnh xấu/bí mật của bạn hoặc rủ người khác vào chửi lại; điều đó có thể làm sự việc nghiêm trọng hơn.",
+      "Nếu bạn không gỡ, tiếp tục đăng/chế giễu, nhiều người cùng tham gia hoặc xuất hiện đe dọa, hãy đưa bằng chứng cho cha mẹ, GVCN/giáo viên hoặc người lớn em tin tưởng để cùng hỗ trợ xử lý."
     ];
   }
   if(f.otherBorrowFromUser && f.otherGamble){
@@ -460,9 +500,11 @@ function normalizeGemini(obj,text){
   const out={...fb,...obj};
   if(!out.support || typeof out.support!=="string") out.support=fb.support;
   const hardSafety = fb._diagnostics?.risk_level === "Rất cao";
-  const minSteps = fb._diagnostics?.categories?.includes("Tương tác/trêu đùa an toàn") ? 2 : 4;
-  if(hardSafety || !Array.isArray(out.safe_steps) || out.safe_steps.length<minSteps) out.safe_steps=fb.safe_steps;
-  out.safe_steps=out.safe_steps.slice(0,6).map(String);
+  // Preserve genuine semantic reasoning from Gemini. The old version replaced any
+  // answer with <4 steps by the generic rule fallback, which caused good contextual
+  // reasoning to disappear. Only hard-safety cases force deterministic steps.
+  if(hardSafety || !Array.isArray(out.safe_steps) || out.safe_steps.length===0) out.safe_steps=fb.safe_steps;
+  out.safe_steps=uniq(out.safe_steps.map(String).filter(Boolean)).slice(0,6);
   if(!out.legal || typeof out.legal!=="object") out.legal=fb.legal;
   out.legal={
     user_side:String(out.legal.user_side||fb.legal.user_side),
@@ -471,8 +513,12 @@ function normalizeGemini(obj,text){
   };
   if(!out.final_advice || typeof out.final_advice!=="string") out.final_advice=fb.final_advice;
 
-  // Rules are authoritative for diagnostics to prevent Gemini from swapping actors.
-  out._diagnostics=fb._diagnostics;
+  // Merge semantic diagnostics with deterministic safety. Do not erase Gemini's
+  // actor/role analysis on open wording; deterministic rules remain authoritative
+  // only for hard-safety escalation.
+  const gd=(obj && typeof obj._diagnostics==="object") ? obj._diagnostics : {};
+  out._diagnostics={...fb._diagnostics,...gd};
+  if(hardSafety) out._diagnostics.risk_level=fb._diagnostics.risk_level;
   return out;
 }
 
