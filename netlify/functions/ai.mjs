@@ -404,8 +404,31 @@ function safeStepsFor(f, risk){
     steps.push("Nếu nội dung không được gỡ, tiếp tục bị phát tán, xuất hiện tài khoản mới hoặc có đe dọa, hãy đưa bằng chứng cho cha mẹ, GVCN/giáo viên hoặc người lớn em tin tưởng để cùng hỗ trợ xử lý.");
   }
   if((f.insult || f.rumor) && !f.privacy){
-    steps.push("Không đáp trả bằng xúc phạm hoặc bêu xấu; nói rõ ranh giới và dừng tranh cãi công khai.");
-    if(f.rumor) steps.push("Nếu tin đồn/tẩy chay tiếp diễn, lưu phần thông tin cần thiết và báo GVCN/cha mẹ để được hỗ trợ.");
+    // Action Planner cho xúc phạm / nói xấu / cô lập: xử lý theo cấu trúc
+    // hành vi + mức lặp lại + không đồng thuận + môi trường số, thay vì 2 câu mẫu.
+    const socialExclusion = anyRx(f.t,["\\btay\\s+chay\\b","\\bco\\s+lap\\b","\\bkhong\\s+cho.*tham\\s+gia\\b","\\bloai.*khoi\\s+nhom\\b"]);
+    const onlineHarm = anyRx(f.t,["\\btren\\s+mang\\b","\\bnhom\\s+chat\\b","\\bfacebook\\b","\\btiktok\\b","\\bzalo\\b","\\bdang\\s+bai\\b","\\bbinh\\s+luan\\b"]);
+    steps.push(
+      f.boundarySet
+        ? "Em đã thể hiện rằng mình không đồng ý/không thoải mái, vì vậy em không cần tiếp tục chịu đựng hoặc cố cười cho qua. Nếu thấy an toàn, hãy nhắc lại ranh giới một lần ngắn gọn, rõ ràng rồi dừng tranh cãi."
+        : "Không đáp trả bằng xúc phạm, bêu xấu hoặc kéo thêm người vào công kích. Nếu thấy an toàn, hãy nói ngắn gọn điều em muốn dừng lại và tránh tranh cãi công khai kéo dài."
+    );
+    if(onlineHarm || f.repeated || f.rumor){
+      steps.push("Lưu lại phần thông tin cần thiết để làm rõ sự việc như bài đăng/tin nhắn, tài khoản, thời điểm hoặc những lần hành vi lặp lại; không phát tán lại nội dung gây tổn thương.");
+    }
+    if(onlineHarm){
+      steps.push("Nếu nội dung đang ở trên mạng, dùng chức năng báo cáo/chặn khi phù hợp và kiểm tra quyền riêng tư; nếu là bài đăng hoặc bình luận về em, có thể yêu cầu gỡ nội dung khi việc liên hệ là an toàn.");
+    } else if(socialExclusion){
+      steps.push("Nếu em bị loại khỏi hoạt động học tập hoặc hoạt động chung của lớp, hãy ghi lại việc cụ thể em bị ngăn tham gia và trao đổi với GVCN/giáo viên phụ trách để bảo đảm em vẫn được tham gia phù hợp.");
+    } else {
+      steps.push("Tách sự việc cụ thể nào đang làm em tổn thương nhất (lời nói, tin đồn hay hành vi cô lập) để trình bày rõ với người hỗ trợ, thay vì cố tự giải quyết tất cả cùng lúc.");
+    }
+    steps.push("Không trả đũa bằng cách tung chuyện riêng, lập tài khoản khác để công kích, rủ bạn bè tẩy chay ngược hoặc hẹn đánh nhau; trả đũa có thể làm tình huống leo thang.");
+    steps.push(
+      socialExclusion
+        ? "Vì sự việc có cả nói xấu/cô lập, hãy báo GVCN, giáo viên hoặc cha mẹ/người lớn em tin tưởng nếu hành vi tiếp diễn hoặc ảnh hưởng việc học, sinh hoạt của em; nếu có đe dọa hay nguy cơ bạo lực thì báo ngay."
+        : "Nếu việc xúc phạm/nói xấu tiếp tục, có nhiều người tham gia, ảnh hưởng việc học hoặc làm em thấy không an toàn, hãy đưa thông tin đã lưu cho GVCN, giáo viên hoặc cha mẹ/người lớn em tin tưởng để cùng xử lý."
+    );
   }
   if(f.threat){
     steps.push("Không gặp riêng/đối đầu nếu em thấy không an toàn; nói ngay với người lớn đáng tin cậy.");
@@ -505,6 +528,15 @@ function normalizeGemini(obj,text){
   // reasoning to disappear. Only hard-safety cases force deterministic steps.
   if(hardSafety || !Array.isArray(out.safe_steps) || out.safe_steps.length===0) out.safe_steps=fb.safe_steps;
   out.safe_steps=uniq(out.safe_steps.map(String).filter(Boolean)).slice(0,6);
+
+  // Quality gate: với tình huống thực sự cần hành động, nếu mô hình chỉ tạo 1-2
+  // bước quá ngắn thì dùng Action Planner cấu trúc làm nền. Không áp dụng cho
+  // trêu đùa an toàn hoặc trường hợp mà kế hoạch ngắn là phù hợp.
+  const plannerHasDepth = Array.isArray(fb.safe_steps) && fb.safe_steps.length >= 4;
+  const aiPlanTooThin = Array.isArray(out.safe_steps) && out.safe_steps.length < 3;
+  if(!hardSafety && plannerHasDepth && aiPlanTooThin){
+    out.safe_steps = fb.safe_steps;
+  }
   if(!out.legal || typeof out.legal!=="object") out.legal=fb.legal;
   out.legal={
     user_side:String(out.legal.user_side||fb.legal.user_side),
