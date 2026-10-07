@@ -564,7 +564,16 @@ async function askGemini(text){
     generationConfig:{responseMimeType:"application/json",temperature:0.15,maxOutputTokens:1600}
   };
   const r=await fetch(url,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
-  if(!r.ok) throw new Error(`Gemini HTTP ${r.status}`);
+if (!r.ok) {
+  const detail = await r.json().catch(() => ({}));
+  const reason = String(
+    detail?.error?.message || "Không có mô tả lỗi"
+  )
+    .split(key).join("[ẨN KHÓA]")
+    .replace(/AIza[\w-]+/g, "[ẨN KHÓA]");
+
+  throw new Error(`Gemini HTTP ${r.status}: ${reason}`);
+}
   const data=await r.json();
   const raw=data?.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"";
   if(!raw) throw new Error("Gemini không trả nội dung");
