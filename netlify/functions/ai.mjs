@@ -52,6 +52,7 @@ E. Không làm xung đột leo thang: không trả đũa, đe dọa, bêu xấu,
 F. Đúng lứa tuổi: biết khi nào học sinh tự xử lý được và khi nào phải chuyển cho cha mẹ/GVCN/nhà trường/người lớn đáng tin cậy.
 
 PLAYBOOK ĐỊNH HƯỚNG:
+- Khi đang mâu thuẫn mà một bên rủ/hẹn gặp ở công viên, cổng trường, ngoài trường hoặc nơi vắng: không mặc định là đánh nhau; khuyên không vội đi một mình, đề xuất gặp tại trường có giáo viên/người lớn hỗ trợ, cảnh báo rõ nếu có đe dọa. Không chỉ khuyên "bình tĩnh".
 - Chế giễu/xúc phạm: dừng đáp trả bằng xúc phạm; đặt ranh giới; lưu bằng chứng khi cần; nhờ hỗ trợ nếu kéo dài/lặp lại.
 - Ảnh & đời tư: không chia sẻ tiếp; lưu bằng chứng cần thiết; yêu cầu gỡ/báo cáo với hỗ trợ của người lớn khi phù hợp.
 - Cô lập/tung tin: không tranh cãi công khai kéo dài; làm rõ với người có trách nhiệm; lưu bằng chứng nếu tiếp diễn.
@@ -126,6 +127,64 @@ function norm(s=""){
 function rx(t, pattern){ return new RegExp(pattern, "i").test(t); }
 function anyRx(t, patterns){ return patterns.some(p=>rx(t,p)); }
 function uniq(a){ return [...new Set(a)]; }
+
+
+// Nhận diện theo NGỮ CẢNH: mâu thuẫn + lời hẹn gặp bên ngoài.
+// Không kết luận bạn kia có ý định đánh nhau khi chưa có chứng cứ.
+function meetingRisk(text){
+  const t=norm(text);
+  const dispute=anyRx(t,[
+    "\\bmau\\s*thuan\\b","\\bcai\\s*nhau\\b","\\bxich\\s*mich\\b",
+    "\\bgian\\s+nhau\\b","\\bva\\s+cham\\b","\\bkhuc\\s+mac\\b",
+    "\\bhen\\s+ra\\b.*\\bgiai\\s+quyet\\b"
+  ]);
+  const invitation=anyRx(t,[
+    "\\bru\\s+(?:em|minh|toi|ra)\\b","\\bhen\\s+(?:em|minh|gap|ra)\\b",
+    "\\bgoi\\s+em\\s+ra\\b","\\bbao\\s+em\\s+ra\\b",
+    "\\bdoi\\s+em\\s+ra\\b","\\bra\\s+.*\\bnoi\\s+chuyen\\b",
+    "\\bhen\\s+gap\\b","\\bkeo\\s+em\\s+ra\\b"
+  ]);
+  const offCampus=anyRx(t,[
+    "\\bcong\\s+vien\\b","\\bcong\\s+truong\\b","\\bngoai\\s+truong\\b",
+    "\\bcho\\s+vang\\b","\\bnoi\\s+vang\\b","\\bquan\\s+nuoc\\b",
+    "\\bsau\\s+gio\\s+hoc\\b","\\btan\\s+hoc\\b","\\bra\\s+ngoai\\b",
+    "\\bcho\\s+khac\\b","\\bcho\\s+it\\s+nguoi\\b"
+  ]);
+  const explicitDanger=anyRx(t,[
+    "\\bde\\s+doa\\b","\\bdoa\\s+danh\\b","\\bdanh\\s+nhau\\b",
+    "\\bcho\\s+may\\b","\\bkhong\\s+den\\b.*\\b(?:danh|xu|biet\\s+tay)\\b",
+    "\\bmang\\s+(?:dao|hung\\s+khi)\\b","\\bep\\s+em\\s+di\\b"
+  ]);
+  return {matched:dispute && invitation && offCampus,explicitDanger};
+}
+function meetingResponse(text){
+  const m=meetingRisk(text);
+  if(!m.matched) return null;
+  const high=m.explicitDanger;
+  return {
+    support:"Cô hiểu em muốn giải quyết mâu thuẫn với bạn. Tuy nhiên, vì hai em đang có chuyện không vui, lời hẹn gặp ngoài trường cần được cân nhắc để tránh xung đột leo thang. Cô chưa có căn cứ để nói bạn định làm hại em.",
+    safe_steps:[
+      high ? "Nếu bạn đang đe dọa hoặc ép em đến, em đừng đi gặp; hãy báo ngay cho cha mẹ, giáo viên chủ nhiệm hoặc người lớn đáng tin cậy." : "Em chưa nên vội nhận lời gặp riêng, nhất là ở nơi vắng vẻ hoặc khi chưa biết rõ mục đích cuộc hẹn.",
+      "Em có thể nhắn: “Mình muốn giải quyết chuyện này bình tĩnh. Mai mình nói chuyện ở trường, có thầy cô hỗ trợ nếu cần nhé.”",
+      "Nếu cần trao đổi trực tiếp, hãy chọn nơi an toàn có thầy cô hoặc người lớn đáng tin cậy hỗ trợ; không tự đến một mình để đối đầu.",
+      "Nếu bạn gây sức ép, đe dọa hoặc rủ thêm người để đánh nhau, hãy giữ lại tin nhắn cần thiết và báo ngay người lớn; nếu đang gặp nguy hiểm, hãy đến nơi đông người an toàn và tìm trợ giúp khẩn cấp."
+    ],
+    legal:{
+      user_side:"Việc em được rủ gặp để nói chuyện không có nghĩa em đã làm gì sai pháp luật.",
+      other_side:"Chỉ từ lời hẹn gặp chưa thể kết luận bạn vi phạm pháp luật. Nếu có đe dọa, ép buộc hoặc hành hung thì cần người lớn hỗ trợ xem xét hành vi cụ thể.",
+      note:"Cô ưu tiên hướng dẫn an toàn và hòa giải; không suy đoán tội danh khi chưa đủ thông tin."
+    },
+    final_advice:"Em có quyền từ chối cuộc hẹn khiến mình không yên tâm. Hòa giải là tốt, nhưng không cần đánh đổi sự an toàn để chứng minh mình dũng cảm.",
+    _diagnostics:{
+      situation_summary:"Mâu thuẫn giữa học sinh và lời hẹn gặp ngoài trường; chưa khẳng định có ý định bạo lực.",
+      user_role:"Học sinh được rủ gặp sau mâu thuẫn",
+      actor_analysis:"Bạn là người rủ gặp; em là người được mời. Chưa có chứng cứ xác định ý định của bạn.",
+      categories:["Mâu thuẫn/trả đũa","Nguy cơ xung đột khi hẹn gặp"],
+      risk_level:high?"Cao":"Trung bình-Cao",
+      need_clarification:false,clarifying_question:""
+    }
+  };
+}
 
 function flagsFor(text){
   const t = norm(text);
@@ -496,6 +555,8 @@ function finalAdviceFor(f, risk){
 }
 
 function fallback(text){
+  const meeting=meetingResponse(text);
+  if(meeting) return meeting;
   const f=flagsFor(text);
   const cats=categoriesFrom(f);
   const ra=roleAndActors(f);
@@ -519,6 +580,8 @@ function fallback(text){
 }
 
 function normalizeGemini(obj,text){
+  const meeting=meetingResponse(text);
+  if(meeting) return meeting; // An toàn nhất quán cả khi Gemini trả lời chung chung.
   const fb=fallback(text);
   const out={...fb,...obj};
   if(!out.support || typeof out.support!=="string") out.support=fb.support;
@@ -581,6 +644,7 @@ if (!r.ok) {
 }
 
 export function __testFallback(text){ return fallback(text); }
+export function __testMeeting(text){ return meetingRisk(text); }
 
 export default async (request) => {
   if(request.method!=="POST"){
