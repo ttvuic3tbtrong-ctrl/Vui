@@ -587,8 +587,11 @@ export default async (request) => {
     return new Response(JSON.stringify({error:"Method not allowed"}),{status:405,headers:{"content-type":"application/json"}});
   }
   try{
-    const {text=""}=await request.json();
-    const clean=String(text).trim().slice(0,3000);
+    const payload=await request.json();
+    if(typeof payload?.text!=="string" || payload.text.length>3000){
+      return new Response(JSON.stringify({error:"Tình huống phải là văn bản không quá 3000 ký tự."}),{status:400,headers:{"content-type":"application/json"}});
+    }
+    const clean=payload.text.trim();
     if(!clean){
       return new Response(JSON.stringify({error:"Em hãy nhập tình huống cần chia sẻ."}),{status:400,headers:{"content-type":"application/json"}});
     }

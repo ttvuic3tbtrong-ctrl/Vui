@@ -17,7 +17,18 @@ $$('.nav-btn').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.targ
 $$('.jump').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.target)));
 
 const input=$("#student-input"), count=$("#char-count"), send=$("#send-btn"), log=$("#chat-log");
-input.addEventListener("input",()=>count.textContent=`${input.value.length}/3000`);
+input.addEventListener("input",()=>{
+  count.textContent=`${input.value.length}/3000`;
+  // Nếu học sinh sửa câu hỏi khi AI còn xử lý, hủy yêu cầu cũ để tránh tư vấn nhầm.
+  if(activeRequest){
+    ++requestSequence;
+    activeRequest.abort(); activeRequest=null;
+    send.disabled=false; send.textContent="Phân tích cùng AI";
+    log.querySelectorAll(".msg.ai").forEach(el=>{
+      if(el.textContent.includes("Mình đang đọc kỹ câu chuyện")) el.remove();
+    });
+  }
+});
 
 function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function addMsg(type,html){
@@ -86,23 +97,31 @@ function renderStats(){
   box.innerHTML=CATS.map(c=>`<div class="category-row"><span>${c}</span><div class="bar"><i style="width:${((s.cats[c]||0)/max)*100}%"></i></div><b>${s.cats[c]||0}</b></div>`).join('');
 }
 
+let activeRequest = null;
+let requestSequence = 0;
 async function analyze(){
-  const text=input.value.trim(); if(!text)return;
+  const text=input.value.trim(); if(!text || send.disabled)return;
+  const sequence=++requestSequence;
+  activeRequest?.abort();
+  activeRequest=new AbortController();
+  // Mỗi lần gửi là một tình huống độc lập, không giữ tư vấn cũ trên màn hình.
+  log.replaceChildren();
   addMsg("user",esc(text));
   input.value=""; count.textContent="0/3000"; send.disabled=true; send.textContent="AI đang lắng nghe…";
   const loading=addMsg("ai","Mình đang đọc kỹ câu chuyện để hiểu đúng ai làm gì với ai và tìm cách xử lý phù hợp…");
   try{
     const res=await fetch("/.netlify/functions/ai",{
-      method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text})
+      method:"POST",cache:"no-store",headers:{"Content-Type":"application/json","Cache-Control":"no-cache"},body:JSON.stringify({text}),signal:activeRequest.signal
     });
-    const data=await res.json(); loading.remove();
+    const data=await res.json(); if(sequence!==requestSequence)return; loading.remove();
     if(!res.ok) throw new Error(data.error||"Không kết nối được Trợ lý AI.");
     addMsg("ai",renderReport(data)); record(data);
   }catch(e){
+    if(sequence!==requestSequence || e.name==="AbortError")return;
     loading.remove();
     addMsg("error",`⚠️ ${esc(e.message)}<br><small>Bản V1.3.1 vẫn có bộ phân tích cục bộ miễn phí; em có thể thử lại sau ít phút.</small>`);
   }finally{
-    send.disabled=false; send.textContent="Phân tích cùng AI";
+    if(sequence===requestSequence){send.disabled=false; send.textContent="Phân tích cùng AI"; activeRequest=null;}
   }
 }
 send.addEventListener("click",analyze);
@@ -112,4 +131,23 @@ document.getElementById("reset-stats")?.addEventListener("click",()=>{
   if(confirm("Xóa toàn bộ thống kê thử nghiệm trên thiết bị này?")){
     localStorage.removeItem("ksvh_stats"); renderStats();
   }
+});
+
+// Demo: only prefill the student's input; never treat test expectations as actual AI results.
+const demoSelect=document.getElementById("demo-select");
+(window.DEMO_SCENARIOS||[]).forEach(item=>{
+  const option=document.createElement("option"); option.value=item.id; option.textContent=item.label; demoSelect?.appendChild(option);
+});
+demoSelect?.addEventListener("change",()=>{
+  const item=(window.DEMO_SCENARIOS||[]).find(x=>x.id===demoSelect.value);
+  if(!item)return;
+  input.value=item.text; input.dispatchEvent(new Event("input"));
+  input.focus();
+});
+document.getElementById("clear-chat")?.addEventListener("click",()=>{
+  ++requestSequence; activeRequest?.abort(); activeRequest=null;
+  log.innerHTML='<div class="placeholder">Em có thể chọn một tình huống mẫu hoặc nhập câu chuyện mới. Nội dung trò chuyện trên màn hình đã được xóa.</div>';
+  input.value=""; input.dispatchEvent(new Event("input"));
+  if(demoSelect)demoSelect.value="";
+  send.disabled=false; send.textContent="Phân tích cùng AI";
 });
