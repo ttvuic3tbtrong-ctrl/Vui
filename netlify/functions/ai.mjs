@@ -18,7 +18,7 @@ KHO PHÁP LUẬT GIỚI HẠN V1.5 - BẠO LỰC HỌC ĐƯỜNG:
 
 const SYSTEM = `
 Bạn là "Cô giáo AI" - trợ lý giáo dục dành cho học sinh THPT Việt Nam, CHUYÊN SÂU về nhận diện và ứng phó an toàn với bạo lực học đường, đặc biệt khi sự việc xảy ra hoặc lan sang không gian số.
-Mục tiêu: hiểu ĐÚNG tình huống trước, rồi mới hướng dẫn học sinh bằng 4 phần ngắn gọn, cụ thể, an toàn, nhân văn.
+Mục tiêu: hiểu ĐÚNG tình huống rồi tư vấn TRỌN VẸN CHỈ TRONG MỘT LẦN theo 4 phần cụ thể, thấu cảm, an toàn, logic và phù hợp học sinh.
 
 NGUYÊN TẮC CỐT LÕI:
 - Không được trả lời theo từ khóa đơn lẻ. Phải hiểu quan hệ giữa các nhân vật và hành vi.
@@ -29,7 +29,7 @@ NGUYÊN TẮC CỐT LÕI:
 - Không phán xét con người; chỉ đánh giá hành vi và hướng tới dừng, sửa, bảo vệ.
 - Không khuyến khích trả đũa, đánh nhau, bêu xấu, hack, ép buộc, phát tán riêng tư hay tự đối đầu khi không an toàn.
 - Hướng dẫn phải hành động được: việc làm NGAY -> việc tiếp theo -> khi nào cần người lớn hỗ trợ.
-- Nếu dữ kiện quyết định còn thiếu, nói rõ điều chưa biết và chỉ hỏi 1 câu thật cần thiết.
+- Nếu dữ kiện quyết định còn thiếu, nói rõ điều chưa biết; tư vấn theo các khả năng hợp lý trong CÙNG MỘT LƯỢT. KHÔNG hỏi chờ em trả lời tiếp.
 
 BỘ NÃO PHÂN TÍCH NGẦM 10 BƯỚC - TUYỆT ĐỐI KHÔNG HIỂN THỊ CHUỖI SUY LUẬN NÀY:
 1) Xác định người kể/người đang cần trợ giúp.
@@ -69,9 +69,7 @@ PLAYBOOK ĐỊNH HƯỚNG:
 - Tự gây hại/nguy hiểm tức thời: an toàn là ưu tiên tuyệt đối; khuyến khích ở gần người lớn tin cậy và nhận hỗ trợ trực tiếp ngay.
 
 MỤC 1 - support:
-Bình thường dùng đúng câu:
-"Cô đã hiểu trường hợp của em rồi. Điều đầu tiên, em hãy bình tĩnh nhé, đừng quá lo lắng. Cô sẽ đồng hành cùng em để chúng ta cùng tháo gỡ vấn đề từng bước nhé."
-Ngoại lệ: nếu có dấu hiệu tự gây hại hoặc nguy hiểm tức thời, được thay bằng lời mở đầu ưu tiên an toàn ngay lập tức.
+Viết riêng theo cảm xúc và hoàn cảnh của chính học sinh, xưng cô–em, thấu hiểu mà không sáo rỗng. Không dùng một câu mẫu chung cho mọi trường hợp. Nếu nguy hiểm tức thời, ưu tiên hướng dẫn an toàn trước.
 
 MỤC 2 - safe_steps (TRỌNG TÂM):
 - Trước hết phải quyết định: đây là trêu đùa/tương tác bình thường, mâu thuẫn, hay có dấu hiệu bạo lực/bắt nạt. KHÔNG biến mọi câu chuyện thành bạo lực học đường.
@@ -98,9 +96,9 @@ Chỉ sử dụng KHO PHÁP LUẬT GIỚI HẠN bên dưới.
 ${LAW_KB}
 
 MỤC 4 - final_advice:
-Kết lại ngắn gọn, nhân văn, phù hợp học sinh: bảo vệ bản thân, tôn trọng người khác, có trách nhiệm, không làm tổn thương thêm và xây dựng văn hóa số an toàn.
+Kết lại đầy đủ, chân thành, tự nhiên, không máy móc; không hỏi tiếp hay hứa hội thoại nối tiếp: bảo vệ bản thân, tôn trọng người khác, có trách nhiệm, không làm tổn thương thêm và xây dựng văn hóa số an toàn.
 
-ĐẦU RA CHO HỌC SINH CHỈ CÓ 4 PHẦN. KHÔNG HIỂN THỊ 10 BƯỚC PHÂN TÍCH NGẦM.
+TUYỆT ĐỐI KHÔNG kết thúc bằng câu hỏi cho em trả lời tiếp. Tình cảm tuổi học trò: thấu cảm, phân tích quyền tự quyết và ranh giới, đưa lời nói mẫu và phương án an toàn; không mặc định ghen là bạo lực. ĐẦU RA CHO HỌC SINH CHỈ CÓ 4 PHẦN. KHÔNG HIỂN THỊ 10 BƯỚC PHÂN TÍCH NGẦM.
 Trả JSON thuần đúng cấu trúc:
 {
   "support":"...",
@@ -119,6 +117,230 @@ Trả JSON thuần đúng cấu trúc:
 }
 `;
 
+
+// Bộ 20 tình huống TC101–TC120 đã được giáo viên duyệt nội dung.
+// Ghép gần đúng chỉ khi đủ chắc chắn; tránh áp nhầm lời khuyên giữa các ngữ cảnh khác nhau.
+const APPROVED_RELATIONSHIP_SCENARIOS = [
+  {
+    "id": "TC101",
+    "question": "Em và bạn cùng quen một bạn trai, bạn trai thích em nên bạn muốn gặp riêng em để nói chuyện. Em có nên đi không?",
+    "support": "Cô hiểu em khó xử khi chuyện tình cảm lại liên quan đến một người bạn. Có thể em vừa lo bạn buồn, vừa sợ bị hiểu lầm, nên chưa biết nhận lời gặp có ổn không.",
+    "analysis": "Lời hẹn riêng chưa có nghĩa bạn muốn gây sự; có thể bạn chỉ muốn hỏi rõ chuyện. Nhưng nếu cả hai đang ghen hoặc tổn thương, gặp riêng khi căng thẳng dễ làm cuộc nói chuyện đi xa hơn dự định.",
+    "action": "Em chưa cần đồng ý ngay. Hãy hỏi bạn muốn trao đổi điều gì, chọn thời điểm cả hai bình tĩnh. Nếu muốn gặp, chọn nơi công cộng ban ngày, có người đáng tin biết địa điểm; khi thấy bạn nóng giận hoặc đe dọa, đừng đi một mình và nhờ người lớn hỗ trợ.",
+    "sample": "“Mình hiểu bạn muốn nói chuyện. Mình không muốn hai đứa hiểu lầm nhau. Nếu cần, mình gặp ở trường lúc bình tĩnh nhé.”",
+    "end": "Tình cảm không phải cuộc thi giành phần thắng. Em không có trách nhiệm quyết định cảm xúc của người khác, nhưng có thể chọn cách cư xử chân thành, tôn trọng và an toàn."
+  },
+  {
+    "id": "TC102",
+    "question": "Bạn thân thích cùng một người với em rồi giận em.",
+    "support": "Cô hiểu cảm giác mất vui khi một người bạn thân cũng thích người mình thích. Chuyện này dễ làm em vừa buồn vừa ngại nói chuyện với bạn.",
+    "analysis": "Cùng thích một người không tự động khiến ai có lỗi. Mỗi người có cảm xúc riêng; điều đáng xem xét là hai em có tôn trọng nhau, tránh nói xấu hay gây áp lực cho người được thích hay không.",
+    "action": "Cho nhau chút thời gian bình tĩnh, rồi nói riêng ở nơi thoải mái về cảm giác của mình bằng câu bắt đầu bằng “mình cảm thấy”. Lắng nghe bạn, không yêu cầu bạn phải từ bỏ cảm xúc. Nếu hai em cần khoảng cách một thời gian, điều đó cũng bình thường.",
+    "sample": "“Mình buồn vì sợ chuyện này làm tụi mình xa nhau. Mình muốn hai đứa vẫn tôn trọng nhau dù có cùng thích một người.”",
+    "end": "Một tình bạn tốt không đòi hai người luôn có cảm xúc giống nhau. Điều quan trọng là sự tử tế trong cách đối xử."
+  },
+  {
+    "id": "TC103",
+    "question": "Bạn ấy bảo nếu em không chia tay thì sẽ đánh em.",
+    "support": "Nghe em kể, cô rất lo cho sự an toàn của em. Bị dọa đánh chỉ vì chuyện tình cảm là điều không nên xảy ra với bất kỳ học sinh nào.",
+    "analysis": "Đe dọa bạo lực là dấu hiệu nghiêm trọng, khác với một cuộc tranh luận hay ghen tuông thông thường. Em không cần tự đối đầu để chứng minh mình không sợ.",
+    "action": "Đừng đến cuộc hẹn riêng hoặc đáp trả bằng đe dọa. Giữ lại tin nhắn, nói ngay với cha mẹ, giáo viên chủ nhiệm hoặc người lớn em tin tưởng; nhờ họ phối hợp bảo vệ em ở trường và lúc đi về. Nếu nguy hiểm đang cận kề, đến chỗ có người lớn và gọi trợ giúp khẩn cấp.",
+    "sample": "“Mình không chấp nhận việc bị đe dọa. Mình sẽ nhờ người lớn hỗ trợ để mọi chuyện được giải quyết an toàn.”",
+    "end": "Em có quyền được an toàn và được đối xử tôn trọng. Việc tìm người giúp đỡ là cách bảo vệ bản thân, không phải yếu đuối."
+  },
+  {
+    "id": "TC104",
+    "question": "Người yêu cũ đòi gặp riêng để nói chuyện lần cuối.",
+    "support": "Cô hiểu lời mời “gặp lần cuối” có thể khiến em bối rối, nhất là khi em vẫn còn nhiều cảm xúc sau chia tay.",
+    "analysis": "Một lời chia tay không tạo ra nghĩa vụ phải gặp trực tiếp. Có người muốn khép lại trong hòa bình, nhưng cũng có người chưa chấp nhận ranh giới của đối phương. Điều cần xem là em có thực sự tự nguyện và thấy an toàn không.",
+    "action": "Nếu không muốn, em có thể từ chối rõ ràng và lịch sự, hoặc trao đổi qua tin nhắn. Nếu tự nguyện gặp, chọn nơi công cộng ban ngày, báo người đáng tin và tự chủ phương tiện đi về. Nếu người ấy từng đe dọa, bám theo hay ép buộc, không gặp riêng và tìm hỗ trợ.",
+    "sample": "“Mình tôn trọng chuyện cũ, nhưng mình không muốn gặp riêng. Nếu có điều cần nói, bạn có thể nhắn tin.”",
+    "end": "Chia tay không có nghĩa em phải hy sinh sự thoải mái hoặc an toàn của mình để người khác hài lòng."
+  },
+  {
+    "id": "TC105",
+    "question": "Bạn trai bắt em đưa mật khẩu Facebook để chứng minh tình yêu.",
+    "support": "Cô hiểu em có thể lo bạn trai giận hoặc nghĩ em không tin tưởng khi em không đưa mật khẩu. Nhưng sự lo lắng ấy không có nghĩa em phải đánh đổi quyền riêng tư.",
+    "analysis": "Mật khẩu bảo vệ cả tin nhắn, hình ảnh và thông tin của em lẫn người khác. Niềm tin trong tình cảm được xây dựng bằng hành vi tôn trọng, không phải bằng việc kiểm soát tài khoản.",
+    "action": "Đừng đưa mật khẩu hay mã xác thực. Nếu đã chia sẻ, hãy đổi mật khẩu, đăng xuất khỏi thiết bị lạ và bật xác thực hai bước. Nói rõ ranh giới; nếu bị đe dọa hoặc kiểm soát kéo dài, tìm người lớn đáng tin hỗ trợ.",
+    "sample": "“Mình quý bạn, nhưng tài khoản là riêng tư. Mình muốn chúng mình tin nhau mà không cần xem mật khẩu.”",
+    "end": "Một mối quan hệ lành mạnh cho phép em có không gian riêng và được nói “không” mà không bị trừng phạt."
+  },
+  {
+    "id": "TC106",
+    "question": "Bạn gái giận vì em không trả lời tin nhắn ngay.",
+    "support": "Cô hiểu em mệt khi cứ phải lo người kia giận mỗi lúc mình chưa kịp trả lời. Ai cũng cần thời gian học, nghỉ ngơi và ở bên gia đình.",
+    "analysis": "Có thể bạn ấy lo lắng hoặc cần được quan tâm, nhưng việc đòi phản hồi ngay mọi lúc có thể tạo áp lực. Hai em nên phân biệt quan tâm với kiểm soát.",
+    "action": "Chọn lúc bình tĩnh để nói về lịch học và khoảng thời gian em không thể dùng điện thoại. Hai em có thể thống nhất cách báo bận và giờ trò chuyện phù hợp, thay vì kiểm tra liên tục. Nếu bạn xúc phạm hay dọa nạt vì em trả lời chậm, hãy đặt ranh giới rõ hơn.",
+    "sample": "“Mình không phớt lờ bạn đâu, nhưng lúc học mình không thể nhắn ngay. Tối mình sẽ trả lời khi rảnh nhé.”",
+    "end": "Tình cảm tốt khiến cả hai được yên tâm, chứ không phải luôn sợ làm người kia giận."
+  },
+  {
+    "id": "TC107",
+    "question": "Có bạn tung tin em giật người yêu của bạn.",
+    "support": "Cô biết bị nói là “giật người yêu” có thể làm em tủi thân và rất muốn giải thích ngay. Những lời đồn về tình cảm thường khiến người trong cuộc tổn thương nhiều hơn người ngoài nghĩ.",
+    "analysis": "Tin đồn chưa phải sự thật; tranh cãi công khai trên mạng có thể khiến chuyện lan rộng. Điều quan trọng là làm rõ với những người liên quan bằng thông tin chính xác, không công kích ai.",
+    "action": "Đừng đăng bài đáp trả khi đang tức giận. Lưu bằng chứng tin đồn hoặc tin nhắn xúc phạm; trao đổi riêng, bình tĩnh với người liên quan nếu an toàn. Nếu bị bôi nhọ kéo dài, cô lập hoặc bắt nạt, nhờ giáo viên hỗ trợ xử lý.",
+    "sample": "“Mình không muốn chuyện chưa rõ bị lan truyền. Nếu có hiểu lầm, mình sẵn sàng nói chuyện trực tiếp, tôn trọng nhau.”",
+    "end": "Danh dự của em không được quyết định bởi lời đồn. Em có quyền yêu cầu người khác dừng lan truyền chuyện riêng tư."
+  },
+  {
+    "id": "TC108",
+    "question": "Bạn hẹn em ra cổng trường để giải quyết chuyện yêu đương.",
+    "support": "Cô hiểu em muốn giải quyết cho xong để không phải lo nghĩ nữa. Nhưng câu “ra cổng trường giải quyết” khi đang căng thẳng cần được xem xét cẩn thận.",
+    "analysis": "Có thể bạn muốn nói chuyện, nhưng cổng trường lúc tan học dễ có người tụ tập, kích động hoặc quay video. Không nên xem đây là cuộc hẹn an toàn chỉ vì ở gần trường.",
+    "action": "Đừng ra gặp một mình khi đang có mâu thuẫn. Đề nghị trao đổi trong trường vào lúc có thầy cô hỗ trợ; nếu bạn đe dọa hoặc kéo nhóm bạn đến, báo ngay giáo viên và gia đình. Tránh cãi vã, thách thức hay rủ người đến “bảo vệ” để đối đầu.",
+    "sample": "“Mình muốn giải quyết rõ ràng nhưng không muốn cãi nhau. Mình nói chuyện ở trường với thầy cô hỗ trợ nhé.”",
+    "end": "Bình tĩnh chọn nơi an toàn là bản lĩnh, không phải né tránh vấn đề."
+  },
+  {
+    "id": "TC109",
+    "question": "Em không thích bạn ấy nhưng bạn cứ theo em mỗi ngày.",
+    "support": "Cô hiểu việc một người cứ đi theo khi em đã không có tình cảm có thể khiến em ngại ngùng, lo lắng hoặc mất tự do.",
+    "analysis": "Thích ai đó không cho phép người ấy bỏ qua lời từ chối hay liên tục theo dõi. Điều quan trọng là hành vi của bạn có tôn trọng ranh giới của em không.",
+    "action": "Nói rõ một lần rằng em không muốn được theo đuổi hoặc đi theo. Hạn chế gặp riêng, đi cùng người đáng tin ở những đoạn đường em lo ngại. Ghi lại thời gian, địa điểm các lần bị bám theo và báo giáo viên, gia đình nếu hành vi tiếp diễn hoặc gây sợ hãi.",
+    "sample": "“Mình không có tình cảm với bạn. Mình mong bạn tôn trọng quyết định và đừng đi theo mình nữa.”",
+    "end": "Em không có lỗi khi không đáp lại tình cảm. Quyền được yên tâm học tập và đi lại của em cần được tôn trọng."
+  },
+  {
+    "id": "TC110",
+    "question": "Bạn ấy bảo sẽ tự làm đau mình nếu em không quay lại.",
+    "support": "Nghe chuyện này, cô hiểu em vừa thương bạn vừa sợ nếu mình không quay lại thì sẽ có chuyện xấu xảy ra. Đó là một áp lực rất lớn đối với một học sinh.",
+    "analysis": "Lời nói muốn tự làm đau bản thân cần được xem nghiêm túc. Nhưng em không thể một mình chịu trách nhiệm giữ an toàn cho người khác bằng cách buộc phải duy trì mối quan hệ.",
+    "action": "Hãy báo ngay cho cha mẹ, giáo viên chủ nhiệm hoặc người lớn có thể tiếp cận bạn ấy; chuyển nguyên văn tin nhắn đe dọa nếu có. Nếu bạn ấy đang chuẩn bị tự hại hoặc đã tự làm đau, liên hệ hỗ trợ khẩn cấp và người lớn ở gần bạn ấy ngay. Không hứa giữ bí mật về nguy cơ này.",
+    "sample": "“Mình rất lo cho sự an toàn của bạn. Mình sẽ báo người lớn để bạn được giúp đỡ. Mình không thể quay lại chỉ vì bị gây áp lực.”",
+    "end": "Quan tâm thật sự là giúp bạn nhận được hỗ trợ phù hợp, đồng thời bảo vệ ranh giới và sức khỏe tinh thần của chính em."
+  },
+  {
+    "id": "TC111",
+    "question": "Bạn chụp màn hình tin nhắn tình cảm của em gửi cả lớp.",
+    "support": "Cô hiểu em có thể thấy xấu hổ hoặc mất lòng tin khi những tin nhắn riêng tư bị gửi cho cả lớp. Chuyện riêng bị đem ra bàn tán thường khiến người trong cuộc rất tổn thương.",
+    "analysis": "Việc em từng nhắn tin tình cảm không đồng nghĩa người khác được quyền tự ý chia sẻ. Trọng tâm là hành vi xâm phạm riêng tư và những lời trêu chọc phát sinh.",
+    "action": "Đừng đáp trả bằng cách phát tán tin nhắn của bạn. Giữ bằng chứng về việc chia sẻ, yêu cầu dừng lan truyền và xóa nội dung; nhờ giáo viên, gia đình hoặc người phụ trách nhà trường hỗ trợ nếu việc này tiếp diễn. Điều chỉnh quyền riêng tư tài khoản khi cần.",
+    "sample": "“Đó là tin nhắn riêng của mình. Mình mong bạn ngừng gửi cho người khác và xóa nội dung đã chia sẻ.”",
+    "end": "Em có quyền được tôn trọng dù em đã từng bày tỏ tình cảm với ai."
+  },
+  {
+    "id": "TC112",
+    "question": "Em ghen và muốn đăng bài nói xấu bạn kia.",
+    "support": "Cô hiểu ghen có thể khiến em rất đau lòng và muốn làm điều gì đó để người khác biết mình bị tổn thương. Cảm xúc ấy có thật, nhưng hành động lúc nóng giận dễ gây hậu quả.",
+    "analysis": "Đăng bài nói xấu có thể làm tổn thương danh dự người khác, khiến xung đột kéo dài và chính em cũng khó lấy lại sự bình tĩnh. Cảm xúc không sai; cách thể hiện mới là điều em có thể lựa chọn.",
+    "action": "Tạm rời điện thoại, viết ra điều em đang buồn nhưng chưa đăng. Sau khi bình tĩnh, xác định mình cần điều gì: lời giải thích, sự tôn trọng hay khoảng cách. Trao đổi riêng bằng lời nói không công kích; nếu khó tự xử lý, nhờ người đáng tin góp ý.",
+    "sample": "“Mình đang buồn về chuyện này và muốn nói rõ khi cả hai bình tĩnh, thay vì tranh cãi trên mạng.”",
+    "end": "Giữ được sự tử tế khi bị tổn thương là một cách trưởng thành rất đáng quý."
+  },
+  {
+    "id": "TC113",
+    "question": "Bạn trai rủ em trốn học để đi chơi riêng.",
+    "support": "Cô hiểu em có thể thấy vui vì được rủ đi chơi riêng, đồng thời lo nếu từ chối bạn trai sẽ buồn.",
+    "analysis": "Đi chơi là lựa chọn cá nhân, nhưng trốn học có thể ảnh hưởng việc học và khiến gia đình, nhà trường lo lắng. Tình cảm không nên đặt em vào tình thế phải làm điều mình biết là không phù hợp.",
+    "action": "Em có thể từ chối trốn học và đề xuất thời gian sau giờ học hoặc cuối tuần nếu gia đình cho phép, ở nơi an toàn. Nếu bạn dùng câu “yêu thì phải đi” để gây áp lực, em cần nói rõ ranh giới và xem lại sự tôn trọng trong mối quan hệ.",
+    "sample": "“Mình thích đi chơi cùng bạn, nhưng mình không trốn học. Mình hẹn hôm khác khi cả hai đều rảnh nhé.”",
+    "end": "Người thực sự quý em sẽ tôn trọng việc học, kế hoạch và lựa chọn của em."
+  },
+  {
+    "id": "TC114",
+    "question": "Bạn thân yêu người em từng thích, em có nên nghỉ chơi?",
+    "support": "Cô hiểu khi bạn thân quen người em từng thích, em có thể thấy chạnh lòng, hụt hẫng hoặc như mình bị bỏ lại.",
+    "analysis": "Không phải cứ buồn là phải cắt đứt tình bạn ngay. Cần phân biệt giữa cảm xúc chưa nguôi và việc bạn có thực sự thiếu tôn trọng hay cố tình làm tổn thương em hay không.",
+    "action": "Cho mình thời gian để bình tâm, giảm tiếp xúc với các cuộc trò chuyện khiến em khó chịu. Khi sẵn sàng, nói thật cảm xúc mà không buộc bạn phải lựa chọn. Nếu tình bạn vẫn có sự tôn trọng, hai em có thể xây lại sự gần gũi theo nhịp riêng.",
+    "sample": "“Mình vẫn còn buồn nên cần chút thời gian. Mình mong bạn hiểu, chứ không muốn trách bạn.”",
+    "end": "Em được phép buồn và cũng được phép chọn khoảng cách phù hợp. Đừng ép mình phải ổn ngay."
+  },
+  {
+    "id": "TC115",
+    "question": "Một bạn đòi ảnh riêng tư để giữ bí mật chuyện yêu đương.",
+    "support": "Cô rất lo khi có người dùng chuyện tình cảm để đòi ảnh riêng tư. Em có thể sợ bị lộ bí mật hoặc sợ mất người mình quý, nhưng em không phải làm điều khiến mình bất an.",
+    "analysis": "Ép gửi ảnh riêng tư là hành vi vượt qua ranh giới đồng thuận. Một khi ảnh được gửi đi, em khó kiểm soát ai sẽ lưu hoặc chia sẻ.",
+    "action": "Không gửi ảnh hoặc thông tin nhạy cảm. Giữ lại bằng chứng lời ép buộc, chặn liên hệ khi cần và báo người lớn đáng tin để được hỗ trợ. Nếu bạn đe dọa tung chuyện riêng, đừng thương lượng bằng cách gửi thêm ảnh hay tiền.",
+    "sample": "“Mình không đồng ý gửi ảnh riêng tư. Mình mong bạn tôn trọng quyết định của mình.”",
+    "end": "Tình cảm chân thành không được dùng để ép buộc. Em luôn có quyền nói không."
+  },
+  {
+    "id": "TC116",
+    "question": "Em đã gửi ảnh riêng tư và bị đe dọa phát tán.",
+    "support": "Cô rất tiếc vì em đang phải chịu áp lực này. Nếu em thấy sợ hãi, xấu hổ hoặc hoang mang, những cảm xúc ấy hoàn toàn dễ hiểu.",
+    "analysis": "Người đe dọa phát tán ảnh đang sử dụng thông tin riêng tư để gây sức ép. Việc em từng tin tưởng gửi ảnh không cho phép người khác đe dọa hay phát tán chúng.",
+    "action": "Đừng gửi thêm ảnh, tiền hay đồng ý gặp riêng để “giải quyết”. Lưu bằng chứng tin nhắn đe dọa nhưng không chuyển tiếp ảnh nhạy cảm; nhờ cha mẹ, giáo viên hoặc người lớn đáng tin hỗ trợ báo cáo tài khoản, yêu cầu gỡ nội dung và liên hệ cơ quan chức năng khi cần. Nếu đang bị đe dọa trực tiếp, tìm nơi an toàn và trợ giúp ngay.",
+    "sample": "“Mình không đồng ý việc bạn đe dọa hay chia sẻ ảnh của mình. Mình sẽ nhờ người lớn hỗ trợ xử lý.”",
+    "end": "Em xứng đáng được bảo vệ và tôn trọng. Đừng tự mình chịu đựng hay cố xử lý mọi việc trong bí mật."
+  },
+  {
+    "id": "TC117",
+    "question": "Bạn cùng lớp trêu chọc em vì em thích người cùng giới.",
+    "support": "Cô hiểu bị trêu chọc vì tình cảm của mình có thể khiến em cô đơn hoặc không dám đến lớp. Cô muốn em biết rằng cảm xúc của em đáng được tôn trọng.",
+    "analysis": "Không ai có quyền dùng việc em thích ai để xúc phạm, cô lập hay đe dọa em. Vấn đề cần xử lý là hành vi bắt nạt, không phải việc em phải giải thích hay chứng minh tình cảm của mình.",
+    "action": "Em không cần công khai điều mình chưa sẵn sàng chia sẻ. Nếu an toàn, nói rõ em không chấp nhận lời trêu chọc; lưu bằng chứng, tìm một giáo viên hoặc người lớn tôn trọng quyền riêng tư để được giúp đỡ. Nếu bị đe dọa, ưu tiên an toàn và báo ngay người có trách nhiệm.",
+    "sample": "“Chuyện tình cảm là riêng tư. Mình mong các bạn ngừng trêu chọc và tôn trọng mình.”",
+    "end": "Em xứng đáng được học trong môi trường không kỳ thị. Không ai được quyết định giá trị của em bằng lời trêu chọc."
+  },
+  {
+    "id": "TC118",
+    "question": "Bạn ấy ép em công khai quan hệ trên mạng.",
+    "support": "Cô hiểu em có thể phân vân giữa việc làm người ấy vui và giữ chuyện riêng cho mình. Đôi khi áp lực công khai quan hệ khiến mình mất tự nhiên.",
+    "analysis": "Việc công khai trên mạng có thể ảnh hưởng quyền riêng tư và tạo thêm sự chú ý từ bạn bè. Một mối quan hệ tôn trọng cần có sự đồng thuận của cả hai, không phải chỉ một người quyết định.",
+    "action": "Nói rõ mức độ chia sẻ mà em cảm thấy thoải mái; không đăng ảnh, trạng thái hay thông tin cá nhân khi chưa đồng ý. Kiểm tra quyền riêng tư trên mạng xã hội. Nếu bạn liên tục ép buộc hoặc dọa chia tay để buộc em công khai, hãy nhìn nhận đó là dấu hiệu thiếu tôn trọng ranh giới.",
+    "sample": "“Mình trân trọng mối quan hệ, nhưng mình chưa muốn công khai trên mạng. Mong bạn tôn trọng điều đó.”",
+    "end": "Không công khai không có nghĩa là không chân thành. Em có quyền lựa chọn điều gì thuộc về đời sống riêng của mình."
+  },
+  {
+    "id": "TC119",
+    "question": "Em bị hai nhóm bạn gây áp lực phải chọn phe trong chuyện tình cảm.",
+    "support": "Cô hiểu em rất mệt khi bị kéo vào chuyện của nhiều người, nhất là khi bên nào cũng muốn em đứng về phía mình.",
+    "analysis": "Việc chọn phe có thể làm mâu thuẫn căng thẳng và khiến em mất những tình bạn không đáng mất. Em không bắt buộc trở thành người phân xử một chuyện tình cảm mà mình không trực tiếp liên quan.",
+    "action": "Em có thể nói rõ mình không muốn tham gia nói xấu hay lan truyền tin đồn. Giữ khoảng cách với cuộc tranh cãi, không chuyển tiếp ảnh hoặc tin nhắn riêng. Nếu các nhóm đe dọa, cô lập hoặc gây áp lực kéo dài, nhờ giáo viên hỗ trợ để đảm bảo an toàn.",
+    "sample": "“Mình quý các bạn, nhưng mình không muốn chọn phe hay nói xấu ai. Mình mong mọi người tự nói chuyện với nhau một cách tôn trọng.”",
+    "end": "Biết giữ sự công bằng và ranh giới là điều đáng quý, ngay cả khi người khác không hài lòng ngay lập tức."
+  },
+  {
+    "id": "TC120",
+    "question": "Bạn nhắn muốn gặp để xin lỗi sau khi cãi nhau vì chuyện tình cảm.",
+    "support": "Cô hiểu một lời xin lỗi sau cãi nhau có thể khiến em vừa nhẹ lòng vừa băn khoăn không biết có nên gặp.",
+    "analysis": "Xin lỗi là tín hiệu tích cực, nhưng điều quan trọng còn là bạn có thật sự tôn trọng em và không lặp lại hành vi gây tổn thương hay không. Không có nghĩa vụ phải tha thứ hoặc gặp ngay.",
+    "action": "Nếu em cảm thấy an toàn và muốn trao đổi, chọn nơi công cộng hoặc trong trường, vào lúc cả hai bình tĩnh; báo người đáng tin về cuộc hẹn. Nói rõ điều đã khiến em tổn thương và ranh giới cho lần sau. Nếu từng bị đe dọa, ép buộc hay đánh, không gặp riêng; nhờ người lớn hỗ trợ.",
+    "sample": "“Mình ghi nhận lời xin lỗi. Nếu nói chuyện, mình muốn cả hai bình tĩnh và tôn trọng nhau. Mình cần bạn hiểu điều khiến mình buồn.”",
+    "end": "Hòa giải là lựa chọn, không phải nghĩa vụ. Em có thể tha thứ theo nhịp của mình mà vẫn giữ ranh giới an toàn."
+  }
+];
+const MATCH_STOPWORDS = new Set('em ban minh toi co la va cua ma vi nen cho voi thi duoc nhu the mot nhung nay do ay a oi o de lam khi sao ai bao gio co nen khong hay'.split(' '));
+function scenarioTokens(t){return new Set(norm(t).split(' ').filter(w=>w.length>1&&!MATCH_STOPWORDS.has(w)));}
+function approvedMatch(text){
+  const candidate=norm(text);
+  const scored=APPROVED_RELATIONSHIP_SCENARIOS.map(item=>{
+    const prompt=norm(item.question);
+    if(candidate===prompt)return {item,score:1};
+    const a=scenarioTokens(candidate), b=scenarioTokens(prompt);
+    const common=[...a].filter(x=>b.has(x)).length;
+    const overlap=common/Math.max(a.size,b.size,1);
+    // Chỉ dùng lời tư vấn chuẩn nếu câu nhập hầu như tương đương tình huống gốc.
+    return {item,score:overlap};
+  }).sort((a,b)=>b.score-a.score);
+  return scored[0]?.score>=0.82 && (scored[0].score-scored[1].score>=0.12)
+    ?scored[0].item:null;
+}
+function approvedReply(text){
+  const entry=approvedMatch(text);
+  if(!entry)return null;
+  const danger=/de doa|doa danh|danh em|tong tien|phat tan|tu lam dau|tu hai|ep buoc/.test(norm(text));
+  return {
+    support:entry.support+' '+entry.analysis,
+    safe_steps:[entry.action,entry.sample].filter(Boolean),
+    legal:{
+      user_side:'Cảm xúc và việc lựa chọn tình cảm của em không tự nó là hành vi vi phạm pháp luật. Em có quyền được tôn trọng và bảo vệ sự riêng tư.',
+      other_side:'Chỉ từ lời kể chưa đủ căn cứ kết luận người khác vi phạm pháp luật. Nếu có đe dọa, ép buộc, xâm phạm hình ảnh hoặc dữ liệu riêng tư, cần nhờ người lớn hỗ trợ xử lý theo hành vi cụ thể.',
+      note:'Phần này chỉ định hướng giáo dục và bảo vệ an toàn; không thay thế ý kiến chuyên môn hoặc kết luận của cơ quan có thẩm quyền.'
+    },
+    final_advice:entry.end,
+    _diagnostics:{
+      situation_summary:entry.question,user_role:'Học sinh đang xin tư vấn',
+      actor_analysis:'Dựa trên lời kể của học sinh; không suy đoán động cơ của người khác.',
+      categories:['Mâu thuẫn/trả đũa'],risk_level:danger?'Cao':'Trung bình',
+      need_clarification:false,clarifying_question:''
+    },
+    _reference_case:entry.id
+  };
+}
+
 function norm(s=""){
   return String(s).toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d")
@@ -131,6 +353,66 @@ function uniq(a){ return [...new Set(a)]; }
 
 // Nhận diện theo NGỮ CẢNH: mâu thuẫn + lời hẹn gặp bên ngoài.
 // Không kết luận bạn kia có ý định đánh nhau khi chưa có chứng cứ.
+
+// Nhận diện ngữ cảnh tình cảm học đường: ghen tuông, mối quan hệ, lời hẹn gặp.
+// Không gán động cơ bạo lực khi chưa có dấu hiệu cụ thể.
+function relationshipContext(text){
+ const t=norm(text);
+ const relation=anyRx(t,[
+  "\\btinh\\s+cam\\b","\\bye[u]?\\s+duong\\b","\\bban\\s+trai\\b",
+  "\\bban\\s+gai\\b","\\bnguoi\\s+yeu\\b","\\bcrush\\b",
+  "\\bthich\\s+(?:em|ban|nhau|mot)\\b","\\bghen\\b",
+  "\\bquen\\s+(?:mot|cung|ban)\\b","\\bchia\\s+tay\\b",
+  "\\bto\\s+tinh\\b","\\btranh\\s+(?:gianh|danh)\\b"
+ ]);
+ const tension=anyRx(t,[
+  "\\bghen\\b","\\btranh\\s+(?:gianh|danh)\\b","\\bcung\\s+quen\\b",
+  "\\bban\\s+trai\\b.*\\bthich\\s+em\\b","\\bban\\s+gai\\b.*\\bthich\\s+em\\b",
+  "\\bmau\\s+thuan\\b","\\bgian\\b","\\bnoi\\s+xau\\b","\\bdoa\\b",
+  "\\bkhong\\s+dong\\s+y\\b","\\bep\\b","\\bchia\\s+tay\\b"
+ ]);
+ const meeting=anyRx(t,[
+  "\\bgap\\s+rieng\\b","\\bhen\\s+gap\\b","\\bmuon\\s+gap\\b",
+  "\\bru\\s+(?:em|minh)\\s+(?:di|ra|gap)\\b","\\bhen\\s+(?:em|minh)\\b",
+  "\\bnoi\\s+chuyen\\b.*\\b(?:rieng|gap)\\b"
+ ]);
+ const danger=anyRx(t,[
+  "\\bde\\s+doa\\b","\\bdoa\\s+danh\\b","\\bdanh\\s+nhau\\b",
+  "\\bcho\\s+may\\b","\\bep\\s+(?:di|gap|buoc)\\b",
+  "\\bcho\\s+vang\\b","\\bnoi\\s+vang\\b","\\bmang\\s+dao\\b",
+  "\\btung\\s+anh\\b","\\bphat\\s+tan\\b","\\btong\\s+tien\\b"
+ ]);
+ return {matched:relation&&tension&&meeting,danger};
+}
+function relationshipResponse(text){
+ const r=relationshipContext(text);
+ if(!r.matched)return null;
+ return {
+  support:"Cô hiểu em có thể rất khó xử khi chuyện tình cảm liên quan đến tình bạn. Cảm xúc của mỗi người cần được tôn trọng, nhưng không ai có quyền ép em gặp riêng hay buộc em phải đáp lại tình cảm. Chỉ từ lời mời nói chuyện, cô chưa thể kết luận bạn ấy có ý định xấu.",
+  safe_steps:[
+   r.danger?"Nếu bạn có lời đe dọa, ép buộc hoặc hẹn đến nơi vắng, em đừng đi gặp; hãy báo ngay cho người lớn đáng tin cậy.":"Nếu em chưa thoải mái hoặc chưa rõ mục đích, em có thể từ chối hay đề nghị nói chuyện lúc khác; không cần vội nhận lời.",
+   "Em có thể nhắn: “Mình không muốn chuyện này khiến hai đứa tổn thương. Nếu cần nói chuyện, mình chọn lúc bình tĩnh và nơi an toàn nhé.”",
+   "Nếu quyết định gặp, hãy chọn nơi công cộng vào ban ngày, cho một người đáng tin cậy biết em ở đâu; nếu có nguy cơ xung đột, nên trao đổi ở trường với thầy cô hỗ trợ.",
+   "Em không cần nhận lỗi thay cho cảm xúc của người khác; hãy tránh tranh cãi, xúc phạm hoặc đăng chuyện riêng lên mạng."
+  ],
+  legal:{
+   user_side:"Có tình cảm hoặc được người khác thích không tự nó là hành vi vi phạm pháp luật.",
+   other_side:"Chỉ từ lời hẹn nói chuyện chưa thể kết luận có vi phạm; nếu có đe dọa, ép buộc hoặc xâm phạm riêng tư thì cần xem xét hành vi cụ thể.",
+   note:"Cô chỉ định hướng an toàn và ứng xử, không suy đoán vi phạm pháp luật khi thiếu thông tin."
+  },
+  final_advice:"Cô mong em nhớ rằng tình cảm chỉ có ý nghĩa khi mọi người tự nguyện và tôn trọng nhau. Em có thể từ chối lời hẹn khiến mình không yên tâm; an toàn của em luôn quan trọng hơn việc làm vừa lòng người khác.",
+  _diagnostics:{
+   situation_summary:"Tình cảm học đường và lời đề nghị gặp riêng có thể gây khó xử hoặc xung đột.",
+   user_role:"Học sinh đang cân nhắc một cuộc hẹn liên quan đến tình cảm",
+   actor_analysis:"Chưa đủ dữ kiện để quy kết ý định của người hẹn.",
+   categories:["Mâu thuẫn/trả đũa","Tình cảm học đường"],
+   risk_level:r.danger?"Cao":"Trung bình",
+   need_clarification:false,
+   clarifying_question:""
+  }
+ };
+}
+
 function meetingRisk(text){
   const t=norm(text);
   const dispute=anyRx(t,[
@@ -555,6 +837,10 @@ function finalAdviceFor(f, risk){
 }
 
 function fallback(text){
+  const approved=approvedReply(text);
+  if(approved) return approved;
+  const relationship=relationshipResponse(text);
+  if(relationship) return relationship;
   const meeting=meetingResponse(text);
   if(meeting) return meeting;
   const f=flagsFor(text);
@@ -580,6 +866,9 @@ function fallback(text){
 }
 
 function normalizeGemini(obj,text){
+  const approved=approvedReply(text);
+  if(approved) return approved;
+  // Không ghi đè lời tư vấn Gemini có ngữ cảnh bằng mẫu tình cảm chung chung.
   const meeting=meetingResponse(text);
   if(meeting) return meeting; // An toàn nhất quán cả khi Gemini trả lời chung chung.
   const fb=fallback(text);
@@ -645,6 +934,8 @@ if (!r.ok) {
 
 export function __testFallback(text){ return fallback(text); }
 export function __testMeeting(text){ return meetingRisk(text); }
+export function __testRelationship(text){ return relationshipContext(text); }
+export function __testApproved(text){return approvedReply(text);}
 
 export default async (request) => {
   if(request.method!=="POST"){
