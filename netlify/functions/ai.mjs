@@ -341,6 +341,146 @@ function approvedReply(text){
   };
 }
 
+const APPROVED_DEMO_CASES = [
+  {
+    "id": "TH001",
+    "question": "Mấy bạn trong lớp cứ gọi em là 'heo' trong group lớp, em bảo đừng gọi nữa mà các bạn vẫn tag tên em để cười.",
+    "support": "Cô hiểu em buồn và xấu hổ khi bị gọi bằng biệt danh về ngoại hình ngay trong nhóm lớp, nhất là em đã nói rõ mình không thích mà các bạn vẫn tiếp tục. Em có quyền được tôn trọng, và cảm giác khó chịu của em là điều cần được lắng nghe.",
+    "steps": [
+      "Em đừng tự trách mình hay cố cười cho qua. Hãy ngừng tranh cãi trong nhóm nếu việc đó chỉ khiến các bạn tiếp tục trêu chọc.",
+      "Em có thể nhắn một lần, rõ ràng: “Mình không thích bị gọi như vậy. Mình đã nói rồi, mong các bạn dừng lại và không tag mình để chế giễu nữa.”",
+      "Chụp lại những tin nhắn, lượt tag có liên quan, không phát tán lại để trả đũa. Nếu các bạn vẫn tiếp tục, hãy đưa bằng chứng cho giáo viên chủ nhiệm hoặc người lớn em tin tưởng để được hỗ trợ chấm dứt hành vi.",
+      "Tìm đến những người bạn tôn trọng mình và giữ khoảng cách với nhóm đang trêu chọc; em không phải tự chịu đựng chuyện này."
+    ],
+    "ending": "Ngoại hình không quyết định giá trị của em. Việc đặt ranh giới và nhờ hỗ trợ khi bị trêu chọc lặp lại là cách tự bảo vệ mình, không phải mách lẻo."
+  },
+  {
+    "id": "TH002",
+    "question": "Em tức bạn A nên vào bài đăng của bạn ấy comment 'đồ ngu, xấu mà còn chảnh'. Giờ em vẫn muốn chửi tiếp.",
+    "support": "Cô hiểu khi tức giận, em rất dễ muốn viết thêm những lời nặng nề để hả giận. Nhưng em đã bình luận xúc phạm ngoại hình và trí tuệ của bạn; nếu tiếp tục, em sẽ khiến bạn tổn thương hơn và mâu thuẫn cũng khó giải quyết hơn.",
+    "steps": [
+      "Dừng ngay việc bình luận hoặc nhắn tin xúc phạm. Đặt điện thoại xuống một lúc để cảm xúc dịu đi trước khi quyết định làm gì tiếp.",
+      "Xóa bình luận xúc phạm do mình đăng nếu còn có thể, không chụp lại để khoe hoặc rủ người khác công kích bạn.",
+      "Khi đã bình tĩnh, em có thể nói: “Mình đã bình luận quá đáng. Mình xin lỗi vì đã xúc phạm bạn. Nếu có chuyện bất đồng, mình muốn trao đổi về việc đó chứ không công kích cá nhân.”",
+      "Nếu giữa hai em có mâu thuẫn thật sự, hãy nói về hành vi cụ thể khiến em khó chịu; nhờ thầy cô hòa giải nếu hai bên không thể trao đổi tôn trọng."
+    ],
+    "ending": "Biết dừng lại và sửa một lời nói sai là dấu hiệu của sự trưởng thành. Em có thể không đồng ý với bạn mà vẫn giữ được sự tử tế."
+  },
+  {
+    "id": "TH011",
+    "question": "Bạn chụp lúc em ngủ gật rồi đăng group lớp làm meme, em bảo xóa mà bạn không xóa.",
+    "support": "Cô hiểu em rất ngại khi hình ảnh mình ngủ gật bị biến thành trò cười trong nhóm lớp. Điều làm cô lo hơn là em đã yêu cầu gỡ mà bạn vẫn không tôn trọng. Em không cần chịu đựng việc hình ảnh của mình bị sử dụng theo cách khiến mình tổn thương.",
+    "steps": [
+      "Em hãy nhắn rõ ràng, tránh đôi co: “Mình không đồng ý để ảnh của mình làm meme. Bạn hãy xóa ảnh và dừng chia sẻ nhé.”",
+      "Lưu lại ảnh chụp màn hình bài đăng, tên nhóm và tin nhắn em yêu cầu gỡ; chỉ chia sẻ bằng chứng với người có trách nhiệm hỗ trợ.",
+      "Nhờ giáo viên chủ nhiệm hoặc quản trị nhóm yêu cầu gỡ nội dung và ngăn đăng lại. Nếu ảnh đã lan rộng, báo cáo nội dung trên nền tảng khi có thể.",
+      "Không đăng ảnh xấu của bạn để trả đũa. Nếu em thấy ngại đến lớp hoặc bị chế giễu kéo dài, hãy nói với người lớn đáng tin để được hỗ trợ tâm lý và xử lý trong lớp."
+    ],
+    "ending": "Một khoảnh khắc vô tình không phải lý do để người khác làm em xấu hổ. Em xứng đáng được bảo vệ hình ảnh và sự riêng tư của mình."
+  },
+  {
+    "id": "TH022",
+    "question": "Em bịa chuyện bạn A gian lận thi rồi đăng confession vì em ghét bạn.",
+    "support": "Cô hiểu em đang rất ghét bạn A, nhưng việc bịa chuyện bạn gian lận thi rồi đăng confession có thể gây tổn thương lớn cho danh dự và việc học của bạn. Cô muốn giúp em sửa việc này trước khi hậu quả lan rộng, chứ không chỉ trách mắng em.",
+    "steps": [
+      "Dừng ngay việc đăng thêm hoặc bình luận cổ vũ tin đồn. Xóa hoặc đề nghị quản trị confession gỡ bài bịa đặt càng sớm càng tốt.",
+      "Đính chính rõ rằng thông tin em đăng không có căn cứ; không đổ lỗi cho người khác. Em có thể nói: “Mình đã đăng thông tin sai về bạn A. Mình xin đính chính và xin lỗi vì đã gây ảnh hưởng đến bạn.”",
+      "Nếu bài đã lan trong trường, hãy chủ động trao đổi với giáo viên chủ nhiệm để được hướng dẫn khắc phục, tránh để bạn A tiếp tục bị hiểu lầm.",
+      "Sau khi xử lý hậu quả, hãy nhìn lại điều khiến em tức giận với A và tìm cách giải quyết bất đồng mà không dùng tin giả hoặc bêu xấu."
+    ],
+    "ending": "Một lời đính chính kịp thời có thể giúp giảm tổn thương cho người khác. Cô tin em có thể chịu trách nhiệm và chọn cách ứng xử tốt hơn từ đây."
+  },
+  {
+    "id": "TH031",
+    "question": "Bạn nhắn 'mai ra cổng trường tao xử mày'. Em sợ thật.",
+    "support": "Cô hiểu vì sao em sợ: câu “mai ra cổng trường tao xử mày” là lời đe dọa cụ thể về thời điểm và địa điểm, không nên xem như một câu trêu đùa thông thường. Điều quan trọng nhất lúc này là bảo đảm em không phải đối mặt một mình.",
+    "steps": [
+      "Ngay hôm nay, hãy báo cho cha mẹ, giáo viên chủ nhiệm hoặc ban giám hiệu biết nguyên văn lời đe dọa và thời điểm “mai ra cổng trường”. Đưa tin nhắn cho người lớn xem.",
+      "Ngày mai không tự ra cổng trường gặp bạn, không nhận lời “giải quyết riêng” và không rủ nhóm bạn đi đối đầu. Hãy nhờ thầy cô hoặc cha mẹ bố trí người đón, đưa em đến nơi an toàn.",
+      "Lưu tin nhắn đe dọa, không xóa hay đáp trả bằng lời thách thức. Nếu bạn tiếp tục đe dọa, hãy cập nhật ngay cho người lớn đang hỗ trợ.",
+      "Nếu bạn hoặc nhóm bạn xuất hiện để hành hung, hãy tránh tiếp cận, đến ngay nơi có thầy cô/bảo vệ/người lớn; khi có nguy hiểm trực tiếp, yêu cầu hỗ trợ khẩn cấp."
+    ],
+    "ending": "Em không phải chứng minh mình dũng cảm bằng cách ra gặp người đe dọa. Báo người lớn sớm là lựa chọn có trách nhiệm và giúp ngăn bạo lực trước khi xảy ra."
+  },
+  {
+    "id": "TH042",
+    "question": "Em chia tay bạn trai, bạn ấy cứ nhắn hàng chục tin bắt em quay lại.",
+    "support": "Cô hiểu việc đã chia tay mà vẫn liên tục nhận hàng chục tin nhắn đòi quay lại có thể khiến em mệt mỏi, áp lực, thậm chí thấy có lỗi. Nhưng em có quyền kết thúc một mối quan hệ; không ai được buộc em thay đổi quyết định bằng cách nhắn tin dồn dập.",
+    "steps": [
+      "Nếu thấy an toàn, em có thể trả lời một lần, ngắn gọn: “Mình đã suy nghĩ kỹ và không muốn quay lại. Mong bạn tôn trọng quyết định của mình và dừng nhắn tin liên tục.”",
+      "Sau đó không cần tranh luận từng tin nhắn. Có thể tắt thông báo, giới hạn liên hệ hoặc chặn nếu bạn tiếp tục quấy rối; lưu lại các tin nhắn gây áp lực khi cần.",
+      "Đừng nhận lời gặp riêng chỉ vì sợ bạn buồn hoặc giận. Nếu cần trao đổi việc còn dang dở, hãy chọn cách an toàn và có người đáng tin biết.",
+      "Nếu bạn đe dọa, theo dõi, ép gặp hoặc dọa tự làm hại bản thân, hãy báo ngay cho người lớn có trách nhiệm để hỗ trợ; em không phải tự giải quyết những nguy cơ ấy."
+    ],
+    "ending": "Một lời từ chối rõ ràng không phải là sự tàn nhẫn. Tình cảm chỉ có ý nghĩa khi cả hai được tự nguyện và tôn trọng."
+  },
+  {
+    "id": "TH056",
+    "question": "B nợ em 200k, em nói nếu không trả em sẽ tung đoạn chat B từng nói xấu người khác.",
+    "support": "Cô hiểu em bực vì B còn nợ 200 nghìn đồng, nhất là khi em có thể đang cần khoản tiền đó. Nhưng dùng đoạn chat riêng để đe dọa tung lên mạng sẽ khiến em từ người đòi quyền lợi chính đáng trở thành người gây tổn thương cho người khác.",
+    "steps": [
+      "Dừng lời đe dọa phát tán tin nhắn riêng, không đăng hoặc gửi đoạn chat cho người ngoài cuộc.",
+      "Trao đổi thẳng vào khoản nợ: “Bạn còn nợ mình 200 nghìn. Bạn có thể cho mình biết khi nào trả được không? Nếu khó khăn, mình muốn hai bên thống nhất thời hạn cụ thể.”",
+      "Giữ lại bằng chứng về việc cho mượn và các lần hẹn trả tiền, chỉ dùng để trao đổi với người có trách nhiệm khi cần.",
+      "Nếu B tiếp tục né tránh, hãy nhờ phụ huynh hoặc giáo viên hỗ trợ trao đổi phù hợp; không dùng bêu xấu hay đe dọa để ép trả."
+    ],
+    "ending": "Đòi lại tiền là nhu cầu chính đáng, nhưng cách đòi cũng cần tôn trọng quyền riêng tư. Em sẽ có lợi hơn khi xử lý rõ ràng, bình tĩnh và có bằng chứng."
+  },
+  {
+    "id": "TH065",
+    "question": "Em chơi thử một lần 20k rồi thắng, giờ em muốn chơi tiếp để kiếm tiền tiêu.",
+    "support": "Cô hiểu cảm giác vui và phấn khích khi chỉ chơi 20 nghìn đồng mà lại thắng. Chính cảm giác “mình có thể kiếm tiền dễ dàng” khiến trò chơi ăn tiền rất dễ cuốn người ta chơi tiếp. Nhưng thắng một lần không có nghĩa em sẽ tiếp tục thắng; càng chơi lâu, em càng có nguy cơ mất tiền và khó dừng lại.",
+    "steps": [
+      "Cô khuyên em dừng ngay hôm nay, không nạp thêm tiền và không xem đây là cách kiếm tiền tiêu vặt. Tiền thắng được không bảo đảm lần sau sẽ có lãi.",
+      "Thoát khỏi trò chơi, tắt thông báo, rời các nhóm rủ rê đánh bạc và xóa phương thức thanh toán đã lưu nếu có. Đừng thử “thêm một ván” để kiểm chứng vận may.",
+      "Nếu em đã dùng tiền học, tiền gia đình hoặc thấy khó cưỡng lại ý muốn chơi, hãy nói thật với cha mẹ hoặc một người lớn em tin tưởng để được giúp kiểm soát tiền và thời gian sử dụng điện thoại.",
+      "Muốn có tiền tiêu vặt, em có thể cùng gia đình thống nhất khoản chi phù hợp hoặc chọn hoạt động kiếm tiền hợp pháp, phù hợp lứa tuổi; không vay mượn để chơi hoặc gỡ thua."
+    ],
+    "ending": "Điều đáng quý không phải là thắng được 20 nghìn, mà là biết dừng khi mình còn làm chủ được quyết định. Cô mong em giữ tiền và sự bình yên cho mình."
+  },
+  {
+    "id": "TH075",
+    "question": "Bạn bảo em chuyển 200k phí trước để được vay 5 triệu, em có nên chuyển không?",
+    "support": "Cô mừng vì em đã hỏi trước khi chuyển 200 nghìn đồng. Lời hứa “nộp phí trước để vay 5 triệu” là dấu hiệu rất đáng nghi của lừa đảo vay tiền. Với học sinh, khoản vay như vậy còn có thể tạo áp lực nợ nần lớn hơn nhiều so với số tiền ban đầu.",
+    "steps": [
+      "Đừng chuyển 200 nghìn đồng, dù người kia nói đó là phí hồ sơ, phí xác minh hay hứa hoàn lại sau.",
+      "Không gửi CCCD, ảnh chân dung, số tài khoản, mật khẩu hoặc mã OTP cho người mời vay. Không bấm liên kết lạ hoặc cài ứng dụng họ yêu cầu.",
+      "Lưu lại tin nhắn, tên tài khoản và thông tin chuyển tiền họ cung cấp; nhờ cha mẹ hoặc người lớn đáng tin kiểm tra cùng em.",
+      "Nếu em đã lỡ chuyển tiền hoặc cung cấp thông tin, báo ngay cho ngân hàng qua kênh chính thức và người lớn hỗ trợ để tìm cách bảo vệ tài khoản, đồng thời trình báo khi cần."
+    ],
+    "ending": "Việc em dừng lại để hỏi trước khi chuyển tiền là rất đúng. Một khoản vay đáng tin cậy không thể chỉ dựa vào lời hứa trên tin nhắn."
+  },
+  {
+    "id": "TH090",
+    "question": "Em thấy bạn thường xuyên đăng status rất tuyệt vọng sau khi bị bắt nạt. Em lo nhưng sợ nói ra bạn giận.",
+    "support": "Cô cảm nhận được em rất quan tâm đến bạn. Thấy bạn thường xuyên đăng những dòng tuyệt vọng sau khi bị bắt nạt mà không biết phải làm gì thật sự là chuyện khó. Em lo bạn giận nếu mình nói với người lớn, nhưng khi có dấu hiệu tuyệt vọng kéo dài, sự an toàn của bạn quan trọng hơn việc giữ kín hoàn toàn.",
+    "steps": [
+      "Hãy liên hệ với bạn một cách nhẹ nhàng và riêng tư, chẳng hạn: “Mình thấy bạn đang rất buồn. Mình quan tâm đến bạn và muốn bạn được an toàn.” Lắng nghe, không trách móc hay xem nhẹ cảm xúc của bạn.",
+      "Đừng hứa giữ bí mật nếu bạn có dấu hiệu muốn tự làm hại mình. Hãy báo sớm cho giáo viên, phụ huynh của bạn hoặc một người lớn có khả năng hỗ trợ, kể cả khi em sợ bạn giận.",
+      "Nếu bài đăng có ý định tự tử, lời tạm biệt, kế hoạch tự hại hoặc bạn không phản hồi trong hoàn cảnh đáng lo, cần tìm người lớn can thiệp ngay; nếu nguy hiểm cấp bách, liên hệ dịch vụ cấp cứu tại địa phương.",
+      "Không chia sẻ công khai ảnh chụp status hay biến câu chuyện thành chủ đề bàn tán. Em cũng có thể nhờ người lớn hỗ trợ chính mình nếu thấy quá lo lắng."
+    ],
+    "ending": "Giúp bạn không có nghĩa là em phải tự gánh mọi chuyện. Việc tìm người lớn đáng tin để bảo vệ bạn là một hành động quan tâm và dũng cảm."
+  }
+];
+function approvedDemoReply(text){
+ const t=norm(text);
+ const item=APPROVED_DEMO_CASES.find(x=>norm(x.question)===t);
+ if(!item)return null;
+ return {
+  support:item.support,
+  safe_steps:item.steps,
+  legal:{
+   user_side:item.id==='TH002'||item.id==='TH022'||item.id==='TH056'?'Nếu chính em xúc phạm, tung tin sai hoặc đe dọa phát tán nội dung riêng tư, em cần dừng và khắc phục hành vi; trách nhiệm pháp lý cụ thể phải căn cứ tình tiết và độ tuổi.':'Từ lời kể hiện có, không có cơ sở kết luận em vi phạm pháp luật. Em có quyền được bảo vệ và cần ứng xử an toàn.',
+   other_side:item.id==='TH075'?'Yêu cầu chuyển phí trước khi giải ngân là dấu hiệu đáng nghi của hành vi lừa đảo; không thể kết luận tội danh chỉ từ một tin nhắn.':item.id==='TH065'?'Việc tổ chức hoặc tham gia đánh bạc ăn tiền có thể liên quan quy định pháp luật, tùy hình thức và tình tiết; không nên xem là trò kiếm tiền an toàn.':item.id==='TH090'?'Cần đánh giá hành vi bắt nạt cụ thể; ưu tiên bảo vệ sức khỏe tinh thần và an toàn của bạn.':'Hành vi xúc phạm, đe dọa, phát tán hình ảnh hoặc thông tin riêng tư có thể xâm phạm quyền của người khác; cần xem xét sự việc cụ thể.',
+   note:'Đây là định hướng giáo dục và an toàn, không phải kết luận vi phạm hay tư vấn pháp lý chuyên môn.'
+  },
+  final_advice:item.ending,
+  _diagnostics:{situation_summary:item.question,user_role:'Học sinh trong tình huống mẫu',actor_analysis:'Phân tích theo vai trò nêu trong lời kể, không suy đoán.',categories:['Tình huống mẫu '+item.id],risk_level:['TH031','TH090'].includes(item.id)?'Cao':'Trung bình',need_clarification:false,clarifying_question:''},
+  _reference_case:item.id
+ };
+}
+
 function norm(s=""){
   return String(s).toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d")
@@ -836,7 +976,742 @@ function finalAdviceFor(f, risk){
   return "Hãy chọn cách giải quyết không làm tổn thương thêm ai: bảo vệ mình, tôn trọng đối phương, nhờ gia đình/nhà trường hỗ trợ đúng lúc và không biến mâu thuẫn thành nội dung lan truyền trên mạng.";
 }
 
+
+// 100 tình huống giáo viên đã rà soát từ bản Word; ưu tiên trùng khớp nội dung.
+const REVIEWED_100 = [
+ {
+  "id": "DEV001",
+  "question": "tụi bạn cứ kêu em là heo vì em mập, e nói đừng gọi nữa mà tụi nó vẫn gọi mỗi ngày. e nên lm sao",
+  "assessment": "Bạn bị gọi biệt danh xúc phạm lặp lại dù đã phản đối.",
+  "advice": "Cô biết nghe một biệt danh khiến em tổn thương mỗi ngày rất mệt mỏi. Em đã nói dừng mà các bạn vẫn tiếp tục, nên đây không còn là trò đùa vui với em. Em hãy ghi lại những lần xảy ra, nhờ giáo viên chủ nhiệm trao đổi và bảo vệ em; đừng cố chịu đựng một mình.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV002",
+  "question": "Bạn em hay lấy chiều cao của em ra chọc trước lớp, lúc đầu e cười nhưng giờ e thấy khó chịu lắm.",
+  "assessment": "Bạn bị chọc chiều cao trước lớp, ranh giới đã thay đổi.",
+  "advice": "Lúc đầu em cười không có nghĩa là em phải chấp nhận mãi, em nhé. Em có thể nói riêng: “Trước đây mình thấy vui, nhưng bây giờ mình khó chịu, bạn dừng nhé.” Nếu bạn vẫn trêu trước lớp, nhờ cô chủ nhiệm hỗ trợ để em không phải đối mặt một mình.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV003",
+  "question": "Trong gr lớp có mấy bạn cứ gọi em là “đồ ngu”, em ko trả lời thì tụi nó càng tag tên em.",
+  "assessment": "Bạn bị xúc phạm và liên tục gắn thẻ trong nhóm lớp.",
+  "advice": "Cô hiểu bị gọi “đồ ngu” rồi liên tục bị tag tên khiến em ngại mở nhóm. Em đừng đôi co trong nhóm; hãy chụp lại các tin nhắn, tắt thông báo nếu cần và báo quản trị nhóm cùng giáo viên chủ nhiệm để yêu cầu dừng hành vi.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV004",
+  "question": "Bạn thân hay trêu mũi em xấu, cả 2 vẫn cười vui. Vậy có phải bắt nạt ko ạ?",
+  "assessment": "Trêu đùa có vẻ được cả hai đồng thuận, chưa đủ căn cứ kết luận bắt nạt.",
+  "advice": "Nếu cả hai thật sự cùng vui, không ai bị ép cười và khi nói “dừng” thì người kia tôn trọng, chưa đủ cơ sở gọi đó là bắt nạt. Nhưng em có quyền đổi ý bất cứ lúc nào. Nếu một ngày em thấy buồn, hãy nói thẳng với bạn; cô mong tình bạn ấy biết tôn trọng giới hạn của nhau.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV005",
+  "question": "Em lỡ nói bạn là “đồ béo” trước lớp, giờ bạn giận và ko nói chuyện với em. Em phải làm gì để sửa ạ?",
+  "assessment": "Người hỏi đã xúc phạm bạn và muốn sửa sai.",
+  "advice": "Em đã nhận ra câu “đồ béo” làm bạn tổn thương, đó là bước đầu đáng quý. Em hãy xin lỗi cụ thể, không nói “chỉ đùa thôi”, và hỏi bạn cần gì để thấy được tôn trọng. Sau đó cho bạn thời gian; đừng ép bạn phải tha thứ ngay.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV006",
+  "question": "Mấy bạn cứ bắt chước giọng nói của em rồi cười, e nói ko thích nhưng vẫn làm.",
+  "assessment": "Bạn bị bắt chước giọng nói sau khi yêu cầu dừng.",
+  "advice": "Giọng nói là một phần riêng của em và không đáng bị đem ra làm trò cười. Vì em đã nói không thích mà các bạn vẫn làm, hãy ghi lại sự việc và nhờ giáo viên can thiệp. Nếu em muốn, cô có thể giúp em tập một câu nói ngắn, rõ ràng để đặt giới hạn.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV007",
+  "question": "Có bạn bình luận dưới ảnh em “nhìn như con khỉ”, nhiều người thả haha. Em có nên chửi lại ko?",
+  "assessment": "Bạn bị bình luận miệt thị trên ảnh và muốn trả đũa.",
+  "advice": "Cô hiểu em tức khi bị bình luận xúc phạm và nhiều người hùa theo. Nhưng chửi lại dễ khiến em bị cuốn vào một cuộc công kích mới. Em hãy lưu ảnh màn hình, ẩn hoặc báo cáo bình luận, chặn người quấy rối và nhờ người lớn hỗ trợ nếu việc này kéo dài.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV008",
+  "question": "Bạn trong lớp hay nói em học dốt, vô dụng, chỉ nói lúc ko có giáo viên. e thấy ngại đi học.",
+  "assessment": "Bạn bị hạ thấp năng lực khi vắng giáo viên, ngại đi học.",
+  "advice": "Nghe những lời “vô dụng” lặp lại có thể khiến em mất tự tin, nhưng chúng không nói lên giá trị của em. Vì em đã ngại đến trường, cô muốn em sớm chia sẻ với giáo viên chủ nhiệm hoặc người lớn em tin tưởng, kể rõ lúc nào và ai có mặt để được hỗ trợ.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV009",
+  "question": "Tụi em hay gọi biệt danh nhau cho vui, nhưng hôm nay bạn bảo em dừng. Em có cần xin lỗi ko?",
+  "assessment": "Người hỏi dùng biệt danh và bạn đã yêu cầu dừng.",
+  "advice": "Có chứ em, khi bạn nói dừng thì điều cần làm là tôn trọng ngay. Em hãy xin lỗi vì đã khiến bạn khó chịu, ngừng dùng biệt danh ấy và nhắc các bạn khác đừng tiếp tục. Một lời xin lỗi có ý nghĩa khi hành động của mình thay đổi.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV010",
+  "question": "Bạn cứ đem hoàn cảnh gia đình em ra chế giễu trên mạng. Em rất tức và muốn đăng chuyện xấu của bạn lại.",
+  "assessment": "Bạn bị chế giễu hoàn cảnh gia đình, đang định trả đũa.",
+  "advice": "Cô hiểu em đau lòng và tức giận khi chuyện gia đình bị đem ra chế giễu. Nhưng đăng chuyện xấu của bạn để trả đũa sẽ làm cả hai tổn thương thêm. Em hãy lưu bằng chứng, hạn chế tranh cãi trên mạng và nhờ giáo viên cùng người lớn đáng tin cậy giúp chấm dứt việc xúc phạm.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV011",
+  "question": "Nhóm bạn trong lớp tự nhiên ko cho em ngồi chung và nói mọi người đừng chơi với em.",
+  "assessment": "Bạn bị vận động cô lập trong lớp.",
+  "advice": "Bị ngăn không cho ngồi hay chơi cùng khiến em dễ cảm thấy mình bị bỏ rơi. Em không cần van xin cả nhóm chấp nhận mình. Hãy kể cụ thể với giáo viên chủ nhiệm, tìm một bạn an toàn để đồng hành và nhờ cô hỗ trợ xây dựng lại cách ứng xử trong lớp.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV012",
+  "question": "Mấy bạn kick em khỏi gr làm bài rồi vẫn ghi tên em là ko làm gì. e phải sao ạ",
+  "assessment": "Bạn bị loại khỏi nhóm học và bị quy trách nhiệm không làm bài.",
+  "advice": "Đây không chỉ là chuyện bạn bè mà còn ảnh hưởng quyền tham gia học tập của em. Em hãy giữ lịch sử nhóm, phần bài mình đã làm và trao đổi sớm với giáo viên bộ môn để được đánh giá công bằng; đồng thời đề nghị cô giúp nhóm phân công minh bạch.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV013",
+  "question": "Bạn A bảo ai nói chuyện với em thì A sẽ nghỉ chơi người đó, giờ gần như ko ai nói với em.",
+  "assessment": "Bạn bị đe dọa cô lập qua sức ép với bạn khác.",
+  "advice": "Khi một người dọa nghỉ chơi bất kỳ ai nói chuyện với em, đó là cách gây sức ép lên cả nhóm. Cô mong em đừng tự trách mình. Em hãy chia sẻ với giáo viên chủ nhiệm, nói rõ lời đe dọa và nhờ cô bảo vệ những bạn muốn đối xử tử tế với em.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV014",
+  "question": "Em bị mấy bạn tẩy chay nhưng ko ai chửi hay đánh em, vậy có tính là bạo lực học đường ko?",
+  "assessment": "Bạn hỏi liệu tẩy chay không đánh chửi có là bạo lực.",
+  "advice": "Cô hiểu việc nhiều bạn tránh chơi khiến em buồn và hoang mang. Nếu có người cố ý lôi kéo cả nhóm tẩy chay em, nhất là khi việc này lặp lại và ảnh hưởng đến học tập, đó có thể là bắt nạt bằng cách cô lập. Em hãy ghi lại các sự việc cụ thể và nhờ giáo viên chủ nhiệm hoặc người lớn em tin tưởng hỗ trợ. Cô sẽ không vội kết luận khi chưa biết đầy đủ câu chuyện.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV015",
+  "question": "Nhóm em cố tình ko báo lịch làm bài nhóm cho em, đến lúc nộp lại nói em ko tham gia.",
+  "assessment": "Bạn bị giấu lịch làm nhóm rồi đổ lỗi.",
+  "advice": "Em hãy tập hợp các tin nhắn, thời điểm mình hỏi lịch và phần việc đã thực hiện, rồi trao đổi riêng với giáo viên bộ môn trước khi chấm điểm. Cô hiểu cảm giác bị đổ lỗi rất ấm ức, nhưng đưa thông tin rõ ràng sẽ hiệu quả hơn tranh cãi với cả nhóm.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV016",
+  "question": "Em giận một bạn nên em rủ mấy đứa khác đừng chơi với bạn đó nữa. Giờ em thấy mình làm quá, sửa sao ạ?",
+  "assessment": "Người hỏi chủ động rủ tẩy chay bạn, muốn sửa.",
+  "advice": "Em đã thấy việc rủ người khác nghỉ chơi có thể khiến bạn bị cô lập. Hãy dừng lời kêu gọi đó, nói với nhóm rằng mỗi người có quyền tự quyết định kết bạn và xin lỗi người bị ảnh hưởng. Nếu bạn chưa muốn nói chuyện, em hãy tôn trọng và chứng minh bằng hành động.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV017",
+  "question": "Bạn em bị cả lớp né tránh sau một tin đồn. Em muốn chơi với bạn nhưng sợ mình cũng bị tẩy chay.",
+  "assessment": "Người chứng kiến sợ bị tẩy chay nếu giúp bạn.",
+  "advice": "Cô hiểu em sợ bị kéo vào chuyện. Em không cần đối đầu với cả lớp để giúp bạn: chỉ cần hỏi thăm riêng, ngồi cạnh bạn khi an toàn và cùng bạn tìm giáo viên đáng tin cậy. Đừng lan truyền tin đồn; một sự đồng hành kín đáo cũng rất có ý nghĩa.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV018",
+  "question": "Tụi nó lập gr riêng để nói xấu em rồi chụp hình gửi cho em xem.",
+  "assessment": "Bạn bị lập nhóm nói xấu rồi cố ý gửi ảnh chụp.",
+  "advice": "Việc họ chụp lời nói xấu gửi cho em có thể nhằm làm em tổn thương. Em đừng phản công trong nhóm; hãy lưu những ảnh chụp đó, chặn liên hệ quấy rối nếu cần và báo giáo viên chủ nhiệm. Cô muốn em có người đứng cùng, không phải tự chịu đựng.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV019",
+  "question": "Trong giờ thể dục mấy bạn cố tình ko chọn em vào đội, còn nói “đừng cho nó vào”. Việc này xảy ra hoài.",
+  "assessment": "Bạn bị loại khỏi đội thể dục lặp lại và chế giễu.",
+  "advice": "Trong hoạt động thể dục, việc cố tình loại em và nói lời hạ thấp nhiều lần cần được giáo viên biết. Em hãy trao đổi với giáo viên thể dục về những lần xảy ra và đề nghị cách chia đội công bằng. Em xứng đáng được tham gia học tập, không phải chịu chế giễu.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV020",
+  "question": "Em và bạn cãi nhau, sau đó bạn kêu mọi người block em hết. Em nên nói với ai?",
+  "assessment": "Bạn bị kêu gọi chặn liên lạc sau tranh cãi.",
+  "advice": "Một cuộc cãi nhau không nên biến thành việc cả nhóm cô lập em. Em có thể ngừng nhắn khi đang nóng giận, lưu những tin nhắn kích động tẩy chay và nhờ giáo viên chủ nhiệm giúp hòa giải trong điều kiện an toàn. Không cần tìm cách nhắn liên tục cho người đã chặn em.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV021",
+  "question": "Có người tung tin em ăn cắp tiền trong lớp nhưng em ko làm. Tin lan qua mấy lớp rồi.",
+  "assessment": "Bạn bị vu cáo ăn cắp và tin đồn lan rộng.",
+  "advice": "Bị gán chuyện ăn cắp khi em không làm là rất nghiêm trọng với danh dự của em. Em hãy báo ngay giáo viên chủ nhiệm và gia đình, cung cấp những gì em biết về nguồn tin, đề nghị nhà trường xác minh và đính chính phù hợp. Đừng tự đi chất vấn từng người trong lúc tức giận.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV022",
+  "question": "Bạn nói trên story là em sống giả tạo dù ko ghi tên, nhưng ai cũng biết đang nói em.",
+  "assessment": "Bạn bị nói bóng gió trên story, chưa nêu đích danh.",
+  "advice": "Cô hiểu em thấy bị nhắm tới dù story không ghi tên. Trước khi phản ứng, em hãy lưu nội dung và xem có dấu hiệu rõ ràng nào cho thấy đang nói về mình không. Nếu ảnh hưởng đến em, hãy trao đổi bình tĩnh hoặc nhờ người lớn hỗ trợ, tránh đăng story đáp trả khiến hiểu lầm lớn hơn.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV023",
+  "question": "Có nick ảo lấy tên em đi nhắn tin chửi người khác, giờ mọi người tưởng là em.",
+  "assessment": "Có tài khoản giả danh người hỏi để xúc phạm người khác.",
+  "advice": "Em nên chụp lại trang giả mạo, đường dẫn và các tin nhắn liên quan; báo cáo tài khoản mạo danh với nền tảng. Hãy nói sớm với giáo viên, gia đình và những người bị nhắn tin rằng đó không phải tài khoản của em, đồng thời kiểm tra bảo mật tài khoản thật.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV024",
+  "question": "Bạn kể chuyện riêng của em sai sự thật rồi gửi vào gr lớp. Em giải thích càng nhiều càng rối.",
+  "assessment": "Bạn bị kể sai chuyện riêng và càng giải thích càng rối.",
+  "advice": "Em không cần trả lời từng bình luận trong nhóm lớp. Hãy lưu tin nhắn, viết ngắn gọn điều gì sai sự thật và nhờ giáo viên chủ nhiệm hỗ trợ làm rõ trong phạm vi cần thiết. Cô hiểu em muốn giải thích ngay, nhưng cách bình tĩnh, có người hỗ trợ sẽ bảo vệ em tốt hơn.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV025",
+  "question": "Em lỡ kể một chuyện chưa kiểm chứng về bạn cho mấy người khác, giờ mới biết là sai. Em nên làm gì?",
+  "assessment": "Người hỏi đã truyền tin chưa kiểm chứng và muốn sửa.",
+  "advice": "Em hãy dừng kể lại ngay, liên hệ những người mình đã nói để đính chính rằng thông tin chưa đúng và xin lỗi bạn bị ảnh hưởng. Đừng biện minh bằng câu “em chỉ nghe người khác nói”. Cô tin việc chủ động sửa sai sẽ giúp hạn chế tin đồn lan tiếp.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV026",
+  "question": "Mấy bạn ghép ảnh em với câu nói em chưa từng nói rồi đăng lên mạng.",
+  "assessment": "Bạn bị ghép ảnh với lời nói giả.",
+  "advice": "Đây là nội dung bị chỉnh sửa và gán lời em chưa từng nói. Em hãy lưu bản đăng, đường dẫn và thời điểm, yêu cầu người đăng gỡ bỏ, báo cáo nền tảng và nhờ giáo viên hoặc gia đình hỗ trợ đính chính. Đừng đăng lại ảnh ghép chỉ để chứng minh mình bị hại.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV027",
+  "question": "Bạn cũ cứ đăng bài bóng gió nói em lừa dối, nhiều người vào hỏi em có chuyện gì.",
+  "assessment": "Bạn bị bài đăng bóng gió từ bạn cũ.",
+  "advice": "Cô hiểu những bài đăng úp mở khiến em bị người khác hỏi dồn. Em có thể không trả lời công khai, lưu các bài có liên quan và nhắn riêng một lần để đề nghị ngừng ám chỉ nếu an toàn. Nếu tiếp diễn hoặc có nội dung sai sự thật, nhờ người lớn hỗ trợ.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV028",
+  "question": "Em nghe tin xấu về một bạn và định share để cảnh báo mọi người, nhưng em ko biết có thật ko.",
+  "assessment": "Người hỏi định chia sẻ tin xấu chưa xác minh.",
+  "advice": "Em khoan chia sẻ nhé. Khi chưa biết tin có thật không, việc “cảnh báo” có thể vô tình làm hại danh dự của bạn. Nếu lo có nguy cơ thực sự, hãy báo riêng cho giáo viên hoặc người có trách nhiệm để xác minh, thay vì phát tán lên mạng.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV029",
+  "question": "Có bạn lập tài khoản giống tên và avatar em để đăng mấy thứ tục tĩu.",
+  "assessment": "Có tài khoản giả tên và ảnh người hỏi để đăng nội dung tục.",
+  "advice": "Em hãy lưu đường dẫn, ảnh chụp tài khoản giả và báo cáo hành vi mạo danh; nhờ bạn bè không tương tác hoặc chia sẻ nội dung đó. Nói với giáo viên, gia đình để hỗ trợ làm rõ, và kiểm tra cài đặt bảo mật tài khoản của em. Đây không phải lỗi của em.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV030",
+  "question": "Tin đồn về gia đình em bị truyền trong lớp, e rất xấu hổ và ko muốn đi học.",
+  "assessment": "Tin đồn về gia đình khiến người hỏi không muốn đi học.",
+  "advice": "Cô rất tiếc vì chuyện gia đình khiến em bị soi mói. Em không cần kể chi tiết riêng tư để tự bảo vệ mình. Hãy báo giáo viên chủ nhiệm hoặc người lớn em tin tưởng, nhờ họ can thiệp tin đồn và hỗ trợ em trở lại lớp an toàn; nếu quá căng thẳng, em có thể xin gặp bộ phận tư vấn học đường.",
+  "legal": "Quyền được tôn trọng danh dự, nhân phẩm; cần xem xét bối cảnh và mức độ."
+ },
+ {
+  "id": "DEV031",
+  "question": "Bạn chụp lúc em ngủ gục rồi đăng lên gr lớp làm meme, em yêu cầu xóa mà bạn ko xóa.",
+  "assessment": "Ảnh ngủ gục bị dùng làm meme dù đã yêu cầu xóa.",
+  "advice": "Em đã yêu cầu xóa mà bạn không làm, vậy em nên lưu bài đăng và tin nhắn yêu cầu gỡ. Hãy báo quản trị nhóm, giáo viên chủ nhiệm hoặc nền tảng để được hỗ trợ gỡ nội dung. Em không phải chấp nhận bị đem hình ảnh ra trêu chỉ vì ảnh được chụp ở lớp.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV032",
+  "question": "Em gửi ảnh riêng cho bạn thân, giờ bạn dọa nếu em nghỉ chơi sẽ tung ảnh.",
+  "assessment": "Bạn thân dùng ảnh riêng để đe dọa phát tán.",
+  "advice": "Cô hiểu em sợ khi người em tin tưởng đem ảnh riêng ra đe dọa. Em không có lỗi vì đã tin bạn. Đừng gửi thêm ảnh, tiền hay làm theo yêu cầu của bạn để đổi lấy sự im lặng. Hãy lưu tin nhắn đe dọa, báo ngay cho cha mẹ hoặc người lớn em tin tưởng để được giúp đỡ yêu cầu gỡ ảnh và bảo vệ an toàn. Nếu là ảnh nhạy cảm, đừng gửi ảnh đó thêm cho bất kỳ ai, kể cả để chứng minh sự việc.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV033",
+  "question": "Có bạn quay video em bị ngã rồi up tiktok, video đang nhiều view. e muốn gỡ thì làm sao",
+  "assessment": "Video người hỏi bị ngã lan truyền trên TikTok.",
+  "advice": "Em có thể lưu đường dẫn và ảnh chụp bài đăng, dùng chức năng báo cáo của TikTok và yêu cầu người đăng gỡ video. Nhờ gia đình hoặc giáo viên hỗ trợ nếu em bị chế giễu hoặc nội dung tiếp tục lan truyền. Em không cần bình luận đôi co dưới video.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV034",
+  "question": "Bạn lấy ảnh trên fb của em ghép mặt vào hình xấu rồi gửi khắp lớp.",
+  "assessment": "Ảnh người hỏi bị ghép xấu và gửi khắp lớp.",
+  "advice": "Cô hiểu việc ảnh của em bị sửa rồi gửi đi khiến em khó chịu và xấu hổ. Hãy lưu một vài bằng chứng cần thiết, nhờ giáo viên yêu cầu dừng chia sẻ và hỗ trợ gỡ nội dung. Em đừng tự phát tán ảnh ghép để phản bác vì như vậy ảnh càng lan rộng.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV035",
+  "question": "Em lỡ đăng ảnh bạn lên story để chọc, bạn nói ko đồng ý. Em đã xóa rồi thì còn cần làm gì nữa ko?",
+  "assessment": "Người hỏi đã đăng ảnh bạn, đã xóa và muốn sửa.",
+  "advice": "Xóa story là bước đúng, nhưng em vẫn nên xin lỗi vì đã dùng ảnh bạn khi bạn không đồng ý. Hỏi bạn xem có ai lưu hoặc chia sẻ lại không và cùng tìm cách yêu cầu gỡ nếu có. Sau này hãy xin phép trước khi đăng hình người khác, em nhé.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV036",
+  "question": "Có người cap đoạn chat riêng của em với bạn rồi đăng công khai, chỉ che tên người kia chứ ko che tên em.",
+  "assessment": "Đoạn chat riêng của người hỏi bị công khai kèm tên.",
+  "advice": "Em có quyền khó chịu khi tin nhắn riêng bị đưa ra công khai. Hãy lưu đường dẫn và nội dung, đề nghị người đăng gỡ và báo cáo bài viết nếu cần. Nếu họ không hợp tác hoặc thông tin gây ảnh hưởng, hãy nhờ giáo viên hay người lớn đáng tin cậy hỗ trợ, đừng công khai thêm chuyện riêng để tranh cãi.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV037",
+  "question": "Bạn xin ảnh em để làm bài nhưng sau đó dùng ảnh đó làm meme. Em thấy bị lừa.",
+  "assessment": "Ảnh được xin cho mục đích học tập nhưng bị biến thành meme.",
+  "advice": "Bạn xin ảnh để làm bài nhưng lại dùng làm meme, điều đó khác với mục đích em đã đồng ý. Em hãy nói rõ em không cho phép sử dụng như vậy, yêu cầu gỡ và nhờ giáo viên hỗ trợ nếu bạn không thực hiện. Cô hiểu vì sao em cảm thấy mất lòng tin.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV038",
+  "question": "Một bạn quay cảnh hai bạn khác cãi nhau rồi gửi em, em có nên gửi tiếp vào gr lớp ko?",
+  "assessment": "Người chứng kiến được gửi clip cãi nhau, hỏi có nên chuyển tiếp.",
+  "advice": "Em đừng gửi clip vào nhóm lớp nhé, vì việc lan truyền có thể khiến hai bạn bị bêu riếu và mâu thuẫn tăng lên. Nếu clip cho thấy nguy cơ đánh nhau, hãy báo giáo viên và chỉ cung cấp bằng chứng qua kênh phù hợp; còn nếu không nguy hiểm, hãy khuyên người quay ngừng chia sẻ.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV039",
+  "question": "Em phát hiện có clip của mình bị đăng trong nhóm kín mà em ko được vào nhóm đó.",
+  "assessment": "Clip của người hỏi bị đăng trong nhóm kín.",
+  "advice": "Cô hiểu em lo khi biết clip của mình xuất hiện trong nhóm em không được vào. Nếu an toàn, hãy yêu cầu người đăng gỡ và nhờ người tin cậy xác nhận đường dẫn, lưu bằng chứng phù hợp. Nếu họ không gỡ, clip nhạy cảm hoặc em bị đe dọa, hãy báo ngay cha mẹ, giáo viên và nền tảng. Đừng trả đũa hay tìm cách đột nhập nhóm.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV040",
+  "question": "Bạn dùng AI ghép mặt em vào ảnh nhạy cảm rồi dọa gửi cho người khác nếu em ko nghe lời.",
+  "assessment": "Ảnh nhạy cảm giả mạo bằng AI dùng để cưỡng ép.",
+  "advice": "Cô rất tiếc vì em bị đe dọa bằng ảnh nhạy cảm do AI tạo ra. Ảnh giả không làm em trở thành người có lỗi. Đừng gửi tiền, ảnh hay gặp riêng người đe dọa. Em hãy lưu lời đe dọa và đường dẫn bài đăng nếu có, rồi báo ngay cha mẹ, giáo viên hoặc người lớn đáng tin cậy. Nhờ người lớn hỗ trợ báo cáo và yêu cầu gỡ nội dung; không chuyển tiếp ảnh nhạy cảm để làm bằng chứng.",
+  "legal": "Quyền đối với hình ảnh và đời sống riêng tư; tham chiếu Điều 32 và Điều 38 Bộ luật Dân sự 2015 tùy tình huống."
+ },
+ {
+  "id": "DEV041",
+  "question": "Bạn chửi em trước nên em chửi lại nặng hơn, giờ 2 bên đang rủ người ra nói chuyện.",
+  "assessment": "Hai bên chửi nhau, có nguy cơ hẹn đánh nhau.",
+  "advice": "Cô hiểu em đang rất nóng giận, nhưng lúc này an toàn quan trọng hơn việc phân thắng thua. Em hãy dừng nhắn lời kích động, không đi gặp nhóm người ngoài trường và báo ngay giáo viên, cha mẹ về lời hẹn. Khi mọi người bình tĩnh, hãy nhận phần sai của mình và nhờ người lớn hỗ trợ hòa giải.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV042",
+  "question": "Em với bạn cãi nhau trong game, hôm sau bạn tiếp tục khịa em ở lớp. Em muốn giải quyết cho xong.",
+  "assessment": "Xung đột từ game kéo sang lớp.",
+  "advice": "Chuyện trong game đang ảnh hưởng đến việc học của em. Em hãy ngừng đáp trả lời khịa, nói rõ rằng em muốn kết thúc tranh cãi và chỉ trao đổi khi bình tĩnh. Nếu bạn tiếp tục xúc phạm ở lớp, nhờ giáo viên chủ nhiệm hỗ trợ thay vì hẹn nhau “giải quyết cho xong”.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV043",
+  "question": "Bạn giấu cặp của em nên em lấy điện thoại bạn giấu lại. Giờ ai cũng nói người kia sai.",
+  "assessment": "Hai bên giấu đồ của nhau để trả đũa.",
+  "advice": "Việc bạn giấu cặp của em là sai, nhưng lấy điện thoại bạn giấu lại cũng khiến mâu thuẫn nặng hơn. Em hãy trả điện thoại nguyên vẹn, đề nghị bạn trả cặp và nhờ giáo viên chứng kiến nếu cần. Cô mong hai em giải quyết bằng việc hoàn trả đồ và nhận trách nhiệm, không tiếp tục trả đũa.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV044",
+  "question": "Bạn đăng status đá xéo em, em định đăng ảnh xấu của bạn để trả đũa có được ko?",
+  "assessment": "Người hỏi định đăng ảnh xấu để trả đũa story.",
+  "advice": "Em đừng đăng ảnh xấu của bạn nhé. Một status khiến em bực không cho phép mình xâm phạm hình ảnh người khác. Em có thể lưu status, tạm ngừng theo dõi và trao đổi riêng khi bình tĩnh; nếu bị nhắm tới kéo dài, hãy nhờ giáo viên hỗ trợ.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV045",
+  "question": "Hai nhóm trong lớp đang khẩu chiến trên gr, ai cũng cap màn hình bên kia để chế ảnh.",
+  "assessment": "Hai nhóm công kích nhau và chế ảnh trong nhóm.",
+  "advice": "Cô mong em đừng tham gia chụp màn hình để chế giễu hoặc chuyển tiếp ảnh. Nếu em có vai trò quản trị, hãy đề nghị dừng bài công kích và báo giáo viên chủ nhiệm để can thiệp. Việc mỗi bên giữ bằng chứng cho người có trách nhiệm khác với đăng lại để trả đũa.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV046",
+  "question": "Em lỡ đẩy bạn khi bạn chọc em, bạn đẩy lại. Tụi em ko bị thương nhưng đang rất tức.",
+  "assessment": "Hai bên xô đẩy, chưa bị thương.",
+  "advice": "Dù chưa ai bị thương, việc đẩy qua lại có thể dẫn đến tai nạn. Em hãy tránh tiếp xúc khi còn tức, báo giáo viên về sự việc và nhận trách nhiệm vì đã đẩy trước nếu đúng như em kể. Chỉ trao đổi để hòa giải khi có người lớn hỗ trợ và hai bên đã bình tĩnh.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV047",
+  "question": "Bạn A và em hiểu lầm chuyện mượn đồ, giờ A cứ nói em cố tình lấy. Em muốn nói chuyện nhưng sợ cãi tiếp.",
+  "assessment": "Hiểu lầm mượn đồ, sợ đối thoại thành cãi nhau.",
+  "advice": "Em có thể nhờ giáo viên hoặc một người trung gian chứng kiến cuộc nói chuyện ngắn. Hãy chuẩn bị thời điểm mượn, cách trả và những gì em nhớ, rồi nói bằng câu “Mình muốn làm rõ” thay vì buộc tội. Nếu bạn vẫn nóng giận, tạm dừng để tránh cãi tiếp.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV048",
+  "question": "Em bị bạn khiêu khích kiểu “giỏi thì đánh tao đi”. Em nên làm gì lúc đó?",
+  "assessment": "Bạn khiêu khích đánh nhau.",
+  "advice": "Khi nghe “giỏi thì đánh tao đi”, em đừng chứng minh điều gì bằng nắm đấm. Hãy lùi ra chỗ đông người, nói ngắn “Mình không đánh nhau” và tìm giáo viên hoặc người lớn gần đó. Nếu bạn chặn đường hoặc tiến tới đe dọa, ưu tiên rời khỏi nơi nguy hiểm.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV049",
+  "question": "Bạn nói xấu em nên em rủ bạn bè vào comment chửi lại, giờ chuyện lớn hơn rồi. Em sửa sao?",
+  "assessment": "Người hỏi đã rủ người vào chửi, muốn khắc phục.",
+  "advice": "Em hãy ngừng ngay lời kêu gọi bình luận, xóa những bình luận xúc phạm của mình nếu có và nhắn mọi người dừng lại. Sau đó xin lỗi người bị công kích, không đổ lỗi rằng bạn ấy nói xấu trước. Nếu sự việc lan rộng, nhờ giáo viên hỗ trợ hòa giải.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV050",
+  "question": "Tụi em chỉ cãi nhau một lần rồi thôi, ko ai đe dọa hay lặp lại. Như vậy có phải bạo lực học đường ko?",
+  "assessment": "Cãi nhau một lần, không đe dọa hay lặp lại.",
+  "advice": "Một lần tranh cãi chưa đủ để kết luận là bắt nạt, em nhé; cần xem có xúc phạm nghiêm trọng, đe dọa hay tổn hại nào không. Nếu hai em đã dừng và an toàn, có thể trao đổi bình tĩnh để hiểu nhau. Nếu mâu thuẫn tái diễn, hãy tìm người lớn hỗ trợ.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV051",
+  "question": "Bạn nhắn tan học sẽ chờ em ngoài cổng để xử em. e sợ ko dám về một mình.",
+  "assessment": "Bị đe dọa đánh ngoài cổng ngay sau giờ học.",
+  "advice": "Cô hiểu em sợ và em không nên về một mình lúc này. Hãy báo ngay giáo viên, bảo vệ trường và cha mẹ; ở nơi có người lớn, không ra cổng gặp người đe dọa. Giữ tin nhắn làm bằng chứng và nhờ người lớn sắp xếp đường về an toàn.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV052",
+  "question": "Nó bảo chiều nay ra công viên nói chuyện, em ko đi thì nó nói sẽ cho em biết tay.",
+  "assessment": "Bị ép ra công viên và đe dọa nếu không đi.",
+  "advice": "Em không cần đến công viên để chứng minh mình can đảm. Hãy từ chối cuộc hẹn, giữ tin nhắn và báo ngay cha mẹ hoặc giáo viên để được bảo vệ khi đi học và về nhà. Nếu người đó tìm đến hoặc có nguy cơ tấn công, hãy tìm nơi đông người và nhờ hỗ trợ khẩn cấp.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV053",
+  "question": "Bạn gửi tin “mai mày chết với tao”, em ko biết bạn nói thật hay chỉ hù.",
+  "assessment": "Tin nhắn “mai mày chết với tao” chưa rõ thật giả.",
+  "advice": "Câu nói đó có thể là đe dọa nghiêm trọng, dù em chưa biết người gửi có làm thật không. Đừng tự thử xem họ có nói đùa hay không. Hãy chụp tin nhắn, báo ngay giáo viên và gia đình để đánh giá nguy cơ, tránh gặp riêng người đó.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV054",
+  "question": "Một bạn nói sẽ mang dao tới trường để xử em. Em phải làm gì ngay bây giờ?",
+  "assessment": "Đe dọa mang dao tới trường.",
+  "advice": "Cô rất lo vì có lời nói sẽ mang dao đến trường. Em hãy đến ngay nơi có giáo viên hoặc bảo vệ, báo rõ người nói, thời gian và nội dung em biết; đồng thời gọi cha mẹ. Đừng tìm người đó, đừng tự kiểm tra xem lời đe dọa có thật không và đừng tụ tập xem. Nếu nguy hiểm đang diễn ra hoặc có người mang hung khí, nhờ người lớn gọi 113; nếu có người bị thương, gọi 115.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV055",
+  "question": "Bạn cứ đứng chờ gần cổng trường mấy hôm nay, thấy em là đi theo. Em rất sợ.",
+  "assessment": "Bị theo dõi gần cổng trường nhiều ngày.",
+  "advice": "Cô hiểu em rất sợ khi có người liên tục chờ và đi theo. Hãy báo ngay gia đình, giáo viên và bảo vệ trường, nhờ người lớn đón hoặc đi cùng trên đường về. Ghi lại thời gian, địa điểm và đặc điểm người đó nếu an toàn; đừng tự quay lại đối chất.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV056",
+  "question": "Bạn hẹn em ra chỗ vắng, nói nếu ko ra thì sẽ tung “hàng nóng” và kiếm em.",
+  "assessment": "Bị ép ra chỗ vắng và dọa tung “hàng nóng”.",
+  "advice": "Em tuyệt đối đừng đến chỗ vắng một mình. “Hàng nóng” có thể mang nhiều nghĩa nên cô chưa kết luận đó là gì, nhưng lời đe dọa và ép gặp đã đủ để báo ngay cha mẹ, giáo viên. Hãy giữ tin nhắn, không thương lượng riêng; nếu có nguy cơ tức thời, tìm hỗ trợ khẩn cấp.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV057",
+  "question": "Trong gr lớp có người nói “mai tao úp sọt mày”, em ko hiểu họ có làm thật ko.",
+  "assessment": "Lời đe dọa “úp sọt” trong nhóm.",
+  "advice": "Cô không thể biết họ có làm thật hay không, nhưng “úp sọt” có thể ám chỉ đánh hội đồng nên em cần thận trọng. Hãy lưu tin nhắn, báo giáo viên và gia đình ngay hôm nay, không đi một mình tới điểm hẹn hoặc nơi vắng. Đừng đáp lại bằng lời thách thức.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV058",
+  "question": "Bạn đe dọa đánh em nhưng ko nói khi nào ở đâu. Em có cần báo người lớn ngay ko?",
+  "assessment": "Bị dọa đánh chưa rõ thời gian.",
+  "advice": "Có em, nên báo người lớn ngay cả khi chưa biết họ sẽ đánh lúc nào. Em hãy lưu lời đe dọa, nói với giáo viên hoặc cha mẹ và tránh gặp riêng người đó. Nhờ người lớn cùng đánh giá mức nguy hiểm và lên cách đi học, về nhà an toàn.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV059",
+  "question": "Em nghe bạn A nói sẽ đánh bạn B sau giờ học. B chưa biết chuyện này. Em nên làm gì?",
+  "assessment": "Người chứng kiến nghe kế hoạch đánh bạn.",
+  "advice": "Em nên báo ngay giáo viên, bảo vệ trường hoặc người lớn có trách nhiệm để họ bảo vệ bạn B trước giờ tan học. Đừng tự đi đối chất với A hay lan tin khắp lớp. Nếu có thể, cung cấp đúng điều em nghe được, phân biệt rõ điều tận tai nghe với suy đoán.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV060",
+  "question": "Em nóng quá nên nhắn bạn “mai tao xử mày”. Giờ em ko định đánh thật nhưng bạn đã rất sợ. Em phải sửa thế nào?",
+  "assessment": "Người hỏi đã nhắn đe dọa và muốn sửa.",
+  "advice": "Em cần nhắn lại ngay rằng em sẽ không đánh bạn, xin lỗi vì lời đe dọa và dừng mọi lời kích động. Hãy báo giáo viên hoặc cha mẹ để giúp hai bên yên tâm, nhất là nếu đã có lời hẹn gặp. Bạn sợ là điều dễ hiểu; em hãy chứng minh bằng hành động an toàn.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV061",
+  "question": "Bạn bắt em phải mua đồ ăn cho bạn mỗi ngày, ko mua thì dọa đánh.",
+  "assessment": "Bị ép mua đồ ăn hằng ngày bằng đe dọa.",
+  "advice": "Đây không phải việc em phải chiều theo để được yên thân. Hãy báo giáo viên chủ nhiệm và cha mẹ, giữ tin nhắn hoặc ghi lại những lần bị ép; tránh gặp riêng người đe dọa. Người lớn cần giúp em chấm dứt việc ép buộc và bảo đảm an toàn khi đến trường.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV062",
+  "question": "Mấy anh lớp trên bảo em đưa tiền nếu ko sẽ chặn đường về. Em chưa đưa.",
+  "assessment": "Bị học sinh lớp trên đòi tiền và dọa chặn đường.",
+  "advice": "Em đừng tự đi gặp để đưa tiền hay tranh cãi. Hãy báo ngay giáo viên, bảo vệ trường và gia đình, nhờ người lớn đi cùng khi tan học. Giữ bằng chứng và mô tả người đòi tiền; nếu bị chặn đường, tìm nơi đông người và gọi hỗ trợ khẩn cấp.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV063",
+  "question": "Bạn ép em làm bài hộ, nói ko làm thì sẽ tung đoạn chat riêng của em.",
+  "assessment": "Bị ép làm bài hộ bằng đe dọa lộ chat riêng.",
+  "advice": "Em không cần làm bài hộ để đổi lấy sự im lặng. Hãy lưu tin nhắn đe dọa, báo giáo viên chủ nhiệm hoặc người lớn đáng tin cậy để họ vừa bảo vệ chuyện riêng của em vừa xử lý việc ép buộc. Đừng gửi thêm thông tin cá nhân hay tiếp tục mặc cả.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV064",
+  "question": "Bạn bắt em phải đi gặp riêng dù em nói ko muốn, rồi nhắn liên tục ép em đi.",
+  "assessment": "Bị ép gặp riêng và nhắn liên tục.",
+  "advice": "Em đã nói không muốn gặp thì người kia phải tôn trọng. Em không cần giải thích thêm nhiều lần; hãy giữ tin nhắn, báo người lớn đáng tin cậy và không đến cuộc hẹn một mình. Nếu người đó tìm đến hoặc chặn đường, ưu tiên tìm nơi an toàn.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV065",
+  "question": "Một bạn mượn điện thoại em rồi ko trả, còn nói em báo cô thì coi chừng.",
+  "assessment": "Điện thoại bị giữ và bị đe dọa khi báo cô.",
+  "advice": "Em hãy báo ngay giáo viên và gia đình, nói rõ ai đang giữ điện thoại và lời đe dọa. Đừng tự giằng lại hoặc gặp riêng để đòi nếu có nguy cơ xô xát. Nhờ người lớn hỗ trợ lấy lại tài sản và bảo vệ em.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV066",
+  "question": "Bạn yêu cầu em đưa mật khẩu fb để chứng minh em ko nói xấu bạn. Em có nên đưa ko?",
+  "assessment": "Bị yêu cầu giao mật khẩu Facebook.",
+  "advice": "Em tuyệt đối không cần đưa mật khẩu để chứng minh mình vô tội. Em hãy từ chối, bật xác thực hai yếu tố và báo người lớn nếu bạn tiếp tục gây sức ép. Nếu đã lỡ cung cấp, hãy đổi mật khẩu ngay và đăng xuất khỏi thiết bị lạ.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV067",
+  "question": "Em bị ép phải xin lỗi trước cả lớp về chuyện em ko làm, nếu ko nhóm bạn nói sẽ tẩy chay em.",
+  "assessment": "Bị ép xin lỗi công khai về việc không làm.",
+  "advice": "Cô hiểu em thấy bất công. Em không cần nhận lỗi về chuyện mình không làm chỉ vì sợ bị tẩy chay. Hãy lưu lời đe dọa, kể sự việc với giáo viên chủ nhiệm và nhờ cô xác minh, bảo vệ em trước sức ép của nhóm.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV068",
+  "question": "Bạn bảo em gửi ảnh riêng tư, em từ chối thì bạn dọa đăng chuyện xấu về em.",
+  "assessment": "Bị ép gửi ảnh riêng tư, dọa bôi xấu.",
+  "advice": "Em đừng gửi bất kỳ ảnh riêng tư nào để đổi lấy lời hứa không nói xấu. Hãy lưu tin nhắn đe dọa, chặn liên hệ khi đã giữ bằng chứng và báo ngay cha mẹ hoặc người lớn đáng tin cậy. Nếu họ phát tán nội dung, nhờ người lớn hỗ trợ báo cáo và gỡ bỏ.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV069",
+  "question": "Bạn bắt em chép bài cho bạn và giữ đồ của em đến khi em làm xong.",
+  "assessment": "Bị giữ đồ để ép chép bài.",
+  "advice": "Bạn không có quyền giữ đồ của em để buộc em làm bài hộ. Em hãy báo giáo viên bộ môn hoặc chủ nhiệm, nói rõ món đồ và thời điểm bị giữ; nhờ cô hỗ trợ lấy lại. Đừng tự giằng co hoặc làm bài thay để chấm dứt sự việc.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV070",
+  "question": "Mấy bạn ép em tham gia đánh một bạn khác, nói nếu em ko tham gia thì lần sau sẽ tới lượt em.",
+  "assessment": "Bị ép tham gia đánh bạn khác, dọa sẽ đến lượt mình.",
+  "advice": "Em đừng tham gia đánh bạn dù bị ép, vì điều đó gây nguy hiểm cho cả hai. Hãy báo ngay giáo viên, ban giám hiệu hoặc gia đình về lời đe dọa và kế hoạch đánh nhau. Tránh đi một mình và nhờ người lớn bảo vệ cả em lẫn bạn đang bị nhắm tới.",
+  "legal": "Không sử dụng bạo lực hay đe dọa; tìm người có trách nhiệm hỗ trợ, không tự kết luận trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV071",
+  "question": "Bạn cứ nhắn tin hỏi chuyện tình cảm dù em nói ko muốn nói nữa, ngày nào cũng nhắn.",
+  "assessment": "Bị nhắn chuyện tình cảm liên tục dù đã từ chối.",
+  "advice": "Em có quyền không trả lời những câu hỏi tình cảm khiến mình khó chịu. Em có thể nhắn một lần rằng em không muốn tiếp tục chủ đề này, rồi hạn chế liên hệ. Nếu bạn vẫn nhắn hằng ngày, hãy lưu bằng chứng và nhờ giáo viên hoặc người lớn hỗ trợ.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV072",
+  "question": "Có bạn liên tục bình luận về cơ thể em làm em rất khó chịu.",
+  "assessment": "Bị bình luận về cơ thể liên tục.",
+  "advice": "Cô hiểu những lời nhận xét về cơ thể có thể khiến em xấu hổ. Em hãy nói rõ rằng em không đồng ý để bạn bình luận như vậy. Nếu hành vi lặp lại, ghi lại thời điểm và báo giáo viên chủ nhiệm; em không cần thay đổi cơ thể để được tôn trọng.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV073",
+  "question": "Bạn cứ chạm vào người em dù em đã né và nói dừng. Em ko biết phải nói với ai.",
+  "assessment": "Bị đụng chạm dù đã nói dừng.",
+  "advice": "Cô muốn em biết rằng cơ thể em là của em; khi em đã né và nói dừng, bạn không được tiếp tục chạm vào người em. Hãy rời đến nơi có người lớn nếu an toàn và báo ngay cho giáo viên, cha mẹ hoặc một người lớn em tin tưởng. Em có thể nói rõ ai đã làm gì, ở đâu, lúc nào; em không cần tự đối chất với người đó. Nếu em đang bị giữ lại hoặc có nguy cơ bị xâm hại, hãy kêu cứu và tìm hỗ trợ khẩn cấp.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV074",
+  "question": "Một người trong trường nhắn xin ảnh nhạy cảm của em, em từ chối nhưng họ vẫn hỏi tiếp.",
+  "assessment": "Bị liên tục xin ảnh nhạy cảm.",
+  "advice": "Em có quyền từ chối hoàn toàn việc gửi ảnh nhạy cảm. Em đừng gửi ảnh, cũng đừng tiếp tục thương lượng với người đang gây sức ép. Hãy giữ các tin nhắn yêu cầu và nói ngay với cha mẹ, giáo viên hoặc người lớn em tin tưởng để họ giúp ngăn việc quấy rối. Nếu người nhắn là người có quyền lực với em, hãy chọn một người lớn khác để báo; không cần tự giải quyết một mình.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV075",
+  "question": "Bạn gửi hình tục vào gr rồi tag tên em để chọc. Em ko muốn xem.",
+  "assessment": "Bị gửi nội dung tục và gắn thẻ để trêu.",
+  "advice": "Em có quyền không xem những hình ảnh đó. Hãy tránh mở lại hoặc chuyển tiếp, báo quản trị nhóm để gỡ nội dung và nhờ giáo viên chủ nhiệm can thiệp nếu người gửi cố tình lặp lại. Em không cần chịu đựng chỉ để tránh bị chê là “không biết đùa”.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV076",
+  "question": "Bạn cứ đứng sát và chặn đường em để nói chuyện dù em muốn đi.",
+  "assessment": "Bị chặn đường và đứng sát dù muốn rời đi.",
+  "advice": "Nếu bạn đứng chắn lối và không để em đi, hãy nói rõ “Mình muốn đi, bạn tránh ra” khi an toàn, rồi tìm đến chỗ có giáo viên hoặc người lớn. Đừng cố tranh luận ở nơi vắng. Báo sự việc nếu hành vi tiếp diễn hoặc em thấy bị đe dọa.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV077",
+  "question": "Em đã block nhưng bạn tạo nick khác nhắn tiếp, hỏi em đang ở đâu và đi học đường nào.",
+  "assessment": "Bị theo dõi trực tuyến qua nhiều tài khoản và hỏi đường đi.",
+  "advice": "Việc tạo tài khoản mới để hỏi em đang ở đâu sau khi bị chặn là dấu hiệu cần cảnh giác. Đừng chia sẻ vị trí, lịch học hay tuyến đường; hãy lưu tin nhắn, siết quyền riêng tư và báo ngay gia đình, giáo viên. Nếu nghi bị theo dõi ngoài đời, cần có người lớn đi cùng.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV078",
+  "question": "Bạn trêu ghép đôi em với người khác mỗi ngày, em đã nói rất ngại mà vẫn tiếp tục.",
+  "assessment": "Bị ghép đôi trêu chọc hằng ngày dù đã phản đối.",
+  "advice": "Cô hiểu em ngại khi chuyện tình cảm bị đem ra trêu mỗi ngày. Em đã nói không thích, vậy các bạn cần dừng. Hãy nhắc lại ranh giới một cách rõ ràng và nhờ giáo viên chủ nhiệm hỗ trợ nếu họ tiếp tục; em không phải chứng minh điều gì về mối quan hệ của mình.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV079",
+  "question": "Một bạn hỏi chuyện riêng tư về cơ thể em trước nhiều người làm em xấu hổ.",
+  "assessment": "Bị hỏi chuyện riêng tư về cơ thể trước đám đông.",
+  "advice": "Em không có nghĩa vụ trả lời câu hỏi riêng tư về cơ thể trước nhiều người. Em có thể nói “Mình không muốn nói chuyện này” rồi rời đi. Nếu bạn tiếp tục làm em xấu hổ, hãy báo giáo viên để được bảo vệ quyền riêng tư và sự tôn trọng.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV080",
+  "question": "Em từng đùa kiểu nhắn tin làm bạn khó chịu. Bạn nói dừng rồi, em nên làm gì để tôn trọng ranh giới của bạn?",
+  "assessment": "Người hỏi từng nhắn tin đùa quá giới hạn, muốn sửa.",
+  "advice": "Khi bạn nói dừng, em hãy dừng ngay, xin lỗi cụ thể và không nhắn tiếp để đòi bạn phải trả lời. Đừng biện minh rằng mình chỉ đùa. Em có thể hỏi một lần xem bạn có muốn giữ khoảng cách không, rồi tôn trọng lựa chọn của bạn.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV081",
+  "question": "Em thấy mấy bạn đang vây một bạn ở cầu thang và chửi, em có nên chạy vào can ko?",
+  "assessment": "Người chứng kiến thấy một bạn bị vây ở cầu thang.",
+  "advice": "Em đừng lao vào giữa nhóm đang vây bạn vì có thể nguy hiểm cho cả hai. Hãy gọi ngay giáo viên, bảo vệ hoặc người lớn gần nhất, mô tả vị trí chính xác. Nếu an toàn, em có thể đứng ở khoảng cách phù hợp để hướng dẫn người lớn đến, không quay clip để đăng mạng.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV082",
+  "question": "Bạn thân nói với em đang bị dọa đánh nhưng bắt em hứa ko kể ai. Em nên giữ bí mật ko?",
+  "assessment": "Bạn thân bị dọa đánh, yêu cầu giữ bí mật.",
+  "advice": "Cô hiểu em muốn giữ lời hứa với bạn, nhưng khi có nguy cơ bị đánh thì an toàn quan trọng hơn bí mật. Em hãy nói với bạn rằng mình cần nhờ giáo viên hoặc cha mẹ giúp bảo vệ bạn ấy; có thể cùng bạn đi báo. Đừng tự tìm người đe dọa để giải quyết.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV083",
+  "question": "Em thấy clip bạn bị đánh trong gr lớp, nhiều người đang xin clip. Em nên làm gì?",
+  "assessment": "Người chứng kiến nhận clip đánh nhau đang bị xin chia sẻ.",
+  "advice": "Em đừng gửi clip cho người khác hoặc đăng lên mạng. Nếu clip giúp xác định nguy cơ hay người bị hại, hãy báo giáo viên và cung cấp bằng chứng qua kênh an toàn, không phát tán rộng. Hỏi thăm bạn bị đánh nếu an toàn và khuyên người khác ngừng xin clip.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV084",
+  "question": "Em từng share meme chế giễu một bạn, giờ mới biết bạn buồn và nghỉ học. Em muốn sửa.",
+  "assessment": "Người hỏi từng chia sẻ meme, bạn bị hại nghỉ học.",
+  "advice": "Em hãy dừng chia sẻ meme, xóa bài của mình và đề nghị những người đã nhận không phát tán tiếp. Xin lỗi bạn bằng lời chân thành, không ép bạn phải tha thứ. Vì bạn đã nghỉ học, hãy báo giáo viên chủ nhiệm để nhà trường hỗ trợ bạn ấy, không tự suy đoán lý do nghỉ.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV085",
+  "question": "Em là admin gr lớp, có người đăng ảnh xấu của bạn khác. Em nên xử lý bài đó sao?",
+  "assessment": "Quản trị nhóm lớp thấy ảnh xấu của bạn bị đăng.",
+  "advice": "Là quản trị nhóm, em nên gỡ hoặc ẩn bài vi phạm quy tắc nhóm, nhắc người đăng không chia sẻ lại và không biến việc xử lý thành một cuộc bêu tên công khai. Nếu nội dung nghiêm trọng, hãy báo giáo viên chủ nhiệm; giữ bằng chứng tối thiểu qua kênh an toàn nếu cần.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV086",
+  "question": "Bạn kể với em bị tẩy chay và nói ko muốn đi học nữa. Em có thể giúp bạn thế nào?",
+  "assessment": "Bạn thân bị tẩy chay, không muốn đi học.",
+  "advice": "Cô mừng vì em muốn ở bên bạn. Em hãy lắng nghe, tránh hứa giữ kín mọi chuyện và rủ bạn gặp giáo viên, người tư vấn học đường hoặc cha mẹ mà bạn tin tưởng. Nếu bạn nói muốn biến mất, không muốn sống hay có dấu hiệu tự làm hại mình, hãy hỏi nhẹ nhàng xem bạn có đang nghĩ đến tự làm hại bản thân không, báo người lớn ngay và đừng để bạn một mình khi có nguy cơ trước mắt.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV087",
+  "question": "Em chứng kiến hai bạn cãi nhau, một bạn bắt đầu dọa đánh. Em sợ báo cô sẽ bị nói là mách lẻo.",
+  "assessment": "Người chứng kiến ngại bị gọi là mách lẻo.",
+  "advice": "Báo người lớn khi có lời đe dọa đánh nhau là giúp ngăn nguy hiểm, không phải mách lẻo. Em hãy nói riêng với giáo viên hoặc bảo vệ trường về điều mình thấy, tránh đối đầu trực tiếp. Nếu hai bạn sắp xô xát, hãy gọi hỗ trợ ngay.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV088",
+  "question": "Em đã cùng mấy bạn gọi biệt danh làm một bạn khó chịu. Em muốn xin lỗi nhưng sợ bạn ko chấp nhận.",
+  "assessment": "Người hỏi từng hùa theo gọi biệt danh, muốn xin lỗi.",
+  "advice": "Em hãy xin lỗi vì đã cùng các bạn gọi biệt danh khiến người đó khó chịu, rồi dừng hẳn hành vi và nhắc nhóm không lặp lại. Nếu bạn chưa chấp nhận, em hãy tôn trọng cảm xúc của bạn. Cô tin sự thay đổi bền bỉ quan trọng hơn việc được tha thứ ngay.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV089",
+  "question": "Bạn gửi em ảnh riêng của người khác rồi bảo giữ bí mật. Em ko đăng nhưng có cần xóa ko?",
+  "assessment": "Người chứng kiến được gửi ảnh riêng của người khác.",
+  "advice": "Em đừng chuyển tiếp bức ảnh hay dùng nó để đùa cợt. Nếu ảnh riêng tư hoặc nhạy cảm được chia sẻ khi chưa có sự đồng ý, em hãy báo một người lớn đáng tin cậy để họ hướng dẫn cách yêu cầu gỡ và bảo vệ bạn trong ảnh. Không tải xuống, sao chép hay gửi lại ảnh nhạy cảm để làm bằng chứng; chỉ giữ thông tin về tài khoản, đường dẫn hoặc tin nhắn liên quan khi phù hợp.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV090",
+  "question": "Bạn thân nói bị bắt nạt và bảo “em chỉ muốn biến mất”. Em rất lo nhưng ko biết có nên báo người lớn ko.",
+  "assessment": "Bạn thân nói “chỉ muốn biến mất” sau khi bị bắt nạt.",
+  "advice": "Cô hiểu em lo cho bạn, và em nên báo ngay cho giáo viên, cha mẹ hoặc người lớn có thể đến giúp, dù bạn muốn giữ bí mật. Em có thể hỏi thẳng nhưng dịu dàng: “Bạn có đang nghĩ đến việc làm đau bản thân hay tự tử không?”. Nếu bạn có ý định, kế hoạch hoặc đang gặp nguy hiểm, đừng để bạn ở một mình; nhờ người lớn đưa bạn đến cơ sở y tế hoặc gọi 115 khi cần cấp cứu. Em không phải tự gánh trách nhiệm cứu bạn.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV091",
+  "question": "tụi nó cap đoạn chat riêng của e đăng gr, ghép ảnh e nữa, xong bảo mai ra cổng nói chuyện. e ko dám đi học thì sao",
+  "assessment": "Bị lộ chat, ghép ảnh và hẹn ngoài cổng.",
+  "advice": "Cô hiểu vì sao em sợ đi học: em vừa bị phát tán tin nhắn, ghép ảnh, vừa bị gọi ra cổng. Việc cần làm trước tiên là báo ngay cha mẹ, giáo viên và bảo vệ trường, nhờ người lớn sắp xếp đi học và về nhà an toàn; tuyệt đối không gặp nhóm đó một mình. Sau đó mới cùng người lớn lưu bằng chứng tin nhắn, đường dẫn và yêu cầu gỡ nội dung. Em không cần tự đối đầu để chứng minh mình không sợ.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV092",
+  "question": "Bạn A nói xấu em trên mạng, rủ người tẩy chay em rồi nhắn nếu em mách cô thì sẽ xử em.",
+  "assessment": "Bị nói xấu, tẩy chay và dọa đánh nếu báo cô.",
+  "advice": "Đây không chỉ là nói xấu mà còn có lời đe dọa nhằm ngăn em tìm hỗ trợ. Em hãy báo riêng cho giáo viên, cha mẹ hoặc ban giám hiệu, đưa bằng chứng và đề nghị giữ kín cách tiếp nhận thông tin ở mức phù hợp. Đừng đối chất hay đi gặp nhóm đó một mình.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV093",
+  "question": "e với bạn cãi nhau, e chửi trước, bạn lấy ảnh e đăng lên story rồi dọa gặp ngoài trường. Giờ e cũng có lỗi thì phải lm sao",
+  "assessment": "Người hỏi từng chửi trước, sau đó bị đăng ảnh và dọa gặp.",
+  "advice": "Em có thể nhận lỗi vì đã chửi trước mà vẫn có quyền được bảo vệ khỏi đe dọa và việc dùng ảnh để bêu xấu. Hãy ngừng tranh cãi, báo giáo viên và gia đình về lời hẹn, không gặp riêng. Sau khi an toàn, em có thể xin lỗi phần sai của mình và nhờ người lớn hỗ trợ giải quyết việc đăng ảnh.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV094",
+  "question": "Bạn em bị nhóm khác chế ảnh, kick khỏi nhóm học và mấy hôm nay có người đứng chờ gần cổng. Bạn bảo em đừng kể ai.",
+  "assessment": "Người chứng kiến bạn bị chế ảnh, loại nhóm, có người chờ cổng.",
+  "advice": "Bạn em đang gặp nhiều dấu hiệu đáng lo, nhất là việc có người chờ gần cổng. Em hãy báo ngay giáo viên, bảo vệ trường hoặc cha mẹ của bạn, dù bạn dặn đừng kể; giải thích rằng em làm vậy để bảo vệ bạn. Đừng tự theo dõi nhóm người chờ cổng hay đối đầu.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV095",
+  "question": "Em lỡ share tin đồn về bạn, bạn tức quá dọa tung ảnh riêng của em. Em biết mình sai nhưng em rất sợ.",
+  "assessment": "Người hỏi đã chia sẻ tin đồn, rồi bị dọa tung ảnh riêng.",
+  "advice": "Em cần dừng lan truyền tin đồn, đính chính và xin lỗi bạn vì phần sai của mình. Nhưng việc bạn đe dọa tung ảnh riêng vẫn không thể chấp nhận. Em đừng mặc cả hoặc gửi thêm ảnh; hãy lưu lời đe dọa và nhờ giáo viên, cha mẹ hỗ trợ bảo vệ em.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV096",
+  "question": "có nick lạ biết tên lớp, trường và đường e hay đi, cứ nhắn ‘tao biết m ở đâu’. e block thì nó tạo nick khác.",
+  "assessment": "Nick lạ biết trường lớp, đường đi, liên tục đe dọa.",
+  "advice": "Cô lo cho an toàn của em vì tài khoản lạ biết tuyến đường em đi và liên tục đe dọa. Em hãy báo ngay cha mẹ, giáo viên và bảo vệ trường, nhờ người lớn đi cùng hoặc đưa đón; tránh đi một mình trên đường quen thuộc nếu đang sợ bị theo dõi. Đừng trả lời, đừng đăng vị trí, hãy giữ thông tin tài khoản và tin nhắn. Nếu người đó xuất hiện, bám theo hoặc đe dọa trực tiếp, tìm nơi an toàn và nhờ người lớn gọi 113.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV097",
+  "question": "Bạn bắt em đưa tiền, nếu ko thì đăng clip em bị ngã và rủ mọi người cười. Em đã đưa 1 lần nhưng bạn vẫn đòi.",
+  "assessment": "Bị đòi tiền nhiều lần bằng đe dọa đăng clip.",
+  "advice": "Cô rất lo vì em bị ép đưa tiền nhiều lần bằng lời đe dọa tung clip. Em không nên tự đưa thêm tiền hay hẹn gặp để giải quyết. Hãy báo ngay cha mẹ, giáo viên và bảo vệ trường, giữ tin nhắn, thông tin chuyển tiền và đường dẫn clip nếu có. Nhờ người lớn giúp bảo vệ em khi đi lại và xử lý việc đòi tiền, yêu cầu gỡ clip; đừng tự phát tán clip để chứng minh sự việc.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV098",
+  "question": "Nhóm bạn ko cho em làm bài chung, lên mạng nói em vô dụng, hôm nay còn bảo tan học ở lại nói chuyện. Em nên ưu tiên làm gì trước?",
+  "assessment": "Bị loại nhóm, xúc phạm trên mạng, hẹn ở lại sau giờ.",
+  "advice": "Lúc này em hãy ưu tiên lời hẹn sau giờ học vì có thể tiềm ẩn nguy cơ. Đừng ở lại gặp nhóm một mình; báo giáo viên và cha mẹ để được hỗ trợ về nhà an toàn. Sau đó lưu bằng chứng về việc bị loại nhóm và xúc phạm để giáo viên giải quyết công bằng chuyện học tập.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV099",
+  "question": "Em thấy bạn bị nói xấu và tẩy chay, em vào bênh thì họ quay sang chửi và dọa cả em. Em có nên tiếp tục tranh luận ko?",
+  "assessment": "Người chứng kiến bênh bạn rồi bị chửi và dọa.",
+  "advice": "Em không cần tiếp tục tranh luận trong nhóm vì có thể khiến việc đe dọa tăng lên. Hãy lưu tin nhắn, ngừng phản hồi và báo giáo viên hoặc gia đình về việc cả em và bạn bị nhắm tới. Em vẫn có thể giúp bạn bằng cách đồng hành tìm hỗ trợ, không cần đối đầu công khai.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ },
+ {
+  "id": "DEV100",
+  "question": "Bạn đăng đoạn chat riêng, sửa ảnh em thành ảnh nhạy cảm và nói mai tới trường sẽ cho em biết tay nếu em báo người lớn.",
+  "assessment": "Bị đăng chat, ảnh nhạy cảm giả và đe dọa bạo lực.",
+  "advice": "Cô rất lo cho em vì người khác đã đăng tin nhắn riêng, tạo ảnh nhạy cảm giả và dọa sẽ “cho em biết tay” vào ngày mai. An toàn là ưu tiên trước tiên: báo ngay cha mẹ, giáo viên, ban giám hiệu hoặc bảo vệ trường, nhờ người lớn đi cùng và không gặp người đe dọa một mình. Giữ tin nhắn và đường dẫn bài đăng, không chuyển tiếp ảnh nhạy cảm giả. Sau khi em được bảo vệ, nhờ người lớn giúp báo cáo nền tảng, yêu cầu gỡ và xử lý sự việc. Nếu có nguy hiểm trực tiếp, nhờ người lớn gọi 113.",
+  "legal": "Tôn trọng ranh giới cá nhân, quyền riêng tư và an toàn của học sinh; chưa đủ dữ kiện để xác định trách nhiệm pháp lý."
+ }
+];
+function reviewed100Match(text){
+ const input=norm(text);
+ if(!input)return null;
+ const exact=REVIEWED_100.find(c=>norm(c.question)===input);
+ if(exact)return exact;
+ // Chỉ bắt lỗi gõ rất nhỏ; tránh gán nhầm tư vấn cho tình huống khác.
+ const a=new Set(input.split(' ').filter(Boolean));
+ const scored=REVIEWED_100.map(c=>{
+  const b=new Set(norm(c.question).split(' ').filter(Boolean));
+  const shared=[...a].filter(x=>b.has(x)).length;
+  return {c,score:shared/Math.max(a.size,b.size,1)};
+ }).sort((x,y)=>y.score-x.score);
+ return scored[0]?.score>=0.94 && scored[0].score-(scored[1]?.score??0)>=0.08?scored[0].c:null;
+}
+function reviewed100Reply(text){
+ const c=reviewed100Match(text);if(!c)return null;
+ const high=/de doa|doa danh|tu tu|tu hai|danh nhau|anh nhay cam|xam hai|tong tien|cho em biet tay/.test(norm(text));
+ return {
+  support:c.advice,
+  safe_steps:[],
+  legal:{user_side:'Em có quyền được tôn trọng, bảo vệ và tìm kiếm sự hỗ trợ phù hợp. Không tự kết luận em có lỗi chỉ từ lời kể này.',other_side:c.legal,note:'Đây là định hướng giáo dục, không phải kết luận pháp lý. Nếu có nguy cơ trực tiếp, ưu tiên tìm người lớn và trợ giúp khẩn cấp.'},
+  final_advice:'Cô mong em nhớ rằng việc tìm sự giúp đỡ khi cần là một cách bảo vệ bản thân và người khác. Em xứng đáng được tôn trọng và an toàn.',
+  _diagnostics:{situation_summary:c.assessment,user_role:'Học sinh trong tình huống',actor_analysis:'Phân tích theo thông tin được kể; không suy đoán động cơ.',categories:[c.id],risk_level:high?'Cao':'Cần đánh giá theo bối cảnh',need_clarification:false,clarifying_question:''},
+  _reference_case:c.id
+ };
+}
+
 function fallback(text){
+  const reviewed=reviewed100Reply(text);
+  if(reviewed)return reviewed;
+  const demo=approvedDemoReply(text);
+  if(demo)return demo;
   const approved=approvedReply(text);
   if(approved) return approved;
   const relationship=relationshipResponse(text);
@@ -866,6 +1741,10 @@ function fallback(text){
 }
 
 function normalizeGemini(obj,text){
+  const reviewed=reviewed100Reply(text);
+  if(reviewed)return reviewed;
+  const demo=approvedDemoReply(text);
+  if(demo)return demo;
   const approved=approvedReply(text);
   if(approved) return approved;
   // Không ghi đè lời tư vấn Gemini có ngữ cảnh bằng mẫu tình cảm chung chung.
@@ -932,6 +1811,9 @@ if (!r.ok) {
   return JSON.parse(raw);
 }
 
+export function __testReviewed100(text){return reviewed100Reply(text);}
+export function __testReviewedCases(){return REVIEWED_100;}
+export function __testDemo(text){return approvedDemoReply(text);}
 export function __testFallback(text){ return fallback(text); }
 export function __testMeeting(text){ return meetingRisk(text); }
 export function __testRelationship(text){ return relationshipContext(text); }
