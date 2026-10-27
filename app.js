@@ -68,34 +68,72 @@ function renderReport(r){
   </div>`;
 }
 
-function getStats(){
-  return JSON.parse(localStorage.getItem("ksvh_stats")||'{"visits":0,"aiUses":0,"highRisk":0,"cats":{}}');
+// Thống kê tập trung: lưu ở Netlify Blobs, không lưu nội dung hội thoại.
+const statsEndpoint = '/.netlify/functions/stats';
+let systemStats = {visits:0,aiUses:0,cats:{},byDay:{}};
+let statsPending = null;
+function setStatsStatus(message){
+  for(const el of document.querySelectorAll('.stat-status, #stats-connection')) el.textContent=message;
 }
-function saveStats(s){localStorage.setItem("ksvh_stats",JSON.stringify(s));}
-(function visit(){
-  const s=getStats();
-  if(!sessionStorage.getItem("countedVisit")){
-    s.visits++; saveStats(s); sessionStorage.setItem("countedVisit","1");
+
+async function sendStat(type, categories=[]) {
+  try {
+    const res = await fetch(statsEndpoint, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type,categories}), keepalive:true
+    });
+    if (!res.ok) throw new Error(`Lỗi ghi thống kê: HTTP ${res.status}`);
+    await loadStats();
+    return true;
+  } catch (err) {
+    console.warn('Thống kê chưa được lưu:',err);
+    setStatsStatus('⚠️ Chưa ghi được lượt sử dụng lên hệ thống. Vui lòng thử lại.');
+    return false;
   }
-  renderStats();
+}
+async function loadStats(){
+  if(statsPending) return statsPending;
+  statsPending=(async()=>{
+    try {
+      const res=await fetch(statsEndpoint,{cache:'no-store'});
+      if(!res.ok) throw new Error(`Lỗi đọc thống kê: HTTP ${res.status}`);
+      const data=await res.json();
+      if(typeof data.visits!=='number' || typeof data.aiUses!=='number') throw new Error('Dữ liệu thống kê không hợp lệ');
+      systemStats=data;
+      renderStats();
+      setStatsStatus('🟢 Đã kết nối thống kê tập trung – số liệu từ toàn hệ thống');
+    } catch(err) {
+      console.warn('Lỗi thống kê tập trung:',err);
+      setStatsStatus('⚠️ Chưa kết nối được thống kê tập trung. Kiểm tra Netlify Functions → stats.');
+    }
+  })();
+  try { await statsPending; } finally { statsPending=null; }
+}
+(async function visit(){
+  await loadStats();
+  if(!sessionStorage.getItem('systemVisitCounted')) {
+    const saved=await sendStat('visit');
+    if(saved) sessionStorage.setItem('systemVisitCounted','1');
+  }
 })();
 function record(r){
-  const s=getStats(); s.aiUses++;
   const d=r._diagnostics||{};
-  if(["trung bình-cao","cao","rất cao"].includes((d.risk_level||"").toLowerCase())) s.highRisk++;
-  arr(d.categories).forEach(c=>{const key=CATS.includes(c)?c:"Khác";s.cats[key]=(s.cats[key]||0)+1;});
-  saveStats(s); renderStats();
+  const categories=[...new Set(arr(d.categories).map(c=>CATS.includes(c)?c:'Khác'))];
+  sendStat('consult',categories);
 }
 function renderStats(){
-  const s=getStats();
+  const s=systemStats;
   const v=document.getElementById('visits'), a=document.getElementById('ai-uses');
   if(v) v.textContent=s.visits||0; if(a) a.textContent=s.aiUses||0;
   const vh=document.getElementById('visitCount'), ah=document.getElementById('assistantCount');
   if(vh) vh.textContent=s.visits||0; if(ah) ah.textContent=s.aiUses||0;
   const box=document.getElementById('category-list'); if(!box) return;
-  const max=Math.max(1,...CATS.map(c=>s.cats[c]||0));
-  box.innerHTML=CATS.map(c=>`<div class="category-row"><span>${c}</span><div class="bar"><i style="width:${((s.cats[c]||0)/max)*100}%"></i></div><b>${s.cats[c]||0}</b></div>`).join('');
+  const max=Math.max(1,...CATS.map(c=>s.cats?.[c]||0));
+  box.innerHTML=CATS.map(c=>`<div class="category-row"><span>${c}</span><div class="bar"><i style="width:${((s.cats?.[c]||0)/max)*100}%"></i></div><b>${s.cats?.[c]||0}</b></div>`).join('');
 }
+// Tự làm mới số liệu khi học sinh mở trang thống kê.
+const oldShowPage=showPage;
+showPage=function(target){oldShowPage(target);if(target==='stats')loadStats();};
 
 let activeRequest = null;
 let requestSequence = 0;
@@ -127,12 +165,7 @@ async function analyze(){
 send.addEventListener("click",analyze);
 input.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")analyze();});
 
-document.getElementById("reset-stats")?.addEventListener("click",()=>{
-  if(confirm("Xóa toàn bộ thống kê thử nghiệm trên thiết bị này?")){
-    localStorage.removeItem("ksvh_stats"); renderStats();
-  }
-});
-
+// Không cho học sinh xóa dữ liệu toàn hệ thống.
 // Demo: only prefill the student's input; never treat test expectations as actual AI results.
 const demoSelect=document.getElementById("demo-select");
 (window.DEMO_SCENARIOS||[]).forEach(item=>{
