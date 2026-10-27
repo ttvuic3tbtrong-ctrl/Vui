@@ -1,4 +1,4 @@
-import { getStore } from '@netlify/blobs';
+import { getStore, connectLambda } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 
 const CATS = [
@@ -13,6 +13,7 @@ const response = (statusCode, data) => ({
 
 export async function handler(event) {
   try {
+    connectLambda(event);
     const store = getStore({ name: 'co-giao-ai-stats', consistency: 'strong' });
     if (event.httpMethod === 'POST') {
       const body = JSON.parse(event.body || '{}');
