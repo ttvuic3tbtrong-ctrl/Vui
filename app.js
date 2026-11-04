@@ -1,10 +1,24 @@
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 
+
 const CATS = [
-  "Chế giễu/xúc phạm","Ảnh & đời tư","Cô lập/tung tin","Đe dọa",
-  "Mâu thuẫn","Tiền bạc/nợ","Cờ bạc trực tuyến","Vay trực tuyến","Lừa đảo trực tuyến","Khác"
+  "Chế giễu, xúc phạm",
+  "Bắt nạt lặp lại",
+  "Cô lập, tẩy chay",
+  "Tung tin sai sự thật",
+  "Xâm phạm hình ảnh và đời tư",
+  "Đe dọa, uy hiếp",
+  "Bạo lực thể chất",
+  "Ép buộc, khống chế",
+  "Quấy rối, xâm phạm ranh giới",
+  "Mâu thuẫn và trả đũa",
+  "Tình cảm học đường",
+  "Tiền bạc, cờ bạc và vay nợ",
+  "Lừa đảo và an toàn tài khoản",
+  "Khó khăn học tập và tâm lý"
 ];
+
 
 function showPage(target){
   const ids={home:'homePage',knowledge:'knowledgePage',assistant:'assistantPage',stats:'statsPage'};
@@ -116,11 +130,24 @@ async function loadStats(){
     if(saved) sessionStorage.setItem('systemVisitCounted','1');
   }
 })();
-function record(r){
-  const d=r._diagnostics||{};
-  const categories=[...new Set(arr(d.categories).map(c=>CATS.includes(c)?c:'Khác'))];
-  sendStat('consult',categories);
+
+function record(r, studentText) {
+  const classifier = window.CoGiaoAIPhanLoai;
+
+  let categories = [];
+
+  if (classifier && typeof classifier.phanLoaiTinhHuong === 'function') {
+    const result = classifier.phanLoaiTinhHuong(studentText || '');
+    categories = [
+      ...new Set(
+        (result.nhom || []).filter(c => CATS.includes(c))
+      )
+    ];
+  }
+
+  sendStat('consult', categories);
 }
+
 function renderStats(){
   const s=systemStats;
   const v=document.getElementById('visits'), a=document.getElementById('ai-uses');
@@ -153,7 +180,7 @@ async function analyze(){
     });
     const data=await res.json(); if(sequence!==requestSequence)return; loading.remove();
     if(!res.ok) throw new Error(data.error||"Không kết nối được Trợ lý AI.");
-    addMsg("ai",renderReport(data)); record(data);
+    addMsg("ai",renderReport(data)); record(data,text);
   }catch(e){
     if(sequence!==requestSequence || e.name==="AbortError")return;
     loading.remove();
