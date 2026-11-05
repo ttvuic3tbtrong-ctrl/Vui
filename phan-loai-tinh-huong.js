@@ -85,6 +85,7 @@
       id: "ep_buoc",
       ten: "Ép buộc, khống chế",
       cum: [
+         "bị ép buộc",
         "bị ép đưa tiền", "bị ép làm bài hộ",
         "bị ép làm việc", "bị cưỡng ép",
         "bị khống chế", "bắt em phải đưa tiền",
@@ -117,6 +118,7 @@
       id: "tinh_cam",
       ten: "Tình cảm học đường",
       cum: [
+         "vấn đề tình cảm",
         "chia tay người yêu", "ghen tuông",
         "bị ép quay lại", "người yêu cũ",
         "bị người yêu bỏ",
@@ -139,6 +141,8 @@
       id: "lua_dao",
       ten: "Lừa đảo và an toàn tài khoản",
       cum: [
+         "bị lừa đảo trực tuyến",
+        "bị lừa đảo",
         "bị lừa chuyển khoản", "bị lừa tiền",
         "bị chiếm tài khoản",
         "bị hack tài khoản",
