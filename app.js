@@ -148,16 +148,76 @@ function record(r, studentText) {
   sendStat('consult', categories);
 }
 
-function renderStats(){
-  const s=systemStats;
-  const v=document.getElementById('visits'), a=document.getElementById('ai-uses');
-  if(v) v.textContent=s.visits||0; if(a) a.textContent=s.aiUses||0;
-  const vh=document.getElementById('visitCount'), ah=document.getElementById('assistantCount');
-  if(vh) vh.textContent=s.visits||0; if(ah) ah.textContent=s.aiUses||0;
-  const box=document.getElementById('category-list'); if(!box) return;
-  const max=Math.max(1,...CATS.map(c=>s.cats?.[c]||0));
-  box.innerHTML=CATS.map(c=>`<div class="category-row"><span>${c}</span><div class="bar"><i style="width:${((s.cats?.[c]||0)/max)*100}%"></i></div><b>${s.cats?.[c]||0}</b></div>`).join('');
+
+function renderStats() {
+  const s = systemStats;
+
+  const v = document.getElementById('visits');
+  const a = document.getElementById('ai-uses');
+  if (v) v.textContent = s.visits || 0;
+  if (a) a.textContent = s.aiUses || 0;
+
+  const vh = document.getElementById('visitCount');
+  const ah = document.getElementById('assistantCount');
+  if (vh) vh.textContent = s.visits || 0;
+  if (ah) ah.textContent = s.aiUses || 0;
+
+  const box = document.getElementById('category-list');
+  if (!box) return;
+
+  const newCats = s.cats || {};
+  const max = Math.max(
+    1,
+    ...CATS.map(c => newCats[c] || 0)
+  );
+
+  function drawRows(names, counts, maximum) {
+    return names.map(c => {
+      const count = counts[c] || 0;
+      const width = (count / maximum) * 100;
+
+      return `
+        <div class="category-row">
+          <span>${esc(c)}</span>
+          <div class="bar">
+            <i style="width:${width}%"></i>
+          </div>
+          <b>${count}</b>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Biểu đồ 14 nhóm mới
+  box.innerHTML = drawRows(CATS, newCats, max);
+
+  // Biểu đồ 10 nhóm lịch sử
+  const legacyCats = s.legacyCats || {};
+  const oldNames = Object.keys(legacyCats);
+
+  if (oldNames.length > 0) {
+    const oldMax = Math.max(
+      1,
+      ...oldNames.map(c => legacyCats[c] || 0)
+    );
+
+    box.innerHTML += `
+      <div style="margin-top:28px">
+        <h3 style="color:#1454b8">
+          Thống kê tình huống lịch sử (10 nhóm cũ)
+        </h3>
+        <p style="font-size:13px;color:#64748b">
+          Dữ liệu được ghi nhận trước khi cập nhật
+          hệ thống phân loại 14 nhóm. Các nhóm cũ
+          được giữ nguyên để bảo toàn số liệu,
+          không tự động chuyển sang nhóm mới.
+        </p>
+        ${drawRows(oldNames, legacyCats, oldMax)}
+      </div>
+    `;
+  }
 }
+
 // Tự làm mới số liệu khi học sinh mở trang thống kê.
 const oldShowPage=showPage;
 showPage=function(target){oldShowPage(target);if(target==='stats')loadStats();};
