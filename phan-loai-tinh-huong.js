@@ -99,7 +99,9 @@
     {id:"tien_bac",ten:"Tiền bạc, cờ bạc và vay nợ",cum:[
    "vay tiền nhưng không trả","vay tiền","nợ em",
       "mượn tiền không trả","bị đòi nợ",
-      "bạn nợ tiền","vay tiền qua app",
+      
+
+
       "vay nóng","đánh bài trên mạng",
       "đánh bài ăn tiền","chơi tài xỉu",
       "cá cược online","thua tiền cá cược",
@@ -203,6 +205,7 @@
     "em chi doc bai bao",
     "em dang hoc cach phong tranh",
     "em muon tim hieu ve",
+     "em chi muon tim hieu ve",
     "em nghe ke mot nguoi khac",
     "ban noi dua rang"
   ];
