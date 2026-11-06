@@ -42,6 +42,7 @@
     ]},
     {id:"rieng_tu",ten:"Xâm phạm hình ảnh và đời tư",cum:[
       "bị chụp lén","đăng ảnh riêng tư",
+       "chụp lúc em ngủ gật",
       "bị phát tán ảnh","bị tung ảnh",
       "bị ghép ảnh","chế ảnh em",
       "bị lộ tin nhắn","đăng tin nhắn riêng",
