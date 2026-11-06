@@ -193,7 +193,7 @@ function renderStats() {
 
   // Biểu đồ 10 nhóm lịch sử
   const legacyCats = s.legacyCats || {};
-  const oldNames = Object.keys(legacyCats);
+ const oldNames = [];
 
   if (oldNames.length > 0) {
     const oldMax = Math.max(
