@@ -97,7 +97,7 @@
       "bạn trai chia tay","bạn gái chia tay"
     ]},
     {id:"tien_bac",ten:"Tiền bạc, cờ bạc và vay nợ",cum:[
-   "vay tiền nhưng không trả","vay tiền","nợ em",
+   "vay tiền nhưng không trả","vay tiền","nợ tiền em","nợ em",
       "mượn tiền không trả","bị đòi nợ",
       
 
