@@ -13,7 +13,10 @@
       cum: [
         "bị chửi", "bạn chửi em", "bị chế giễu",
         "bị miệt thị", "chê ngoại hình",
-        "gọi biệt danh xúc phạm", "body shaming",
+      "gọi biệt danh xúc phạm",
+"bằng biệt danh xúc phạm",
+"biệt danh xúc phạm",
+"body shaming",
         "bị sỉ nhục", "bị xúc phạm"
       ]
     },
@@ -44,7 +47,9 @@
       id: "tin_don",
       ten: "Tung tin sai sự thật",
       cum: [
-        "bị tung tin đồn", "bị bịa chuyện",
+       "bị tung tin đồn",
+"tung tin đồn",
+"bị bịa chuyện",
         "bị vu khống", "bị nói xấu",
         "đồn sai về em", "bịa tin về em"
       ]
