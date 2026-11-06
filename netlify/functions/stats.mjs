@@ -41,7 +41,7 @@ const response = (statusCode, data) => ({
 export async function handler(event) {
   try {
     connectLambda(event);
-    const store = getStore({ name: 'co-giao-ai-stats', consistency: 'eventual' });
+   const store = getStore({ name: 'co-giao-ai-stats-dot-2', consistency: 'eventual' });
     if (event.httpMethod === 'POST') {
       const body = JSON.parse(event.body || '{}');
       if (!['visit','consult'].includes(body.type)) return response(400,{error:'Sự kiện không hợp lệ'});
