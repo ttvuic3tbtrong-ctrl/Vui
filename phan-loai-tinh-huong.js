@@ -7,9 +7,9 @@
   "use strict";
 
   const NHOM = [
-    {id:"xuc_pham",ten:"Chế giễu, xúc phạm",cum:[
+    {id:"chế giễu ngoại hình",,ten:"Chế giễu, xúc phạm",cum:[
       "bị chửi","bạn chửi em","bị chế giễu","bị miệt thị",
-      "chê ngoại hình","gọi biệt danh xúc phạm",
+      "chê ngoại hình","chế giễu ngoại hình","gọi biệt danh xúc phạm",
       "bằng biệt danh xúc phạm","biệt danh xúc phạm",
       "body shaming","bị sỉ nhục","bị xúc phạm",
       "lấy em ra làm trò cười","làm trò cười trước lớp",
