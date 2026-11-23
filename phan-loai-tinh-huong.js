@@ -28,14 +28,25 @@
       "lặp đi lặp lại việc bắt nạt",
       "vẫn tag tên em để cười"
     ]},
-    {id:"co_lap",ten:"Cô lập, tẩy chay",cum:[
-      "bị cô lập","bị tẩy chay","không ai chơi cùng",
-      "cả lớp tránh mặt","rủ nhau không chơi với em",
-      "bị đuổi khỏi nhóm lớp","bị loại khỏi nhóm học tập",
-      "không cho em tham gia hoạt động chung",
-      "không cho em tham gia nhóm",
-      "cả nhóm không cho em tham gia"
-    ]},
+   
+{id:"co_lap",ten:"Cô lập, tẩy chay",cum:[
+  "bị cô lập","bị tẩy chay",
+  "cố tình tẩy chay","tẩy chay em",
+  "không ai chơi cùng","cả lớp tránh mặt",
+  "rủ nhau không chơi với em",
+  "rủ nhau không nói chuyện với em",
+  "không nói chuyện với em",
+  "không chơi với em",
+  "bị đuổi khỏi nhóm lớp",
+  "bị loại khỏi nhóm học tập",
+  "không cho em tham gia hoạt động chung",
+  "không cho em tham gia hoạt động nhóm",
+  "không cho em tham gia nhóm",
+  "cả nhóm không cho em tham gia",
+  "cố tình xa lánh em",
+  "bị mọi người xa lánh"
+]},
+
     {id:"tin_don",ten:"Tung tin sai sự thật",cum:[
       "bị tung tin đồn","tung tin đồn","bị bịa chuyện",
       "bị vu khống","bị nói xấu","đồn sai về em",
