@@ -135,18 +135,33 @@
       "chơi tiếp để kiếm tiền tiêu",
       "chuyển 200k phí trước để được vay"
     ]},
-    {id:"lua_dao",ten:"Lừa đảo và an toàn tài khoản",cum:[
-      "bị lừa đảo trực tuyến","bị lừa đảo",
-      "bị lừa chuyển khoản","bị lừa tiền",
-      "bị chiếm tài khoản","bị hack tài khoản",
-      "bị lấy mật khẩu","bị lừa cung cấp otp",
-      "đường link giả mạo",
-      "bị giả mạo tài khoản",
-      "gửi link giả để lấy mật khẩu",
-      "link giả để lấy mật khẩu",
-      "lấy mật khẩu của em",
-      "phí trước để được vay","chuyển 200k phí trước"
-    ]},
+    
+{id:"lua_dao",ten:"Lừa đảo và an toàn tài khoản",cum:[
+  "bị lừa đảo trực tuyến",
+  "bị lừa đảo",
+  "bị lừa chuyển khoản",
+  "bị lừa tiền",
+  "bị chiếm tài khoản",
+  "bị hack tài khoản",
+  "bị lấy mật khẩu",
+  "bị lừa cung cấp otp",
+  "đường link giả mạo",
+  "bị giả mạo tài khoản",
+  "gửi link giả để lấy mật khẩu",
+  "link giả để lấy mật khẩu",
+  "lấy mật khẩu của em",
+  "phí trước để được vay",
+  "chuyển 200k phí trước",
+  "giả danh giáo viên",
+  "giả mạo giáo viên",
+  "yêu cầu cung cấp mã otp",
+  "cung cấp mã otp",
+  "yêu cầu đăng nhập tài khoản",
+  "lừa đảo để chiếm tài khoản",
+  "đường link lạ yêu cầu đăng nhập",
+  "chiếm đoạt tài khoản"
+]},
+
     {id:"hoc_tap",ten:"Khó khăn học tập và tâm lý",cum:[
       "bị điểm kém","điểm thấp",
       "áp lực điểm số","áp lực học tập",
